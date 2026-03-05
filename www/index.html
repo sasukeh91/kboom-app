@@ -99,7 +99,7 @@ input:focus{border-color:var(--accent)}
 .pop-title{font-size:26px;font-weight:900;letter-spacing:.5px}
 .pop-date{font-size:13px;color:var(--text2);margin-top:4px}
 .pop-remain{text-align:center;font-size:13px;color:var(--accent);font-weight:700;padding:0 16px 8px}
-.balloons-area{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.balloons-area{min-height:55vh;display:flex;align-items:center;justify-content:center;padding:24px;flex-wrap:wrap}
 .balloon-row{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
 .balloon-item{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;animation:floatB 3s ease-in-out infinite;user-select:none;-webkit-user-select:none}
 .balloon-item:nth-child(2){animation-delay:.6s}
@@ -355,65 +355,122 @@ function bsvg(type, sz) {
   </svg>`;
 }
 
-// ─── CHARACTER SVG ───
+// ─── CHARACTER SVG ─── (caricatura moderna)
 function charSVG(u, w, h) {
   const n = svgN++;
-  const skin = '#F5C5A3', skinD = '#C8866A', hair = '#3D2B1F';
+  const skin='#FDBCB4', skinD='#D4876A', skinL='#FFD5CC', hair='#2C2020';
   const oc = OUTFIT_C[(u.char_outfit||'default')] || OUTFIT_C.default;
-  const bgc = BG_C[(u.char_bg||'blue')] || BG_C.blue;
-  const bgt = BG_TOP[(u.char_bg||'blue')] || BG_TOP.blue;
-  const hk = u.char_hat||'none', ek = u.char_eyes||'normal';
+  const bg1= {blue:'#1E4DB7',bg_sunset:'#C0392B',bg_space:'#0D0D1A',bg_rainbow:'#6B2DAA'}[(u.char_bg||'blue')]||'#1E4DB7';
+  const bg2= {blue:'#07144A',bg_sunset:'#6E1208',bg_space:'#030308',bg_rainbow:'#2A0A55'}[(u.char_bg||'blue')]||'#07144A';
+  const hk=u.char_hat||'none', ek=u.char_eyes||'normal';
 
-  const eyes = {
-    normal:`<ellipse cx="34" cy="34" rx="4.5" ry="5" fill="white"/><circle cx="34" cy="35.5" r="2.8" fill="#1a1a2e"/><circle cx="35.4" cy="33.5" r="1" fill="white"/><ellipse cx="52" cy="34" rx="4.5" ry="5" fill="white"/><circle cx="52" cy="35.5" r="2.8" fill="#1a1a2e"/><circle cx="53.4" cy="33.5" r="1" fill="white"/>`,
-    eyes_sunglasses:`<rect x="26" y="30" width="16" height="10" rx="4" fill="#0D0D1A" opacity=".95"/><rect x="45" y="30" width="16" height="10" rx="4" fill="#0D0D1A" opacity=".95"/><line x1="42" y1="35" x2="45" y2="35" stroke="#0D0D1A" stroke-width="2"/><rect x="27" y="31" width="6" height="3" rx="1.5" fill="white" opacity=".2"/><rect x="46" y="31" width="6" height="3" rx="1.5" fill="white" opacity=".2"/>`,
-    eyes_heart:`<path d="M29 30 Q29 27 32 27 Q35 27 35 30 Q35 33.5 32 36 Q29 33.5 29 30" fill="#FF4D6D"/><path d="M47 30 Q47 27 50 27 Q53 27 53 30 Q53 33.5 50 36 Q47 33.5 47 30" fill="#FF4D6D"/>`,
-    eyes_star:`<polygon points="32,26 33.5,31 38.5,31 34.5,33.5 36,38.5 32,36 28,38.5 29.5,33.5 25.5,31 30.5,31" fill="#FFD700"/><polygon points="50,26 51.5,31 56.5,31 52.5,33.5 54,38.5 50,36 46,38.5 47.5,33.5 43.5,31 48.5,31" fill="#FFD700"/>`
+  const EYES = {
+    normal:`
+      <path d="M34 26 Q39 23 44 25" stroke="${hair}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M56 25 Q61 23 66 26" stroke="${hair}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="39" cy="33" rx="7" ry="8" fill="white"/><ellipse cx="61" cy="33" rx="7" ry="8" fill="white"/>
+      <circle cx="39" cy="34" r="5" fill="#1a1a2e"/><circle cx="61" cy="34" r="5" fill="#1a1a2e"/>
+      <circle cx="39" cy="34" r="3" fill="#7C5CFC"/><circle cx="61" cy="34" r="3" fill="#7C5CFC"/>
+      <circle cx="41" cy="31.5" r="1.8" fill="white"/><circle cx="63" cy="31.5" r="1.8" fill="white"/>`,
+    eyes_sunglasses:`
+      <path d="M30 27 Q39 22 46 25" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M54 25 Q61 22 70 27" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="28" y="28" width="22" height="14" rx="6" fill="#0D0D1A"/>
+      <rect x="51" y="28" width="22" height="14" rx="6" fill="#0D0D1A"/>
+      <path d="M50 35 L51 35" stroke="#0D0D1A" stroke-width="2.5"/>
+      <rect x="30" y="29" width="8" height="5" rx="2.5" fill="white" opacity=".18"/>
+      <rect x="53" y="29" width="8" height="5" rx="2.5" fill="white" opacity=".18"/>`,
+    eyes_heart:`
+      <path d="M30 26 Q37 22 44 25" stroke="#FF4D6D" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M56 25 Q63 22 70 26" stroke="#FF4D6D" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M31 29 Q31 24 36 24 Q41 24 41 29 Q41 35 36 40 Q31 35 31 29" fill="#FF4D6D"/>
+      <path d="M59 29 Q59 24 64 24 Q69 24 69 29 Q69 35 64 40 Q59 35 59 29" fill="#FF4D6D"/>
+      <circle cx="33" cy="27" r="2" fill="white" opacity=".5"/>
+      <circle cx="61" cy="27" r="2" fill="white" opacity=".5"/>`,
+    eyes_star:`
+      <path d="M30 25 Q37 22 44 24" stroke="#FFD700" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M56 24 Q63 22 70 25" stroke="#FFD700" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <polygon points="37,22 39.5,29.5 47.5,29.5 41.5,34.5 43.5,42 37,37.5 30.5,42 32.5,34.5 26.5,29.5 34.5,29.5" fill="#FFD700"/>
+      <polygon points="63,22 65.5,29.5 73.5,29.5 67.5,34.5 69.5,42 63,37.5 56.5,42 58.5,34.5 52.5,29.5 60.5,29.5" fill="#FFD700"/>
+      <polygon points="37,22 39.5,29.5 47.5,29.5 41.5,34.5 43.5,42 37,37.5 30.5,42 32.5,34.5 26.5,29.5 34.5,29.5" fill="white" opacity=".3"/>`
   }[ek]||'';
 
-  const noHairHats = ['hat_tophat','hat_cowboy'];
-  const hairSVG = noHairHats.includes(hk) ? '' :
-    `<path d="M20 38 Q19 11 43 9 Q67 11 66 38 Q57 23 43 21 Q29 23 20 38 Z" fill="${hair}"/>
-     <path d="M20 38 Q17 26 19 18 Q22 10 28 9 Q20 15 20 38 Z" fill="${hair}" opacity=".7"/>
-     <path d="M66 38 Q69 26 67 18 Q64 10 58 9 Q66 15 66 38 Z" fill="${hair}" opacity=".7"/>`;
+  const noHairHats=['hat_tophat','hat_cowboy'];
+  const HAIR = noHairHats.includes(hk)?'': `
+    <ellipse cx="50" cy="26" rx="32" ry="28" fill="${hair}"/>
+    <path d="M20 34 Q19 8 50 5 Q81 8 80 34 Q68 18 50 16 Q32 18 20 34 Z" fill="${hair}"/>
+    <path d="M20 34 Q16 22 18 12 Q22 4 30 3 Q21 12 20 34 Z" fill="${hair}" opacity=".75"/>
+    <path d="M80 34 Q84 22 82 12 Q78 4 70 3 Q79 12 80 34 Z" fill="${hair}" opacity=".75"/>`;
 
-  const hatSVG = {
+  const HATS = {
     none:'',
-    hat_party:`<path d="M43 4 L25 42 L61 42 Z" fill="#FF4D6D"/><path d="M43 4 L35 32 L51 32 Z" fill="#FF9F1C" opacity=".65"/><circle cx="43" cy="3" r="4.5" fill="#FFD700"/><circle cx="30" cy="40" r="3" fill="#4DAAFF"/><circle cx="56" cy="40" r="3" fill="#52D726"/><line x1="43" y1="42" x2="43" y2="42"/>`,
-    hat_cap:`<path d="M21 32 Q21 12 43 10 Q65 12 65 32 Q65 40 43 42 Q21 40 21 32 Z" fill="#CC3333"/><path d="M14 36 Q14 32 43 32 Q72 32 72 36 L72 44 Q72 46 43 46 Q14 46 14 44 Z" fill="#AA2222"/>`,
-    hat_tophat:`<rect x="29" y="0" width="28" height="30" rx="3" fill="#111122"/><rect x="20" y="28" width="46" height="8" rx="3" fill="#111122"/><rect x="30" y="3" width="26" height="5" rx="2" fill="#FFD700" opacity=".45"/>`,
-    hat_crown:`<path d="M20 38 L20 16 L33 27 L43 8 L53 27 L66 16 L66 38 Z" fill="#FFD700"/><rect x="20" y="34" width="46" height="8" rx="2" fill="#E6B800"/><circle cx="43" cy="10" r="4.5" fill="#FF4D6D"/><circle cx="23" cy="22" r="3" fill="#4DAAFF"/><circle cx="63" cy="22" r="3" fill="#52D726"/>`,
-    hat_cowboy:`<ellipse cx="43" cy="30" rx="31" ry="8" fill="#8B6914"/><path d="M22 30 Q23 12 43 8 Q63 12 64 30 Z" fill="#8B6914"/><ellipse cx="43" cy="28" rx="22" ry="6" fill="#6B4F0A"/><path d="M12 32 Q14 38 22 36" stroke="#6B4F0A" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M74 32 Q72 38 64 36" stroke="#6B4F0A" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+    hat_party:`
+      <path d="M50 -2 L26 46 L74 46 Z" fill="#FF4D6D"/>
+      <path d="M50 -2 L39 36 L61 36 Z" fill="#FF9F1C" opacity=".7"/>
+      <path d="M50 -2 L45 22 L55 22 Z" fill="white" opacity=".28"/>
+      <circle cx="50" cy="-4" r="6" fill="#FFD700"/>
+      <circle cx="31" cy="44" r="5" fill="#4DAAFF"/><circle cx="69" cy="44" r="5" fill="#52D726"/><circle cx="50" cy="46" r="4" fill="#FC5C7D"/>`,
+    hat_cap:`
+      <path d="M20 32 Q20 8 50 5 Q80 8 80 32 Q80 42 50 44 Q20 42 20 32 Z" fill="#CC2222"/>
+      <ellipse cx="34" cy="44" rx="26" ry="8" fill="#AA1111"/>
+      <circle cx="50" cy="6" r="5" fill="#AA1111"/>
+      <path d="M20 30 Q50 27 80 30" stroke="white" stroke-width="1.5" fill="none" opacity=".35"/>`,
+    hat_tophat:`
+      <ellipse cx="50" cy="34" rx="36" ry="8" fill="#111"/>
+      <rect x="28" y="-12" width="44" height="46" rx="4" fill="#111"/>
+      <rect x="28" y="28" width="44" height="8" fill="#1a1a1a"/>
+      <rect x="30" y="29" width="40" height="4" fill="#CC9900" opacity=".55"/>`,
+    hat_crown:`
+      <rect x="20" y="36" width="60" height="12" rx="4" fill="#E6B800"/>
+      <path d="M20 38 L20 14 L34 27 L50 4 L66 27 L80 14 L80 38 Z" fill="#FFD700"/>
+      <circle cx="50" cy="6" r="6" fill="#FF4D6D"/>
+      <circle cx="23" cy="22" r="5" fill="#4DAAFF"/><circle cx="77" cy="22" r="5" fill="#52D726"/>
+      <circle cx="37" cy="33" r="4" fill="#FC5C7D"/><circle cx="63" cy="33" r="4" fill="#7C5CFC"/>`,
+    hat_cowboy:`
+      <ellipse cx="50" cy="34" rx="40" ry="10" fill="#8B6914"/>
+      <path d="M22 34 Q24 10 50 6 Q76 10 78 34 Z" fill="#8B6914"/>
+      <ellipse cx="50" cy="28" rx="26" ry="8" fill="#6B4F0A"/>
+      <path d="M10 36 Q12 46 22 42" stroke="#6B4F0A" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M90 36 Q88 46 78 42" stroke="#6B4F0A" stroke-width="4.5" fill="none" stroke-linecap="round"/>`
   }[hk]||'';
 
-  return `<svg viewBox="0 0 86 130" xmlns="http://www.w3.org/2000/svg" width="${w||86}" height="${h||130}">
-    <defs><linearGradient id="cbg${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${bgt}"/><stop offset="100%" stop-color="${bgc}"/></linearGradient></defs>
-    <rect width="86" height="130" rx="14" fill="url(#cbg${n})"/>
-    <ellipse cx="43" cy="127" rx="17" ry="4" fill="rgba(0,0,0,.22)"/>
-    <rect x="27" y="96" width="13" height="29" rx="6" fill="#1E1E42"/>
-    <rect x="46" y="96" width="13" height="29" rx="6" fill="#1E1E42"/>
-    <ellipse cx="33" cy="125" rx="10" ry="5" fill="#111122"/>
-    <ellipse cx="53" cy="125" rx="10" ry="5" fill="#111122"/>
-    <path d="M18 70 Q20 62 30 60 L43 66 L56 60 Q66 62 68 70 L68 100 Q43 107 18 100 Z" fill="${oc}"/>
-    <path d="M39 60 L43 66 L47 60" fill="white" opacity=".22"/>
-    <path d="M18 71 Q6 78 7 96 Q10 100 16 98 Q17 82 22 74 Z" fill="${oc}"/>
-    <ellipse cx="11" cy="100" rx="7" ry="6" fill="${skin}"/>
-    <path d="M68 71 Q80 78 79 96 Q76 100 70 98 Q69 82 64 74 Z" fill="${oc}"/>
-    <ellipse cx="75" cy="100" rx="7" ry="6" fill="${skin}"/>
-    <rect x="37" y="54" width="12" height="13" rx="5" fill="${skin}"/>
-    <ellipse cx="43" cy="36" rx="23" ry="24" fill="${skin}"/>
-    <ellipse cx="20" cy="37" rx="4" ry="5.5" fill="${skin}"/>
-    <ellipse cx="66" cy="37" rx="4" ry="5.5" fill="${skin}"/>
-    ${hairSVG}
-    ${eyes}
-    <ellipse cx="43" cy="44" rx="2.8" ry="2" fill="${skinD}"/>
-    <path d="M37 51 Q43 57 49 51" stroke="${skinD}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    ${hatSVG}
+  return `<svg viewBox="0 0 100 158" xmlns="http://www.w3.org/2000/svg" width="${w||100}" height="${h||158}">
+    <defs>
+      <linearGradient id="cbg${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${bg1}"/><stop offset="100%" stop-color="${bg2}"/></linearGradient>
+      <radialGradient id="sk${n}" cx="38%" cy="32%" r="65%"><stop offset="0%" stop-color="${skinL}"/><stop offset="100%" stop-color="${skin}"/></radialGradient>
+    </defs>
+    <rect width="100" height="158" rx="18" fill="url(#cbg${n})"/>
+    <rect width="100" height="158" rx="18" fill="rgba(255,255,255,.03)"/>
+    <ellipse cx="50" cy="154" rx="20" ry="5" fill="rgba(0,0,0,.25)"/>
+    <rect x="30" y="112" width="15" height="38" rx="7" fill="#1A213E"/>
+    <rect x="55" y="112" width="15" height="38" rx="7" fill="#1A213E"/>
+    <ellipse cx="37" cy="150" rx="13" ry="6" fill="#0D0D1A"/><ellipse cx="63" cy="150" rx="13" ry="6" fill="#0D0D1A"/>
+    <ellipse cx="33" cy="147" rx="5" ry="2" fill="rgba(255,255,255,.12)"/><ellipse cx="59" cy="147" rx="5" ry="2" fill="rgba(255,255,255,.12)"/>
+    <rect x="22" y="108" width="56" height="8" rx="3" fill="#111"/><rect x="44" y="109" width="12" height="6" rx="1.5" fill="#CC9900"/>
+    <path d="M16 76 Q18 66 30 64 L50 72 L70 64 Q82 66 84 76 L84 114 Q50 120 16 114 Z" fill="${oc}"/>
+    <path d="M16 86 Q50 92 84 86 L84 114 Q50 120 16 114 Z" fill="rgba(0,0,0,.12)"/>
+    <path d="M43 64 L50 72 L57 64 L53 70 L50 68 L47 70 Z" fill="white" opacity=".28"/>
+    <path d="M16 77 Q2 86 3 108 Q7 114 13 111 Q14 92 20 82 Z" fill="${oc}"/>
+    <ellipse cx="7" cy="113" rx="9" ry="8" fill="url(#sk${n})"/>
+    <path d="M84 77 Q98 86 97 108 Q93 114 87 111 Q86 92 80 82 Z" fill="${oc}"/>
+    <ellipse cx="93" cy="113" rx="9" ry="8" fill="url(#sk${n})"/>
+    <rect x="43" y="60" width="14" height="16" rx="6" fill="url(#sk${n})"/>
+    <ellipse cx="50" cy="38" rx="32" ry="34" fill="url(#sk${n})"/>
+    <ellipse cx="18" cy="39" rx="6" ry="8" fill="url(#sk${n})"/><ellipse cx="19" cy="39" rx="3.5" ry="5" fill="${skinD}" opacity=".25"/>
+    <ellipse cx="82" cy="39" rx="6" ry="8" fill="url(#sk${n})"/><ellipse cx="81" cy="39" rx="3.5" ry="5" fill="${skinD}" opacity=".25"/>
+    ${HAIR}
+    ${EYES}
+    <path d="M46 51 Q50 56 54 51" stroke="${skinD}" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M34 59 Q50 72 66 59" stroke="${skinD}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M37 60 Q50 70 63 60 Q56 67 50 67 Q44 67 37 60 Z" fill="${skinD}" opacity=".28"/>
+    <ellipse cx="26" cy="50" rx="8" ry="6" fill="#FF9999" opacity=".22"/>
+    <ellipse cx="74" cy="50" rx="8" ry="6" fill="#FF9999" opacity=".22"/>
+    ${HATS}
   </svg>`;
 }
 
 // ─── MINI CHAR (for lists) ───
-function miniChar(u, sz) { return charSVG(u, sz||44, Math.round((sz||44)*1.51)); }
+function miniChar(u, sz) { return charSVG(u, sz||44, Math.round((sz||44)*1.58)); }
 
 // ─── SOUND ───
 let actx;
@@ -641,7 +698,7 @@ async function loadProfile() {
   await refreshMe();
   document.getElementById('profName').textContent = me.username;
   document.getElementById('profPtsVal').textContent = me.points||0;
-  document.getElementById('profChar').innerHTML = charSVG(me,104,156);
+  document.getElementById('profChar').innerHTML = charSVG(me,110,174);
   // Background for header
   const bgKey = me.char_bg||'blue';
   const hdrBg = {blue:'linear-gradient(160deg,#1a3a8c,#0a0a18)',bg_sunset:'linear-gradient(160deg,#c0392b,#1a0a08)',bg_space:'linear-gradient(160deg,#0a0a2e,#050508)',bg_rainbow:'linear-gradient(160deg,#5b2d8c,#1a0a2e)'}[bgKey]||'linear-gradient(160deg,#1a3a8c,#0a0a18)';
