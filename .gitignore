@@ -1,0 +1,8 @@
+node_modules/
+ios/
+android/
+*.db
+*.db-shm
+*.db-wal
+.DS_Store
+dist/

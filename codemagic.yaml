@@ -1,0 +1,101 @@
+workflows:
+  ios-workflow:
+    name: K-Boom iOS Build
+    max_build_duration: 60
+    environment:
+      xcode: latest
+      node: v20
+      groups:
+        - ios_build
+      vars:
+        APP_ID: ro.kboom.app
+        APP_NAME: "K-Boom"
+    scripts:
+      - name: Prepare API key
+        script: |
+          echo "$ASC_KEY_B64" | base64 -d | tr -d '\r' > /tmp/AuthKey.p8
+          echo "=== Key debug ==="
+          head -1 /tmp/AuthKey.p8
+          tail -1 /tmp/AuthKey.p8
+          echo "Lines: $(wc -l < /tmp/AuthKey.p8)"
+          openssl pkey -in /tmp/AuthKey.p8 -check -noout 2>&1 || echo "KEY CHECK FAILED"
+
+      - name: Initialize keychain and fetch signing files
+        script: |
+          keychain initialize
+          echo "$CERTIFICATE_PRIVATE_KEY" | base64 -d | tr -d '\r' > /tmp/cert_key.pem
+          app-store-connect fetch-signing-files "$APP_ID" \
+            --type IOS_APP_STORE \
+            --create \
+            --private-key @file:/tmp/AuthKey.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --certificate-key @file:/tmp/cert_key.pem
+          keychain add-certificates
+
+      - name: Install dependencies
+        script: npm install
+
+      - name: Install Capacitor CLI
+        script: npm install -g @capacitor/cli @capacitor/assets
+
+      - name: Add iOS platform
+        script: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+
+      - name: Generate app icons
+        script: npx @capacitor/assets generate --ios
+
+      - name: Copy web assets
+        script: npx cap copy ios
+
+      - name: Update iOS project
+        script: npx cap update ios
+
+      - name: Set export compliance
+        script: |
+          PLIST="ios/App/App/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST" 2>/dev/null || \
+          /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST"
+
+      - name: Apply provisioning profiles
+        script: xcode-project use-profiles
+
+      - name: Set app version
+        script: |
+          echo "=== Version Debug ==="
+          RAW_BUILD=$(app-store-connect get-latest-build-number "$APP_ID" \
+            --platform IOS \
+            --private-key @file:/tmp/AuthKey.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" 2>&1) || true
+          echo "Raw output: '$RAW_BUILD'"
+          CURRENT_BUILD=$(echo "$RAW_BUILD" | grep -E '^[0-9]+$' | tail -1)
+          CURRENT_BUILD=${CURRENT_BUILD:-0}
+          NEW_BUILD=$((CURRENT_BUILD + 1))
+          echo "NEW_BUILD: $NEW_BUILD"
+          agvtool new-marketing-version 1.0.0
+          agvtool new-version -all $NEW_BUILD
+        working_directory: ios/App
+
+      - name: Build iOS
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/App/App.xcworkspace \
+            --scheme App \
+            --archive-flags="-destination 'generic/platform=iOS'"
+
+      - name: Upload to TestFlight
+        script: |
+          app-store-connect publish \
+            --path build/ios/ipa/App.ipa \
+            --private-key @file:/tmp/AuthKey.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --testflight
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log

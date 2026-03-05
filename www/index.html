@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>K-Boom</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08080F;--bg2:#0F0F1E;--card:#16162A;--card2:#1E1E36;--border:#2A2A48;
+  --accent:#7C5CFC;--accent2:#FC5C7D;--gold:#FFD700;--text:#EEEEFF;--text2:#8888BB;
+  --nav-h:72px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+
+/* ─── AUTH ─── */
+#auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:radial-gradient(ellipse at 40% 0%,#1a0040 0%,var(--bg) 65%)}
+.logo{text-align:center;margin-bottom:36px}
+.logo-icon{width:80px;height:80px;margin:0 auto 12px;animation:floatBomb 3s ease-in-out infinite}
+@keyframes floatBomb{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+.logo-title{font-size:44px;font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,#7C5CFC,#FC5C7D);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:13px;color:var(--text2);margin-top:6px;letter-spacing:.5px}
+.auth-card{background:var(--card);border-radius:24px;padding:28px 22px;width:100%;max-width:380px;border:1px solid var(--border)}
+.auth-tabs{display:flex;background:var(--bg2);border-radius:12px;padding:4px;margin-bottom:22px;gap:4px}
+.auth-tab{flex:1;padding:10px;text-align:center;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text2);transition:all .2s}
+.auth-tab.active{background:var(--accent);color:#fff}
+input[type=text],input[type=password]{width:100%;padding:14px 16px;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;margin-bottom:12px;outline:none;transition:border-color .2s}
+input:focus{border-color:var(--accent)}
+.btn{width:100%;padding:15px;border-radius:14px;border:none;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#7C5CFC,#FC5C7D);color:#fff}
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text)}
+.err{color:var(--accent2);font-size:13px;text-align:center;margin-top:10px;min-height:18px}
+
+/* ─── APP SHELL ─── */
+#app{display:none;flex-direction:column;height:100vh;height:100dvh}
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
+.screen.active{display:block}
+
+/* ─── BOTTOM NAV ─── */
+.nav{height:var(--nav-h);background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom,0px);position:relative;z-index:100}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 4px;border:none;background:none;color:var(--text2);font-size:10px;font-weight:600;letter-spacing:.3px;transition:color .2s}
+.nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nb.active{color:var(--accent)}
+.nb-pop{flex:1.3;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;border:none;background:none}
+.nb-pop-circle{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7C5CFC,#FC5C7D);display:flex;align-items:center;justify-content:center;margin-top:-22px;box-shadow:0 4px 24px rgba(124,92,252,.5);transition:transform .15s}
+.nb-pop-circle svg{width:26px;height:26px;fill:white;stroke:none}
+.nb-pop:active .nb-pop-circle{transform:scale(.9)}
+.nb-pop-label{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.5px}
+
+/* ─── SHARED COMPONENTS ─── */
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:20px 16px 10px}
+.section-title{font-size:16px;font-weight:800;letter-spacing:.3px}
+.section-link{font-size:12px;color:var(--accent);font-weight:600}
+.stat-strip{display:flex;gap:10px;padding:14px 16px 0}
+.stat-box{flex:1;background:var(--card);border-radius:16px;padding:14px;border:1px solid var(--border)}
+.stat-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.stat-lbl svg{width:12px;height:12px}
+.stat-val{font-size:28px;font-weight:900}
+.fire-text{background:linear-gradient(135deg,#FF9F1C,#FC5C7D);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.purple-text{background:linear-gradient(135deg,#7C5CFC,#4DAAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ─── HOME ─── */
+#home-screen{padding-bottom:20px}
+.home-hdr{padding:52px 18px 22px;background:linear-gradient(180deg,#110025 0%,transparent 100%)}
+.home-greeting{font-size:12px;color:var(--text2);letter-spacing:.5px}
+.home-user{font-size:28px;font-weight:900;margin-top:2px}
+.home-pts{font-size:14px;color:var(--gold);font-weight:700;margin-top:4px;display:flex;align-items:center;gap:6px}
+.home-pts svg{width:14px;height:14px;fill:var(--gold)}
+
+/* Community cards */
+.community-scroll{display:flex;gap:10px;padding:0 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.community-scroll::-webkit-scrollbar{display:none}
+.comm-card{flex-shrink:0;background:var(--card);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--border);min-width:90px;transition:transform .2s}
+.comm-card:active{transform:scale(.95)}
+.comm-name{font-size:11px;font-weight:700;max-width:82px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.comm-pts{font-size:10px;color:var(--gold);font-weight:600}
+
+/* Balloon preview */
+.balloon-preview{display:flex;gap:10px;padding:0 16px}
+.bp-card{flex:1;background:var(--card);border-radius:16px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--border);position:relative;cursor:pointer}
+.bp-card.popped{opacity:.45}
+.bp-pop-mark{position:absolute;top:8px;right:8px;width:20px;height:20px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.bp-pop-mark svg{width:11px;height:11px;stroke:var(--accent2);fill:none;stroke-width:2.5}
+
+/* Leaderboard */
+.lb-list{padding:0 16px;display:flex;flex-direction:column;gap:8px}
+.lb-row{background:var(--card);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid var(--border)}
+.lb-rank{font-size:16px;font-weight:900;width:26px;text-align:center;color:var(--text2)}
+.lb-rank.r1{color:#FFD700}.lb-rank.r2{color:#C0C0C0}.lb-rank.r3{color:#CD7F32}
+.lb-name{flex:1;font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-pts{font-size:13px;font-weight:700;color:var(--gold)}
+
+/* ─── POP SCREEN ─── */
+#pop-screen{display:flex;flex-direction:column;min-height:100%;background:radial-gradient(ellipse at 50% 20%,#1a0040 0%,var(--bg) 65%)}
+#pop-screen.active{display:flex!important}
+.pop-hdr{text-align:center;padding:52px 16px 8px}
+.pop-title{font-size:26px;font-weight:900;letter-spacing:.5px}
+.pop-date{font-size:13px;color:var(--text2);margin-top:4px}
+.pop-remain{text-align:center;font-size:13px;color:var(--accent);font-weight:700;padding:0 16px 8px}
+.balloons-area{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+.balloon-row{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.balloon-item{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;animation:floatB 3s ease-in-out infinite;user-select:none;-webkit-user-select:none}
+.balloon-item:nth-child(2){animation-delay:.6s}
+.balloon-item:nth-child(3){animation-delay:1.2s}
+@keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.b-string{width:2px;height:22px;background:rgba(255,255,255,.3);border-radius:1px}
+.balloon-item.popped{opacity:0;transform:scale(1.6)!important;transition:all .25s ease-out;pointer-events:none}
+.all-done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.all-done-icon{width:80px;height:80px;margin:0 auto 16px;opacity:.9}
+.all-done-title{font-size:24px;font-weight:900;margin-bottom:8px}
+.all-done-sub{font-size:14px;color:var(--text2)}
+
+/* ─── PROFILE SCREEN ─── */
+#profile-screen{padding-bottom:24px}
+.prof-hdr{padding:52px 20px 28px;text-align:center;transition:background .4s}
+.prof-name{font-size:24px;font-weight:900;margin-top:12px}
+.prof-pts{font-size:15px;color:var(--gold);font-weight:700;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+.prof-pts svg{width:14px;height:14px;fill:var(--gold)}
+
+/* Customization dropdowns */
+.customize-wrap{padding:0 16px}
+.slot-row{background:var(--card);border-radius:16px;margin-bottom:10px;overflow:hidden;border:1px solid var(--border)}
+.slot-trigger{display:flex;align-items:center;padding:14px 16px;cursor:pointer;gap:12px}
+.slot-icon{width:36px;height:36px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slot-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:2}
+.slot-info{flex:1;min-width:0}
+.slot-label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.slot-current{font-size:14px;font-weight:700;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot-chevron{width:20px;height:20px;color:var(--text2);transition:transform .3s;flex-shrink:0}
+.slot-chevron svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.slot-row.open .slot-chevron{transform:rotate(180deg)}
+.slot-options{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.slot-row.open .slot-options{max-height:160px}
+.slot-chips{display:flex;gap:8px;padding:0 14px 14px;overflow-x:auto;scrollbar-width:none}
+.slot-chips::-webkit-scrollbar{display:none}
+.slot-chip{flex-shrink:0;padding:9px 14px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;background:var(--card2);color:var(--text2);border:1.5px solid var(--border);transition:all .2s;text-align:center}
+.slot-chip.equipped{background:var(--accent);color:#fff;border-color:var(--accent)}
+.slot-chip.owned{color:var(--text);border-color:var(--text2)}
+.slot-chip.locked{opacity:.4;cursor:default}
+
+/* Shop section */
+.shop-section{padding:0 16px}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shop-card{background:var(--card);border-radius:18px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--border);position:relative;transition:transform .15s}
+.shop-card:active{transform:scale(.96)}
+.shop-card.owned{border-color:var(--accent);opacity:.6}
+.shop-emoji{font-size:40px}
+.shop-name{font-size:12px;font-weight:700;text-align:center}
+.shop-price{font-size:13px;font-weight:800;color:var(--gold)}
+.shop-owned-badge{position:absolute;top:8px;right:8px;background:var(--accent);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700;color:#fff}
+
+/* ─── OTHER PROFILE OVERLAY ─── */
+#overlay-prof{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto}
+.overlay-back{padding:50px 16px 12px}
+.back-btn{display:flex;align-items:center;gap:8px;background:var(--card);border:none;color:var(--text);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ─── MODAL ─── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-sheet{background:var(--card);border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:480px;transform:translateY(100%);transition:transform .3s;border-top:1px solid var(--border)}
+.modal-bg.open .modal-sheet{transform:translateY(0)}
+.modal-title{font-size:20px;font-weight:800;margin-bottom:6px}
+.modal-sub{font-size:14px;color:var(--text2);margin-bottom:22px}
+.modal-btns{display:flex;gap:10px}
+.modal-btns .btn{flex:1}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:calc(var(--nav-h) + 16px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);color:var(--text);padding:12px 20px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:9999;white-space:nowrap;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── FX ─── */
+.pop-fx{position:fixed;pointer-events:none;z-index:9999;animation:fxOut .7s ease-out forwards}
+@keyframes fxOut{0%{opacity:1;transform:scale(.6)}100%{opacity:0;transform:translateY(-70px) scale(1.4)}}
+.pts-fx{position:fixed;pointer-events:none;z-index:9999;font-size:52px;font-weight:900;color:var(--gold);animation:ptsOut 1s ease-out forwards;text-shadow:0 0 30px rgba(255,215,0,.8),0 2px 12px rgba(0,0,0,.8);transform:translateX(-50%)}
+@keyframes ptsOut{0%{opacity:1;transform:translateX(-50%) translateY(0) scale(.6)}20%{opacity:1;transform:translateX(-50%) translateY(-10px) scale(1.2)}100%{opacity:0;transform:translateX(-50%) translateY(-90px) scale(1)}}
+.spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:40px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ─── AUTH ─── -->
+<div id="auth">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="38" fill="url(#bombGrad)"/>
+      <circle cx="40" cy="44" r="24" fill="#1a1a2e"/>
+      <circle cx="40" cy="44" r="18" fill="#2a2a4e"/>
+      <circle cx="33" cy="38" r="4" fill="rgba(255,255,255,.15)"/>
+      <path d="M40 20 Q44 12 52 8" stroke="#FFD700" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="54" cy="6" r="5" fill="#FF9F1C"/>
+      <defs><linearGradient id="bombGrad" x1="0" y1="0" x2="80" y2="80"><stop offset="0%" stop-color="#7C5CFC"/><stop offset="100%" stop-color="#FC5C7D"/></linearGradient></defs>
+    </svg>
+    <div class="logo-title">K-BOOM</div>
+    <div class="logo-sub">Sparge baloane. Castiga puncte. Devino legendar.</div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuth('login')">Autentificare</div>
+      <div class="auth-tab" onclick="switchAuth('register')">Cont nou</div>
+    </div>
+    <input type="text" id="au" placeholder="Username" autocomplete="username" autocapitalize="none" autocorrect="off">
+    <input type="password" id="ap" placeholder="Parola" autocomplete="current-password">
+    <button class="btn btn-primary" onclick="doAuth()">Intra</button>
+    <div class="err" id="aerr"></div>
+  </div>
+</div>
+
+<!-- ─── APP ─── -->
+<div id="app">
+  <div class="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="home-screen">
+      <div class="home-hdr">
+        <div class="home-greeting">Buna ziua,</div>
+        <div class="home-user" id="hUser">—</div>
+        <div class="home-pts" id="hPts"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span id="hPtsVal">0 puncte</span></div>
+      </div>
+      <div class="stat-strip">
+        <div class="stat-box">
+          <div class="stat-lbl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8z"/></svg>Streak</div>
+          <div class="stat-val fire-text" id="hStreak">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="8" rx="7" ry="8"/><path d="M12 16 L11.5 20 M12 16 L12.5 20 M10 20 Q12 22 14 20"/></svg>Baloane azi</div>
+          <div class="stat-val purple-text" id="hRemain">3</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">Baloanele tale</div>
+        <div class="section-link" onclick="goTab('pop')">Sparge →</div>
+      </div>
+      <div class="balloon-preview" id="bPreview"></div>
+
+      <div class="section-head">
+        <div class="section-title">Comunitate</div>
+      </div>
+      <div class="community-scroll" id="commScroll"><div class="spinner"></div></div>
+
+      <div class="section-head">
+        <div class="section-title">Clasament</div>
+      </div>
+      <div class="lb-list" id="lbList"><div class="spinner"></div></div>
+      <div style="height:16px"></div>
+    </div>
+
+    <!-- POP -->
+    <div class="screen" id="pop-screen">
+      <div class="pop-hdr">
+        <div class="pop-title">Sparge Baloane</div>
+        <div class="pop-date" id="popDate"></div>
+      </div>
+      <div class="pop-remain" id="popRemain"></div>
+      <div class="balloons-area" id="balloonsArea"><div class="spinner"></div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="screen" id="profile-screen">
+      <div class="prof-hdr" id="profHdr">
+        <div id="profChar" style="display:inline-block"></div>
+        <div class="prof-name" id="profName">—</div>
+        <div class="prof-pts"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span id="profPtsVal">0</span> puncte</div>
+      </div>
+
+      <div class="section-head" style="padding-bottom:6px">
+        <div class="section-title">Personalizare</div>
+      </div>
+      <div class="customize-wrap" id="customizeWrap"></div>
+
+      <div class="section-head">
+        <div class="section-title">Magazin</div>
+      </div>
+      <div class="shop-section"><div class="shop-grid" id="shopGrid"><div class="spinner"></div></div></div>
+      <div style="height:20px"></div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <button class="nb active" id="nb-home" onclick="goTab('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>Acasa
+    </button>
+    <button class="nb-pop" onclick="goTab('pop')">
+      <div class="nb-pop-circle">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span class="nb-pop-label">SPARGE</span>
+    </button>
+    <button class="nb" id="nb-profile" onclick="goTab('profile')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil
+    </button>
+  </nav>
+</div>
+
+<!-- OTHER PROFILE OVERLAY -->
+<div id="overlay-prof">
+  <div class="overlay-back">
+    <button class="back-btn" onclick="closeOverlay()">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Inapoi
+    </button>
+  </div>
+  <div style="text-align:center;padding:16px 20px 32px">
+    <div id="ovChar" style="display:inline-block"></div>
+    <div class="prof-name" id="ovName"></div>
+    <div class="prof-pts"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span id="ovPts"></span> puncte</div>
+  </div>
+</div>
+
+<!-- BUY MODAL -->
+<div class="modal-bg" id="buyModal">
+  <div class="modal-sheet">
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-sub" id="mSub"></div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal()">Anuleaza</button>
+      <button class="btn btn-primary" onclick="confirmBuy()">Cumpara</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONSTANTS ───
+const BC = {
+  red:['#FF4D6D','#C91B3D'], green:['#52D726','#1B8C00'], blue:['#4DAAFF','#1B4FCC'],
+  orange:['#FF9F1C','#CC6600'], purple:['#9B5DE5','#5B00CC'], pink:['#F15BB5','#CC006E'],
+  gold:['#FFD700','#CC9900'], rainbow:['#FF4D6D','#9B5DE5']
+};
+const OUTFIT_C = {default:'#4A90D9',outfit_rainbow:'#FF6B9D',outfit_gold:'#FFB347',outfit_dark:'#2C2C3E'};
+const BG_C = {blue:'#1B3A8C',bg_sunset:'#C0392B',bg_space:'#0A0A1A',bg_rainbow:'#5B2D8C'};
+const BG_TOP = {blue:'#2d5bc4',bg_sunset:'#e05a2b',bg_space:'#1a1a3e',bg_rainbow:'#7c3fcc'};
+const SLOT_NAMES = {hat:'Palarie',eyes:'Ochi',outfit:'Outfit',bg:'Fundal'};
+const SLOT_KEYS = {hat:'char_hat',eyes:'char_eyes',outfit:'char_outfit',bg:'char_bg'};
+const DEFAULT_VAL = {hat:'none',eyes:'normal',outfit:'default',bg:'blue'};
+const DEFAULT_LABEL = {hat:'Fara palarie',eyes:'Normal',outfit:'Default',bg:'Albastru (default)'};
+
+let token = localStorage.getItem('kb_t'), me = null, shopData = {}, pending = null, svgN = 0;
+
+// ─── BALLOON SVG ───
+function bsvg(type, sz) {
+  const [c1,c2] = BC[type]||BC.red;
+  const n = svgN++;
+  return `<svg width="${sz}" height="${Math.round(sz*1.18)}" viewBox="0 0 88 104">
+    <defs><radialGradient id="g${n}" cx="35%" cy="28%" r="65%"><stop offset="0%" stop-color="rgba(255,255,255,.7)"/><stop offset="100%" stop-color="${c2}"/></radialGradient></defs>
+    <ellipse cx="44" cy="46" rx="38" ry="44" fill="url(#g${n})"/>
+    <ellipse cx="44" cy="46" rx="38" ry="44" fill="${c1}" opacity=".28"/>
+    <circle cx="30" cy="24" r="9" fill="rgba(255,255,255,.32)"/>
+    <path d="M44 90 Q42 95 44 97 Q46 95 44 90" fill="${c2}"/>
+    <line x1="44" y1="97" x2="44" y2="104" stroke="${c2}" stroke-width="2"/>
+  </svg>`;
+}
+
+// ─── CHARACTER SVG ───
+function charSVG(u, w, h) {
+  const n = svgN++;
+  const skin = '#F5C5A3', skinD = '#C8866A', hair = '#3D2B1F';
+  const oc = OUTFIT_C[(u.char_outfit||'default')] || OUTFIT_C.default;
+  const bgc = BG_C[(u.char_bg||'blue')] || BG_C.blue;
+  const bgt = BG_TOP[(u.char_bg||'blue')] || BG_TOP.blue;
+  const hk = u.char_hat||'none', ek = u.char_eyes||'normal';
+
+  const eyes = {
+    normal:`<ellipse cx="34" cy="34" rx="4.5" ry="5" fill="white"/><circle cx="34" cy="35.5" r="2.8" fill="#1a1a2e"/><circle cx="35.4" cy="33.5" r="1" fill="white"/><ellipse cx="52" cy="34" rx="4.5" ry="5" fill="white"/><circle cx="52" cy="35.5" r="2.8" fill="#1a1a2e"/><circle cx="53.4" cy="33.5" r="1" fill="white"/>`,
+    eyes_sunglasses:`<rect x="26" y="30" width="16" height="10" rx="4" fill="#0D0D1A" opacity=".95"/><rect x="45" y="30" width="16" height="10" rx="4" fill="#0D0D1A" opacity=".95"/><line x1="42" y1="35" x2="45" y2="35" stroke="#0D0D1A" stroke-width="2"/><rect x="27" y="31" width="6" height="3" rx="1.5" fill="white" opacity=".2"/><rect x="46" y="31" width="6" height="3" rx="1.5" fill="white" opacity=".2"/>`,
+    eyes_heart:`<path d="M29 30 Q29 27 32 27 Q35 27 35 30 Q35 33.5 32 36 Q29 33.5 29 30" fill="#FF4D6D"/><path d="M47 30 Q47 27 50 27 Q53 27 53 30 Q53 33.5 50 36 Q47 33.5 47 30" fill="#FF4D6D"/>`,
+    eyes_star:`<polygon points="32,26 33.5,31 38.5,31 34.5,33.5 36,38.5 32,36 28,38.5 29.5,33.5 25.5,31 30.5,31" fill="#FFD700"/><polygon points="50,26 51.5,31 56.5,31 52.5,33.5 54,38.5 50,36 46,38.5 47.5,33.5 43.5,31 48.5,31" fill="#FFD700"/>`
+  }[ek]||'';
+
+  const noHairHats = ['hat_tophat','hat_cowboy'];
+  const hairSVG = noHairHats.includes(hk) ? '' :
+    `<path d="M20 38 Q19 11 43 9 Q67 11 66 38 Q57 23 43 21 Q29 23 20 38 Z" fill="${hair}"/>
+     <path d="M20 38 Q17 26 19 18 Q22 10 28 9 Q20 15 20 38 Z" fill="${hair}" opacity=".7"/>
+     <path d="M66 38 Q69 26 67 18 Q64 10 58 9 Q66 15 66 38 Z" fill="${hair}" opacity=".7"/>`;
+
+  const hatSVG = {
+    none:'',
+    hat_party:`<path d="M43 4 L25 42 L61 42 Z" fill="#FF4D6D"/><path d="M43 4 L35 32 L51 32 Z" fill="#FF9F1C" opacity=".65"/><circle cx="43" cy="3" r="4.5" fill="#FFD700"/><circle cx="30" cy="40" r="3" fill="#4DAAFF"/><circle cx="56" cy="40" r="3" fill="#52D726"/><line x1="43" y1="42" x2="43" y2="42"/>`,
+    hat_cap:`<path d="M21 32 Q21 12 43 10 Q65 12 65 32 Q65 40 43 42 Q21 40 21 32 Z" fill="#CC3333"/><path d="M14 36 Q14 32 43 32 Q72 32 72 36 L72 44 Q72 46 43 46 Q14 46 14 44 Z" fill="#AA2222"/>`,
+    hat_tophat:`<rect x="29" y="0" width="28" height="30" rx="3" fill="#111122"/><rect x="20" y="28" width="46" height="8" rx="3" fill="#111122"/><rect x="30" y="3" width="26" height="5" rx="2" fill="#FFD700" opacity=".45"/>`,
+    hat_crown:`<path d="M20 38 L20 16 L33 27 L43 8 L53 27 L66 16 L66 38 Z" fill="#FFD700"/><rect x="20" y="34" width="46" height="8" rx="2" fill="#E6B800"/><circle cx="43" cy="10" r="4.5" fill="#FF4D6D"/><circle cx="23" cy="22" r="3" fill="#4DAAFF"/><circle cx="63" cy="22" r="3" fill="#52D726"/>`,
+    hat_cowboy:`<ellipse cx="43" cy="30" rx="31" ry="8" fill="#8B6914"/><path d="M22 30 Q23 12 43 8 Q63 12 64 30 Z" fill="#8B6914"/><ellipse cx="43" cy="28" rx="22" ry="6" fill="#6B4F0A"/><path d="M12 32 Q14 38 22 36" stroke="#6B4F0A" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M74 32 Q72 38 64 36" stroke="#6B4F0A" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+  }[hk]||'';
+
+  return `<svg viewBox="0 0 86 130" xmlns="http://www.w3.org/2000/svg" width="${w||86}" height="${h||130}">
+    <defs><linearGradient id="cbg${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${bgt}"/><stop offset="100%" stop-color="${bgc}"/></linearGradient></defs>
+    <rect width="86" height="130" rx="14" fill="url(#cbg${n})"/>
+    <ellipse cx="43" cy="127" rx="17" ry="4" fill="rgba(0,0,0,.22)"/>
+    <rect x="27" y="96" width="13" height="29" rx="6" fill="#1E1E42"/>
+    <rect x="46" y="96" width="13" height="29" rx="6" fill="#1E1E42"/>
+    <ellipse cx="33" cy="125" rx="10" ry="5" fill="#111122"/>
+    <ellipse cx="53" cy="125" rx="10" ry="5" fill="#111122"/>
+    <path d="M18 70 Q20 62 30 60 L43 66 L56 60 Q66 62 68 70 L68 100 Q43 107 18 100 Z" fill="${oc}"/>
+    <path d="M39 60 L43 66 L47 60" fill="white" opacity=".22"/>
+    <path d="M18 71 Q6 78 7 96 Q10 100 16 98 Q17 82 22 74 Z" fill="${oc}"/>
+    <ellipse cx="11" cy="100" rx="7" ry="6" fill="${skin}"/>
+    <path d="M68 71 Q80 78 79 96 Q76 100 70 98 Q69 82 64 74 Z" fill="${oc}"/>
+    <ellipse cx="75" cy="100" rx="7" ry="6" fill="${skin}"/>
+    <rect x="37" y="54" width="12" height="13" rx="5" fill="${skin}"/>
+    <ellipse cx="43" cy="36" rx="23" ry="24" fill="${skin}"/>
+    <ellipse cx="20" cy="37" rx="4" ry="5.5" fill="${skin}"/>
+    <ellipse cx="66" cy="37" rx="4" ry="5.5" fill="${skin}"/>
+    ${hairSVG}
+    ${eyes}
+    <ellipse cx="43" cy="44" rx="2.8" ry="2" fill="${skinD}"/>
+    <path d="M37 51 Q43 57 49 51" stroke="${skinD}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    ${hatSVG}
+  </svg>`;
+}
+
+// ─── MINI CHAR (for lists) ───
+function miniChar(u, sz) { return charSVG(u, sz||44, Math.round((sz||44)*1.51)); }
+
+// ─── SOUND ───
+let actx;
+function getCtx() {
+  if (!actx || actx.state === 'closed') actx = new (window.AudioContext||window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function playPop(type) {
+  try {
+    const ctx = getCtx();
+    const t = ctx.currentTime;
+    const baseFreq = {red:220,green:262,blue:294,orange:330,purple:349,pink:392,gold:523,rainbow:587}[type]||300;
+    const master = ctx.createGain(); master.gain.value = .7; master.connect(ctx.destination);
+
+    // Noise burst (pop click)
+    const bsz = Math.floor(ctx.sampleRate * .04);
+    const buf = ctx.createBuffer(1, bsz, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0;i<bsz;i++) d[i] = (Math.random()*2-1) * (1 - i/bsz);
+    const noise = ctx.createBufferSource(); noise.buffer = buf;
+    const nf = ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=900; nf.Q.value=.6;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(.5, t); ng.gain.exponentialRampToValueAtTime(.001, t+.06);
+    noise.connect(nf); nf.connect(ng); ng.connect(master); noise.start(t);
+
+    // Main boing tone
+    const o1 = ctx.createOscillator(); o1.type='sine';
+    o1.frequency.setValueAtTime(baseFreq*.7, t);
+    o1.frequency.exponentialRampToValueAtTime(baseFreq*1.8, t+.06);
+    o1.frequency.exponentialRampToValueAtTime(baseFreq*.5, t+.45);
+    const g1 = ctx.createGain();
+    g1.gain.setValueAtTime(0,t); g1.gain.linearRampToValueAtTime(.45,t+.025);
+    g1.gain.exponentialRampToValueAtTime(.001,t+.5);
+    o1.connect(g1); g1.connect(master); o1.start(t); o1.stop(t+.5);
+
+    // Harmonic overtone
+    const o2 = ctx.createOscillator(); o2.type='sine';
+    o2.frequency.setValueAtTime(baseFreq*2.2, t+.03);
+    o2.frequency.exponentialRampToValueAtTime(baseFreq*1.5, t+.35);
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0,t+.03); g2.gain.linearRampToValueAtTime(.18,t+.07);
+    g2.gain.exponentialRampToValueAtTime(.001,t+.45);
+    o2.connect(g2); g2.connect(master); o2.start(t+.03); o2.stop(t+.5);
+
+    // Bright chime tail
+    const o3 = ctx.createOscillator(); o3.type='triangle';
+    o3.frequency.setValueAtTime(baseFreq*4, t+.08);
+    o3.frequency.linearRampToValueAtTime(baseFreq*3.5, t+.5);
+    const g3 = ctx.createGain();
+    g3.gain.setValueAtTime(.12,t+.08); g3.gain.exponentialRampToValueAtTime(.001,t+.55);
+    o3.connect(g3); g3.connect(master); o3.start(t+.08); o3.stop(t+.6);
+  } catch(e){}
+}
+
+// ─── API ───
+async function api(url, opts={}) {
+  if (!opts.headers) opts.headers = {};
+  opts.headers['Authorization'] = 'Bearer ' + token;
+  try {
+    const r = await fetch(url, opts);
+    if (r.status === 401) { doLogout(); return null; }
+    return await r.json();
+  } catch(e) { return null; }
+}
+async function apiPost(url, body) {
+  return api(url, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+}
+
+// ─── AUTH ───
+let authMode = 'login';
+function switchAuth(m) {
+  authMode = m;
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(m==='login'?0:1)));
+  document.getElementById('ap').setAttribute('autocomplete', m==='register'?'new-password':'current-password');
+  document.getElementById('aerr').textContent = '';
+}
+async function doAuth() {
+  const u = document.getElementById('au').value.trim(), p = document.getElementById('ap').value;
+  const err = document.getElementById('aerr');
+  if (!u||!p) { err.textContent='Completeaza ambele campuri.'; return; }
+  const r = await fetch('/api/'+authMode,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+  const d = await r.json();
+  if (!r.ok) { err.textContent=d.error||'Eroare'; return; }
+  token = d.token; localStorage.setItem('kb_t', token);
+  startApp(d.user);
+}
+document.getElementById('ap').addEventListener('keydown', e=>{ if(e.key==='Enter') doAuth(); });
+function doLogout() { localStorage.removeItem('kb_t'); location.reload(); }
+
+// ─── APP START ───
+async function startApp(user) {
+  document.getElementById('auth').style.display='none';
+  document.getElementById('app').style.display='flex';
+  me = user;
+  const [full, shop] = await Promise.all([api('/api/me'), api('/api/shop')]);
+  if (full) me = full;
+  if (shop) shopData = shop;
+  loadHome(); loadProfile();
+}
+async function refreshMe() { const u = await api('/api/me'); if(u) me=u; }
+
+// ─── NAVIGATION ───
+function goTab(tab) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(tab+'-screen').classList.add('active');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  const nb = document.getElementById('nb-'+tab);
+  if(nb) nb.classList.add('active');
+  if(tab==='home') loadHome();
+  if(tab==='pop') loadPop();
+  if(tab==='profile') loadProfile();
+}
+
+// ─── HOME ───
+async function loadHome() {
+  if(!me) return;
+  document.getElementById('hUser').textContent = me.username;
+  document.getElementById('hPtsVal').textContent = (me.points||0)+' puncte';
+  document.getElementById('hStreak').textContent = me.streak||0;
+  const daily = await api('/api/daily');
+  if(daily) {
+    document.getElementById('hRemain').textContent = daily.remaining;
+    renderBPreview(daily);
+  }
+  const lb = await api('/api/leaderboard');
+  if(lb) { renderCommunity(lb); renderLB(lb); }
+}
+
+function renderBPreview(daily) {
+  const el = document.getElementById('bPreview'); el.innerHTML='';
+  daily.balloons.forEach((type,i)=>{
+    const popped = daily.popped.includes(i);
+    const d = document.createElement('div');
+    d.className='bp-card'+(popped?' popped':'');
+    d.innerHTML=`${bsvg(type,52)}${popped?`<div class="bp-pop-mark"><svg viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:''}`;
+    d.onclick=()=>goTab('pop');
+    el.appendChild(d);
+  });
+}
+
+function renderCommunity(users) {
+  const el = document.getElementById('commScroll'); el.innerHTML='';
+  const others = users.filter(u=>u.id!==me?.id).slice(0,15);
+  if(!others.length) { el.innerHTML='<div style="padding:16px;color:var(--text2);font-size:13px">Niciun alt jucator inca.</div>'; return; }
+  others.forEach(u=>{
+    const d = document.createElement('div');
+    d.className='comm-card';
+    d.innerHTML=`${miniChar(u,56)}<div class="comm-name">${esc(u.username)}</div><div class="comm-pts">${u.points}p</div>`;
+    d.onclick=()=>openOverlay(u.id);
+    el.appendChild(d);
+  });
+}
+
+function renderLB(rows) {
+  const el = document.getElementById('lbList'); el.innerHTML='';
+  const medals=['🥇','🥈','🥉'];
+  const rc=['r1','r2','r3'];
+  rows.slice(0,10).forEach((u,i)=>{
+    const d = document.createElement('div');
+    d.className='lb-row';
+    d.innerHTML=`<div class="lb-rank ${rc[i]||''}">${i<3?medals[i]:i+1}</div><div style="flex-shrink:0">${miniChar(u,34)}</div><div class="lb-name">${esc(u.username)}</div><div class="lb-pts">${u.points}p</div>`;
+    d.onclick=()=>openOverlay(u.id);
+    el.appendChild(d);
+  });
+}
+
+// ─── POP ───
+async function loadPop() {
+  const area = document.getElementById('balloonsArea');
+  area.innerHTML='<div class="spinner"></div>';
+  const daily = await api('/api/daily');
+  if(!daily) return;
+  const today = new Date().toLocaleDateString('ro-RO',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('popDate').textContent=today;
+  document.getElementById('popRemain').textContent=`${daily.remaining} din 3 baloane ramase`;
+  if(daily.remaining===0) {
+    area.innerHTML=`<div class="all-done">
+      <svg class="all-done-icon" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38" fill="url(#doneG)"/><path d="M24 40 L35 52 L56 28" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><defs><linearGradient id="doneG" x1="0" y1="0" x2="80" y2="80"><stop offset="0%" stop-color="#7C5CFC"/><stop offset="100%" stop-color="#FC5C7D"/></linearGradient></defs></svg>
+      <div class="all-done-title">Bravo! Ai spart toate!</div>
+      <div class="all-done-sub">Revino maine pentru baloane noi</div>
+    </div>`;
+    return;
+  }
+  area.innerHTML='<div class="balloon-row" id="bRow"></div>';
+  const row = document.getElementById('bRow');
+  daily.balloons.forEach((type,i)=>{
+    if(daily.popped.includes(i)) return;
+    const item = document.createElement('div');
+    item.className='balloon-item'; item.id='bi-'+i;
+    item.innerHTML=`<div>${bsvg(type,90)}</div><div class="b-string"></div>`;
+    item.addEventListener('click',()=>doPop(i,type,item),{once:true});
+    row.appendChild(item);
+  });
+}
+
+async function doPop(idx, type, el) {
+  playPop(type);
+  if(navigator.vibrate) navigator.vibrate([60,20,80,20,40]);
+  el.classList.add('popped');
+  // Particles
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
+  const FX=['✦','✧','◆','◇','★'];
+  for(let i=0;i<10;i++){
+    const p=document.createElement('div'); p.className='pop-fx';
+    p.textContent=FX[i%5]; p.style.cssText=`left:${cx+(Math.random()-.5)*90}px;top:${cy+(Math.random()-.5)*60}px;font-size:${14+Math.random()*14}px;color:${['#7C5CFC','#FC5C7D','#FFD700','#4DAAFF'][i%4]}`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),750);
+  }
+  const res = await apiPost('/api/pop',{balloon_index:idx});
+  if(!res||res.error) { el.classList.remove('popped'); showToast(res?.error||'Eroare!'); return; }
+  const pf=document.createElement('div'); pf.className='pts-fx';
+  pf.textContent='+'+res.points_earned+'p'; pf.style.cssText=`left:${cx}px;top:${cy-20}px`;
+  document.body.appendChild(pf); setTimeout(()=>pf.remove(),950);
+  me.points=res.total_points;
+  document.getElementById('hPtsVal').textContent=me.points+' puncte';
+  showToast('+'+res.points_earned+' puncte!');
+  setTimeout(()=>loadPop(),400);
+}
+
+// ─── PROFILE ───
+let openSlot = null;
+async function loadProfile() {
+  if(!me) return;
+  await refreshMe();
+  document.getElementById('profName').textContent = me.username;
+  document.getElementById('profPtsVal').textContent = me.points||0;
+  document.getElementById('profChar').innerHTML = charSVG(me,104,156);
+  // Background for header
+  const bgKey = me.char_bg||'blue';
+  const hdrBg = {blue:'linear-gradient(160deg,#1a3a8c,#0a0a18)',bg_sunset:'linear-gradient(160deg,#c0392b,#1a0a08)',bg_space:'linear-gradient(160deg,#0a0a2e,#050508)',bg_rainbow:'linear-gradient(160deg,#5b2d8c,#1a0a2e)'}[bgKey]||'linear-gradient(160deg,#1a3a8c,#0a0a18)';
+  document.getElementById('profHdr').style.background = hdrBg;
+  renderCustomize();
+  renderShop();
+}
+
+function renderCustomize() {
+  const wrap = document.getElementById('customizeWrap'); wrap.innerHTML='';
+  const SLOT_ICON = {
+    hat:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 18a1 1 0 001 1h18a1 1 0 001-1v-2a1 1 0 00-1-1H3a1 1 0 00-1 1v2z"/><path d="M12 3L2 15h20L12 3z"/></svg>`,
+    eyes:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    outfit:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>`,
+    bg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>`
+  };
+  ['hat','eyes','outfit','bg'].forEach(slot=>{
+    const key = SLOT_KEYS[slot];
+    const curVal = me[key]||DEFAULT_VAL[slot];
+    const isDefault = curVal===DEFAULT_VAL[slot];
+    const curLabel = isDefault ? DEFAULT_LABEL[slot] : (shopData[curVal]?.name||curVal);
+    const owned = (me.owned_items||[]).filter(id=>shopData[id]?.slot===slot);
+    const div = document.createElement('div');
+    div.className='slot-row'; div.id='slot-'+slot;
+    div.innerHTML=`<div class="slot-trigger" onclick="toggleSlot('${slot}')">
+      <div class="slot-icon">${SLOT_ICON[slot]}</div>
+      <div class="slot-info"><div class="slot-label">${SLOT_NAMES[slot]}</div><div class="slot-current">${curLabel}</div></div>
+      <div class="slot-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="slot-options"><div class="slot-chips" id="chips-${slot}"></div></div>`;
+    wrap.appendChild(div);
+    // Build chips
+    const chips = div.querySelector('#chips-'+slot);
+    // "none/default" chip
+    const def = document.createElement('div');
+    def.className='slot-chip'+(isDefault?' equipped':'');
+    def.textContent=DEFAULT_LABEL[slot];
+    def.onclick=()=>doEquip('none',slot,DEFAULT_VAL[slot]);
+    chips.appendChild(def);
+    owned.forEach(id=>{
+      const item=shopData[id]; if(!item) return;
+      const chip=document.createElement('div');
+      chip.className='slot-chip owned'+(curVal===id?' equipped':'');
+      chip.textContent=item.emoji+' '+item.name;
+      chip.onclick=()=>doEquip(id,slot,id);
+      chips.appendChild(chip);
+    });
+    if(!owned.length && slot==='bg') {
+      const info=document.createElement('div');
+      info.style.cssText='padding:6px 4px;font-size:12px;color:var(--text2)';
+      info.textContent='Cumpara un fundal din Magazin';
+      chips.appendChild(info);
+    }
+  });
+}
+
+function toggleSlot(slot) {
+  const row = document.getElementById('slot-'+slot);
+  const wasOpen = row.classList.contains('open');
+  document.querySelectorAll('.slot-row.open').forEach(r=>r.classList.remove('open'));
+  if(!wasOpen) { row.classList.add('open'); openSlot=slot; } else { openSlot=null; }
+}
+
+async function doEquip(itemId, slot, val) {
+  const res = await apiPost('/api/equip',{item_id:itemId,slot});
+  if(res?.success) {
+    me[SLOT_KEYS[slot]] = val;
+    showToast('Aplicat!');
+    loadProfile();
+  } else showToast(res?.error||'Eroare');
+}
+
+function renderShop() {
+  const grid = document.getElementById('shopGrid'); grid.innerHTML='';
+  const unowned = Object.entries(shopData).filter(([id])=>!(me.owned_items||[]).includes(id));
+  if(!unowned.length) { grid.innerHTML='<div style="grid-column:span 2;padding:20px;text-align:center;color:var(--text2);font-size:14px">Ai toate itemele!</div>'; return; }
+  unowned.forEach(([id,item])=>{
+    const canAfford = me.points >= item.cost;
+    const d=document.createElement('div');
+    d.className='shop-card';
+    d.innerHTML=`<div class="shop-emoji">${item.emoji}</div><div class="shop-name">${item.name}</div><div class="shop-price"${canAfford?'':' style="color:var(--text2)"'}>${item.cost} pct</div>`;
+    d.onclick=()=>openBuy(id,item);
+    grid.appendChild(d);
+  });
+}
+
+// ─── BUY MODAL ───
+function openBuy(id, item) {
+  if((me.owned_items||[]).includes(id)) return;
+  pending={id,item};
+  document.getElementById('mTitle').textContent=item.emoji+' '+item.name;
+  document.getElementById('mSub').textContent=`Cost: ${item.cost} puncte  |  Ai: ${me.points||0} puncte`;
+  document.getElementById('buyModal').classList.add('open');
+}
+function closeModal() { document.getElementById('buyModal').classList.remove('open'); pending=null; }
+async function confirmBuy() {
+  if(!pending) return;
+  const {id,item}=pending; closeModal();
+  if((me.points||0)<item.cost) { showToast('Puncte insuficiente!'); return; }
+  const r=await apiPost('/api/buy',{item_id:id});
+  if(r?.success) {
+    me.points=r.remaining_points;
+    if(!me.owned_items) me.owned_items=[];
+    me.owned_items.push(id);
+    showToast('Cumparat '+item.emoji);
+    await apiPost('/api/equip',{item_id:id,slot:item.slot});
+    await refreshMe();
+    loadProfile();
+  } else showToast(r?.error||'Eroare');
+}
+document.getElementById('buyModal').addEventListener('click',e=>{ if(e.target===document.getElementById('buyModal')) closeModal(); });
+
+// ─── OTHER PROFILE OVERLAY ───
+async function openOverlay(uid) {
+  if(uid===me?.id) { goTab('profile'); return; }
+  const u=await fetch('/api/profile/'+uid).then(r=>r.json()).catch(()=>null);
+  if(!u) return;
+  document.getElementById('ovChar').innerHTML=charSVG(u,110,166);
+  document.getElementById('ovName').textContent=u.username;
+  document.getElementById('ovPts').textContent=u.points||0;
+  document.getElementById('overlay-prof').style.display='block';
+}
+function closeOverlay() { document.getElementById('overlay-prof').style.display='none'; }
+
+// ─── TOAST ───
+let tTimer;
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(tTimer); tTimer=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── INIT ───
+if(token) {
+  api('/api/me').then(u=>{ if(u) startApp(u); else { localStorage.removeItem('kb_t'); } });
+}
+</script>
+</body>
+</html>
