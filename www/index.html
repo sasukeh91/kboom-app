@@ -123,7 +123,7 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .lb-streak{font-size:11px;color:var(--text2);margin-right:4px}
 
 /* ─── POP SCREEN ─── */
-#pop-screen{display:flex;flex-direction:column;overflow:hidden}
+#pop-screen{flex-direction:column;overflow:hidden}
 #pop-screen.active{display:flex!important}
 .pop-hdr{text-align:center;padding:52px 16px 6px;flex-shrink:0}
 .pop-title{font-size:28px;font-weight:900;letter-spacing:.5px}
@@ -141,8 +141,14 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .balloon-item:nth-child(3){animation-delay:2.2s}
 @keyframes floatB{0%,100%{transform:translateY(0) rotate(-3deg)}25%{transform:translateY(-18px) rotate(2deg)}75%{transform:translateY(-10px) rotate(-4deg)}}
 .b-string{width:1.5px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,.25),transparent);border-radius:1px}
-.balloon-item.popping{animation:popOut .3s ease-out forwards;pointer-events:none}
-@keyframes popOut{0%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}100%{transform:scale(0);opacity:0}}
+.balloon-item.popping{animation:popOut .55s cubic-bezier(.34,1.56,.64,1) forwards;pointer-events:none}
+@keyframes popOut{
+  0%  {transform:scale(1) rotate(0deg);opacity:1;filter:brightness(1)}
+  25% {transform:scale(1.5) rotate(-4deg);opacity:1;filter:brightness(1.8)}
+  45% {transform:scale(2.4) rotate(6deg);opacity:1;filter:brightness(3) saturate(2)}
+  60% {transform:scale(2.8) rotate(-2deg);opacity:.6;filter:brightness(4)}
+  100%{transform:scale(0) rotate(20deg);opacity:0;filter:brightness(1)}
+}
 .b-pts-badge{position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;font-weight:800;border-radius:10px;padding:2px 8px;white-space:nowrap;opacity:0;pointer-events:none}
 
 /* All done */
@@ -2319,6 +2325,7 @@ function charSVG(u, w, h) {
       <rect width="100" height="158" rx="18" fill="url(#glow${n})"/>
       ${bgDecorations(bgKey, n)}
       <rect width="100" height="158" rx="18" fill="rgba(255,255,255,.018)"/>
+      <text x="50" y="11" text-anchor="middle" fill="rgba(255,255,255,.45)" font-size="6" font-weight="900" letter-spacing="1.8" font-family="-apple-system,sans-serif">K-BOOM BRAINROT</text>
       ${renderBrainrot(skinKey, n, hk, bg1, bg2, bgKey)}
     </svg>`;
   }
@@ -2333,6 +2340,7 @@ function charSVG(u, w, h) {
     <rect width="100" height="158" rx="18" fill="url(#cbg${n})"/>
     <rect width="100" height="158" rx="18" fill="url(#glow${n})"/>
     ${bgDecorations(bgKey, n)}
+    <text x="50" y="11" text-anchor="middle" fill="rgba(255,255,255,.45)" font-size="6" font-weight="900" letter-spacing="1.8" font-family="-apple-system,sans-serif">K-BOOM BRAINROT</text>
     <!-- shadow -->
     <ellipse cx="50" cy="155" rx="22" ry="5" fill="rgba(0,0,0,.32)"/>
     <!-- legs -->
@@ -2391,23 +2399,34 @@ function playPop(type) {
   try {
     const ctx = getCtx(); const t = ctx.currentTime;
     const baseFreq = {red:220,green:262,blue:294,orange:330,purple:349,pink:392,gold:523,rainbow:587}[type]||300;
-    const master = ctx.createGain(); master.gain.value = .65; master.connect(ctx.destination);
-    const bsz = Math.floor(ctx.sampleRate*.04);
+    const master = ctx.createGain(); master.gain.value = .75; master.connect(ctx.destination);
+    // Noise burst - longer tail
+    const bsz = Math.floor(ctx.sampleRate*.12);
     const buf = ctx.createBuffer(1,bsz,ctx.sampleRate);
     const d = buf.getChannelData(0);
-    for(let i=0;i<bsz;i++) d[i]=(Math.random()*2-1)*(1-i/bsz);
+    for(let i=0;i<bsz;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/bsz, 1.5);
     const noise=ctx.createBufferSource(); noise.buffer=buf;
-    const nf=ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=1000; nf.Q.value=.5;
-    const ng=ctx.createGain(); ng.gain.setValueAtTime(.55,t); ng.gain.exponentialRampToValueAtTime(.001,t+.06);
+    const nf=ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=1200; nf.Q.value=.4;
+    const ng=ctx.createGain(); ng.gain.setValueAtTime(.8,t); ng.gain.exponentialRampToValueAtTime(.001,t+.12);
     noise.connect(nf); nf.connect(ng); ng.connect(master); noise.start(t);
+    // Main tone - longer, swooping down
     const o1=ctx.createOscillator(); o1.type='sine';
-    o1.frequency.setValueAtTime(baseFreq*.7,t); o1.frequency.exponentialRampToValueAtTime(baseFreq*1.9,t+.05); o1.frequency.exponentialRampToValueAtTime(baseFreq*.5,t+.45);
-    const g1=ctx.createGain(); g1.gain.setValueAtTime(0,t); g1.gain.linearRampToValueAtTime(.45,t+.02); g1.gain.exponentialRampToValueAtTime(.001,t+.5);
-    o1.connect(g1); g1.connect(master); o1.start(t); o1.stop(t+.5);
-    const o3=ctx.createOscillator(); o3.type='triangle';
-    o3.frequency.setValueAtTime(baseFreq*4,t+.07); o3.frequency.linearRampToValueAtTime(baseFreq*3.5,t+.5);
-    const g3=ctx.createGain(); g3.gain.setValueAtTime(.1,t+.07); g3.gain.exponentialRampToValueAtTime(.001,t+.55);
-    o3.connect(g3); g3.connect(master); o3.start(t+.07); o3.stop(t+.6);
+    o1.frequency.setValueAtTime(baseFreq*1.1,t);
+    o1.frequency.exponentialRampToValueAtTime(baseFreq*2.2,t+.06);
+    o1.frequency.exponentialRampToValueAtTime(baseFreq*.35,t+.9);
+    const g1=ctx.createGain(); g1.gain.setValueAtTime(0,t); g1.gain.linearRampToValueAtTime(.55,t+.02); g1.gain.exponentialRampToValueAtTime(.001,t+.95);
+    o1.connect(g1); g1.connect(master); o1.start(t); o1.stop(t+1.0);
+    // Bright overtone
+    const o2=ctx.createOscillator(); o2.type='triangle';
+    o2.frequency.setValueAtTime(baseFreq*3.5,t+.04);
+    o2.frequency.exponentialRampToValueAtTime(baseFreq*1.8,t+.7);
+    const g2=ctx.createGain(); g2.gain.setValueAtTime(.18,t+.04); g2.gain.exponentialRampToValueAtTime(.001,t+.75);
+    o2.connect(g2); g2.connect(master); o2.start(t+.04); o2.stop(t+.8);
+    // Low thud
+    const o3=ctx.createOscillator(); o3.type='sine';
+    o3.frequency.setValueAtTime(80,t); o3.frequency.exponentialRampToValueAtTime(30,t+.3);
+    const g3=ctx.createGain(); g3.gain.setValueAtTime(.5,t); g3.gain.exponentialRampToValueAtTime(.001,t+.35);
+    o3.connect(g3); g3.connect(master); o3.start(t); o3.stop(t+.4);
   } catch(e) {}
 }
 
@@ -3049,14 +3068,23 @@ async function loadSpin() {
   if (!s) return;
   const btn = document.getElementById('spinBtn');
   const sub = document.getElementById('spinSub');
+  const card = document.getElementById('spinCard');
   if (s.spun) {
     btn.textContent = '✓ Facut';
     btn.style.background = 'rgba(82,215,38,.2)';
     btn.style.color = '#52D726';
     btn.disabled = true;
     sub.innerHTML = `<span class="spin-result">+${s.reward} puncte castigate azi! 🎉</span>`;
-    document.getElementById('spinCard').style.cursor = 'default';
-    document.getElementById('spinCard').onclick = null;
+    card.style.cursor = 'default';
+    card.onclick = null;
+  } else {
+    btn.textContent = 'SPIN!';
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.disabled = false;
+    sub.textContent = 'Apasa pentru spin zilnic gratuit!';
+    card.style.cursor = 'pointer';
+    card.onclick = doSpin;
   }
 }
 
