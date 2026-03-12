@@ -19,6 +19,8 @@
   --glow-p:rgba(124,92,252,.4);--glow-r:rgba(255,77,148,.4);
   --bg-g1:rgba(0,20,80,.75);--bg-g2:rgba(0,0,60,.6);--bg-g3:rgba(5,5,30,.5);
   --auth-g1:rgba(0,15,70,.7);--auth-g2:rgba(10,0,50,.6);
+  --bg-main:#070710;--bg-card:#13132A;--bg-nav:rgba(13,13,26,.9);
+  --text-primary:#F0F0FF;--text-muted:#6868A8;
 }
 [data-theme="ocean"]{
   --bg:#010D16;--bg2:#021525;--card:#031E34;--card2:#052A47;--border:#094068;
@@ -26,6 +28,8 @@
   --glow-p:rgba(0,170,255,.35);--glow-r:rgba(0,221,255,.35);
   --bg-g1:rgba(0,30,80,.8);--bg-g2:rgba(0,10,50,.6);--bg-g3:rgba(0,5,30,.5);
   --auth-g1:rgba(0,20,70,.7);--auth-g2:rgba(0,5,40,.6);
+  --bg-main:#010D16;--bg-card:#031E34;--bg-nav:rgba(1,18,30,.92);
+  --text-primary:#D6F4FF;--text-muted:#3A8CB5;
 }
 [data-theme="green"]{
   --bg:#010E06;--bg2:#02160A;--card:#032010;--card2:#062E17;--border:#094D22;
@@ -33,6 +37,8 @@
   --glow-p:rgba(0,204,85,.35);--glow-r:rgba(102,255,153,.35);
   --bg-g1:rgba(0,60,20,.7);--bg-g2:rgba(0,30,5,.6);--bg-g3:rgba(0,15,5,.5);
   --auth-g1:rgba(0,50,15,.7);--auth-g2:rgba(0,20,5,.6);
+  --bg-main:#010E06;--bg-card:#032010;--bg-nav:rgba(1,14,6,.92);
+  --text-primary:#D6FFE6;--text-muted:#3AAD6E;
 }
 [data-theme="fire"]{
   --bg:#0A0500;--bg2:#150800;--card:#200A00;--card2:#2D1000;--border:#4A1800;
@@ -41,6 +47,8 @@
   --glow-p:rgba(255,107,0,.45);--glow-r:rgba(255,61,0,.4);
   --bg-g1:rgba(100,20,0,.8);--bg-g2:rgba(60,5,0,.7);--bg-g3:rgba(20,5,0,.5);
   --auth-g1:rgba(80,15,0,.7);--auth-g2:rgba(40,0,0,.6);
+  --bg-main:#0A0500;--bg-card:#200A00;--bg-nav:rgba(10,5,0,.93);
+  --text-primary:#FFF0E6;--text-muted:#AA5A30;
 }
 [data-theme="cyber"]{
   --bg:#000A0A;--bg2:#001215;--card:#001A1F;--card2:#00222A;--border:#003A45;
@@ -49,12 +57,14 @@
   --glow-p:rgba(0,229,255,.4);--glow-r:rgba(255,0,170,.4);
   --bg-g1:rgba(0,50,80,.7);--bg-g2:rgba(0,10,40,.6);--bg-g3:rgba(0,5,20,.5);
   --auth-g1:rgba(0,40,60,.7);--auth-g2:rgba(0,5,30,.6);
+  --bg-main:#000A0A;--bg-card:#001A1F;--bg-nav:rgba(0,10,10,.93);
+  --text-primary:#E0FFFF;--text-muted:#2A8899;
 }
-html,body{height:100%;background:radial-gradient(ellipse at 15% 0%,var(--bg-g1) 0%,transparent 45%),radial-gradient(ellipse at 85% 100%,var(--bg-g2) 0%,transparent 45%),radial-gradient(ellipse at 50% 50%,var(--bg-g3) 0%,transparent 70%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;overflow:hidden}
+html,body{height:100%;background:radial-gradient(ellipse at 15% 0%,var(--bg-g1) 0%,transparent 45%),radial-gradient(ellipse at 85% 100%,var(--bg-g2) 0%,transparent 45%),radial-gradient(ellipse at 50% 50%,var(--bg-g3) 0%,transparent 70%),var(--bg-main,var(--bg));color:var(--text-primary,var(--text));font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;overflow:hidden}
 
 /* ─── AUTH ─── */
 #auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;
-  background:radial-gradient(ellipse at 30% -10%,var(--auth-g1) 0%,transparent 60%),radial-gradient(ellipse at 80% 110%,var(--auth-g2) 0%,transparent 60%),var(--bg)}
+  background:radial-gradient(ellipse at 30% -10%,var(--auth-g1) 0%,transparent 60%),radial-gradient(ellipse at 80% 110%,var(--auth-g2) 0%,transparent 60%),var(--bg-main,var(--bg))}
 .logo{text-align:center;margin-bottom:32px}
 .logo-icon{width:90px;height:90px;margin:0 auto 14px;animation:floatIcon 3s ease-in-out infinite;filter:drop-shadow(0 8px 24px var(--glow-p))}
 @keyframes floatIcon{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-14px) rotate(5deg)}}
@@ -80,7 +90,7 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .screen.active{display:block}
 
 /* ─── BOTTOM NAV ─── */
-.nav{height:var(--nav-h);background:rgba(13,13,26,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:var(--safe-b);position:relative;z-index:100;flex-shrink:0}
+.nav{height:var(--nav-h);background:var(--bg-nav,rgba(13,13,26,.9));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:var(--safe-b);position:relative;z-index:100;flex-shrink:0}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 4px;border:none;background:none;color:var(--text2);font-size:10px;font-weight:600;letter-spacing:.3px;transition:color .2s;position:relative}
 .nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
 .nb.active{color:var(--accent)}
@@ -255,7 +265,7 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .shop-owned-badge{position:absolute;top:8px;right:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;padding:2px 7px;font-size:9px;font-weight:800;color:#fff}
 
 /* ─── OVERLAY ─── */
-#overlay-prof{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto}
+#overlay-prof{display:none;position:fixed;inset:0;z-index:200;background:var(--bg-main,var(--bg));overflow-y:auto}
 .overlay-back{padding:50px 16px 12px}
 .back-btn{display:flex;align-items:center;gap:8px;background:var(--card);border:none;color:var(--text);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
 .back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
@@ -405,6 +415,32 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .home-card-stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
 .home-card-arrow{color:var(--text3);flex-shrink:0;font-size:18px;line-height:1}
 
+/* ─── SOCIAL FEED ─── */
+.social-feed-wrap{padding:0 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;gap:10px}
+.social-feed-wrap::-webkit-scrollbar{display:none}
+.feed-card{flex-shrink:0;background:var(--bg-card,var(--card));border-radius:20px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--border);min-width:88px;max-width:88px;transition:transform .2s,border-color .2s}
+.feed-card:active{transform:scale(.92)}
+.feed-card:hover{border-color:rgba(124,92,252,.4)}
+.feed-avatar{width:52px;height:52px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feed-name{font-size:11px;font-weight:700;color:var(--text-primary,var(--text));text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feed-lvl{font-size:10px;color:var(--gold);font-weight:700}
+
+/* ─── USER BOTTOM SHEET ─── */
+#userSheet{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.75);align-items:flex-end;justify-content:center}
+#userSheet.open{display:flex}
+.user-sheet-inner{background:var(--bg-card,var(--card));border-radius:24px 24px 0 0;padding:20px 20px calc(20px + var(--safe-b));width:100%;max-width:480px;border-top:1px solid var(--border);transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.1,.64,1);max-height:85vh;overflow-y:auto}
+#userSheet.open .user-sheet-inner{transform:translateY(0)}
+.user-sheet-avatar{width:80px;height:80px;border-radius:18px;overflow:hidden;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.user-sheet-name{font-size:20px;font-weight:900;text-align:center;margin-bottom:4px}
+.user-sheet-pts{font-size:13px;color:var(--gold);font-weight:700;text-align:center;margin-bottom:14px}
+.user-sheet-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.user-sheet-stat{background:var(--card2);border-radius:12px;padding:9px 6px;text-align:center;border:1px solid var(--border)}
+.user-sheet-stat-val{font-size:18px;font-weight:900;margin-bottom:2px}
+.user-sheet-stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.user-sheet-cards-title{font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.user-sheet-top-cards{display:flex;gap:8px;justify-content:center}
+.user-sheet-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.1);border:none;color:var(--text);border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
 /* ─── THEMES ─── */
 .theme-picker{display:flex;gap:8px;padding:12px 16px;margin-bottom:4px}
 .theme-btn{flex:1;padding:10px 6px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:11px;font-weight:700;color:var(--text2);text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -535,7 +571,9 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
             </div>
           </div>
           <div class="streak-badge" id="streakBadge">
-            <div class="streak-fire">🔥</div>
+            <div class="streak-fire">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#FF9F1C" stroke="none"><path d="M12 23c4.97 0 9-3.58 9-8 0-2.7-1.4-5.09-3.5-6.5.28 1.06.5 2.24.5 3.5 0 3.31-2.69 6-6 6S6 15.31 6 12c0-1.26.22-2.44.5-3.5C4.4 9.91 3 12.3 3 15c0 4.42 4.03 8 9 8z"/><path d="M12 17c2.21 0 4-1.79 4-4 0-1.2-.52-2.27-1.34-3 .13.47.34 1 .34 1.5 0 1.66-1.34 3-3 3s-3-1.34-3-3c0-.5.21-1.03.34-1.5C8.52 10.73 8 11.8 8 13c0 2.21 1.79 4 4 4z"/></svg>
+          </div>
             <div>
               <div class="streak-num" id="hStreakNum">0</div>
               <div class="streak-lbl">zile</div>
@@ -577,9 +615,29 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       </div>
       <div class="balloon-preview" id="bPreview"></div>
 
+      <!-- SOCIAL FEED -->
+      <div class="section-head" style="padding-top:18px;padding-bottom:8px">
+        <div class="section-title">Jucatori activi</div>
+      </div>
+      <div class="social-feed-wrap" id="socialFeedWrap">
+        <div style="display:flex;align-items:center;justify-content:center;min-width:80px;color:var(--text2);font-size:12px">Se incarca...</div>
+      </div>
+
+      <!-- USER BOTTOM SHEET -->
+      <div id="userSheet" onclick="closeUserSheet(event)">
+        <div class="user-sheet-inner" style="position:relative">
+          <button class="user-sheet-close" onclick="closeUserSheet(null,true)">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div id="userSheetContent"></div>
+        </div>
+      </div>
+
       <!-- SPIN WHEEL -->
       <div id="spinCard" class="spin-card" onclick="doSpin()">
-        <div class="spin-icon">🎰</div>
+        <div class="spin-icon">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M16 2l2 4-4 1"/></svg>
+        </div>
         <div class="spin-info">
           <div class="spin-title">Roata Norocului</div>
           <div class="spin-sub" id="spinSub">Apasa pentru spin zilnic gratuit!</div>
@@ -589,16 +647,22 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 
       <!-- MISIUNI ZILNICE -->
       <div class="section-head" style="padding-top:18px">
-        <div class="section-title">🎯 Misiuni Zilnice</div>
+        <div class="section-title" style="display:flex;align-items:center;gap:6px">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          Misiuni Zilnice
+        </div>
       </div>
       <div class="missions-wrap" id="missionsWrap"></div>
 
       <div class="section-head" style="padding-bottom:4px">
-        <div class="section-title">🏆 Clasament</div>
+        <div class="section-title" style="display:flex;align-items:center;gap:6px">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2 2 0 000 4H6"/><path d="M18 9h1.5a2 2 0 010 4H18"/><path d="M6 9V4h12v5"/><path d="M6 13v7h12v-7"/><path d="M9 17h6"/></svg>
+          Clasament
+        </div>
       </div>
       <div style="display:flex;gap:6px;padding:4px 16px 10px">
-        <button id="lbTabGlobal" onclick="switchLbTab('global')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;cursor:pointer">🌍 Global</button>
-        <button id="lbTabWeekly" onclick="switchLbTab('weekly')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:800;cursor:pointer">📅 Saptamanal</button>
+        <button id="lbTabGlobal" onclick="switchLbTab('global')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;cursor:pointer">Global</button>
+        <button id="lbTabWeekly" onclick="switchLbTab('weekly')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:800;cursor:pointer">Saptamanal</button>
       </div>
       <div class="lb-list" id="lbList"></div>
       <div style="height:16px"></div>
@@ -627,23 +691,23 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
         <div class="prof-stats">
           <div class="pstat">
             <div class="pstat-val fire-text" id="pstatStreak">0</div>
-            <div class="pstat-lbl">🔥 Streak</div>
+            <div class="pstat-lbl" style="display:flex;align-items:center;justify-content:center;gap:3px"><svg viewBox="0 0 24 24" width="10" height="10" fill="#FF9F1C"><path d="M12 23c4.97 0 9-3.58 9-8 0-2.7-1.4-5.09-3.5-6.5.28 1.06.5 2.24.5 3.5 0 3.31-2.69 6-6 6S6 15.31 6 12c0-1.26.22-2.44.5-3.5C4.4 9.91 3 12.3 3 15c0 4.42 4.03 8 9 8z"/></svg> Streak</div>
           </div>
           <div class="pstat">
             <div class="pstat-val purple-text" id="pstatPops">0</div>
-            <div class="pstat-lbl">💥 Pops</div>
+            <div class="pstat-lbl" style="display:flex;align-items:center;justify-content:center;gap:3px"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#9B5DE5" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Pops</div>
           </div>
           <div class="pstat">
             <div class="pstat-val gold-text" id="pstatBest">0</div>
-            <div class="pstat-lbl">🏆 Record</div>
+            <div class="pstat-lbl" style="display:flex;align-items:center;justify-content:center;gap:3px"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"><path d="M6 9H4.5a2 2 0 000 4H6"/><path d="M18 9h1.5a2 2 0 010 4H18"/><path d="M6 9V4h12v5"/><path d="M6 13v7h12v-7"/></svg> Record</div>
           </div>
           <div class="pstat" onclick="goTab('cards')" style="cursor:pointer;border-color:rgba(124,92,252,.3)">
             <div class="pstat-val" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="pstatCards">0</div>
-            <div class="pstat-lbl">🃏 Carti</div>
+            <div class="pstat-lbl" style="display:flex;align-items:center;justify-content:center;gap:3px"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg> Carti</div>
           </div>
           <div class="pstat">
             <div class="pstat-val" style="background:linear-gradient(135deg,#00E5FF,#FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="pstatStage">0</div>
-            <div class="pstat-lbl">🎮 Stagiu</div>
+            <div class="pstat-lbl" style="display:flex;align-items:center;justify-content:center;gap:3px"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Stagiu</div>
           </div>
         </div>
       </div>
@@ -676,7 +740,10 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 
       <!-- INVITE -->
       <div class="section-head" style="padding-top:18px">
-        <div class="section-title">🔗 Cod Invitatie</div>
+        <div class="section-title" style="display:flex;align-items:center;gap:6px">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Cod Invitatie
+      </div>
       </div>
       <div class="invite-box" id="inviteBox">
         <div class="invite-title">Codul tau — invita prieteni, primiti amandoi puncte!</div>
@@ -692,13 +759,19 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       </div>
 
       <div class="section-head" style="padding-top:18px">
-        <div class="section-title">🃏 Cartile Mele</div>
+        <div class="section-title" style="display:flex;align-items:center;gap:6px">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg>
+        Cartile Mele
+      </div>
         <div class="section-link" onclick="goTab('cards')">Toate →</div>
       </div>
       <div id="profOwnedCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px 8px"></div>
 
       <div class="section-head" style="padding-top:18px">
-        <div class="section-title">👥 Jucatori</div>
+        <div class="section-title" style="display:flex;align-items:center;gap:6px">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Jucatori
+      </div>
       </div>
       <div id="profPlayers" style="display:flex;flex-direction:column;gap:8px;padding:0 16px 8px"></div>
 
@@ -717,7 +790,10 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
   <div id="cardPickerModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow-y:auto">
     <div style="padding:20px 16px 90px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-        <div style="font-size:17px;font-weight:900">🃏 Alege Cartea de Profil</div>
+        <div style="font-size:17px;font-weight:900;display:flex;align-items:center;gap:8px">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg>
+          Alege Cartea de Profil
+        </div>
         <button onclick="closeCardPicker()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:var(--text);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:15px;font-weight:700">✕</button>
       </div>
       <div id="cardPickerGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
@@ -771,7 +847,10 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 <div class="screen" id="cards-screen">
   <div class="cards-hdr">
     <div class="cards-hdr-left">
-      <div class="cards-title">🃏 Carti Brainrot</div>
+      <div class="cards-title" style="display:flex;align-items:center;gap:8px">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg>
+        Carti Brainrot
+      </div>
       <div class="cards-sub" id="cardsSubtitle">Colectia ta</div>
     </div>
     <div class="cards-pts">
@@ -785,7 +864,10 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
     <button class="cf-btn" onclick="filterCards('affordable',this)">Pot cumpara</button>
   </div>
   <div class="cards-grid" id="cardsGrid"></div>
-  <div style="padding:6px 16px 4px;font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-top:8px">🛍️ Magazin</div>
+  <div style="padding:6px 16px 4px;font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-top:8px;display:flex;align-items:center;gap:5px">
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="var(--text2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Magazin
+  </div>
   <div class="shop-section" id="shopSection"></div>
   <div style="height:20px"></div>
 </div>
@@ -808,22 +890,22 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
   <div class="ov-stats">
     <div class="ov-stat">
       <div class="ov-stat-val fire-text" id="ovStreak">0</div>
-      <div class="ov-stat-lbl">🔥 Streak</div>
+      <div class="ov-stat-lbl">Streak</div>
     </div>
     <div class="ov-stat">
       <div class="ov-stat-val purple-text" id="ovPops">0</div>
-      <div class="ov-stat-lbl">💥 Pops</div>
+      <div class="ov-stat-lbl">Pops</div>
     </div>
     <div class="ov-stat">
       <div class="ov-stat-val gold-text" id="ovBest">0</div>
-      <div class="ov-stat-lbl">🏆 Record</div>
+      <div class="ov-stat-lbl">Record</div>
     </div>
     <div class="ov-stat">
       <div class="ov-stat-val" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="ovCards">0</div>
-      <div class="ov-stat-lbl">🃏 Carti</div>
+      <div class="ov-stat-lbl">Carti</div>
     </div>
   </div>
-  <div style="padding:14px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">🃏 Colectie</div>
+  <div style="padding:14px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">Colectie</div>
   <div id="ovCardsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 16px 12px"></div>
   <div style="padding:2px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">Trimite reactie</div>
   <div class="reactions-wrap" id="ovReactions"></div>
@@ -843,7 +925,7 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 </div>
 
 <div class="ach-toast" id="achToast">
-  <div class="ach-icon" id="achIcon">🏆</div>
+  <div class="ach-icon" id="achIcon" style="display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2 2 0 000 4H6"/><path d="M18 9h1.5a2 2 0 010 4H18"/><path d="M6 9V4h12v5"/><path d="M6 13v7h12v-7"/><path d="M9 17h6"/></svg></div>
   <div class="ach-text">
     <div class="ach-title">Realizare deblocata!</div>
     <div class="ach-name" id="achName"></div>
@@ -2566,6 +2648,261 @@ function renderBrainrot(skinKey, n, hk, bg1, bg2, bgKey) {
       <circle cx="32" cy="43" r="2.5" fill="white"/>
       <circle cx="74" cy="43" r="2.5" fill="white"/>
       <path d="M22 70 Q36 76 50 76 Q64 76 78 70" stroke="#666" stroke-width="2.5" fill="none"/>
+      ${hat}`,
+
+    skin_ultra_phoenix: `
+      <!-- PHOENIXUS INFERNALIS — flaming phoenix warrior -->
+      <defs>
+        <radialGradient id="pglow${n}" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#FFD700" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#FF4400" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="pbody${n}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#FF8C00"/>
+          <stop offset="100%" stop-color="#CC2200"/>
+        </linearGradient>
+        <linearGradient id="pwing${n}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFD700"/>
+          <stop offset="40%" stop-color="#FF6600"/>
+          <stop offset="100%" stop-color="#AA1100"/>
+        </linearGradient>
+      </defs>
+      <!-- glow aura -->
+      <ellipse cx="50" cy="90" rx="52" ry="80" fill="url(#pglow${n})"/>
+      <!-- shadow -->
+      <ellipse cx="50" cy="158" rx="24" ry="5" fill="rgba(0,0,0,.4)"/>
+      <!-- WINGS — sweeping fire wings -->
+      <path d="M50 60 Q10 20 -18 50 Q-8 80 20 72 Q10 90 16 108 Q34 88 42 78Z" fill="url(#pwing${n})" opacity="0.95"/>
+      <path d="M50 60 Q90 20 118 50 Q108 80 80 72 Q90 90 84 108 Q66 88 58 78Z" fill="url(#pwing${n})" opacity="0.95"/>
+      <!-- wing feather details -->
+      <path d="M20 72 Q4 60 -18 50" stroke="#FFD700" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M16 85 Q2 78 -8 65" stroke="#FFD700" stroke-width="1" fill="none" opacity="0.5"/>
+      <path d="M80 72 Q96 60 118 50" stroke="#FFD700" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M84 85 Q98 78 108 65" stroke="#FFD700" stroke-width="1" fill="none" opacity="0.5"/>
+      <!-- BODY -->
+      <path d="M28 88 Q30 70 50 65 Q70 70 72 88 L70 130 Q50 138 30 130Z" fill="url(#pbody${n})"/>
+      <!-- chest plate -->
+      <path d="M34 88 Q50 82 66 88 L64 114 Q50 120 36 114Z" fill="#FFD700" opacity="0.7"/>
+      <!-- body detail lines -->
+      <path d="M38 98 Q50 94 62 98" stroke="#FF4400" stroke-width="1.5" fill="none"/>
+      <path d="M37 108 Q50 104 63 108" stroke="#FF4400" stroke-width="1.5" fill="none"/>
+      <!-- LEGS -->
+      <rect x="32" y="128" width="14" height="30" rx="7" fill="#CC3300"/>
+      <rect x="54" y="128" width="14" height="30" rx="7" fill="#CC3300"/>
+      <ellipse cx="39" cy="158" rx="11" ry="6" fill="#993300"/>
+      <ellipse cx="61" cy="158" rx="11" ry="6" fill="#993300"/>
+      <!-- talons -->
+      <path d="M32 158 L28 164 M39 158 L39 165 M46 158 L50 164" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M54 158 L50 164 M61 158 L61 165 M68 158 L72 164" stroke="#8B6914" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- NECK -->
+      <rect x="43" y="46" width="14" height="22" rx="6" fill="#CC4400"/>
+      <!-- HEAD -->
+      <ellipse cx="50" cy="32" rx="22" ry="20" fill="#FF6600"/>
+      <!-- beak -->
+      <path d="M50 38 Q46 48 40 50 L50 46 L60 50 Q54 48 50 38Z" fill="#FFD700"/>
+      <!-- eyes — fierce gold with fire -->
+      <ellipse cx="40" cy="28" rx="7" ry="7" fill="#FFD700"/>
+      <ellipse cx="60" cy="28" rx="7" ry="7" fill="#FFD700"/>
+      <circle cx="40" cy="28" r="4.5" fill="#FF4400"/>
+      <circle cx="60" cy="28" r="4.5" fill="#FF4400"/>
+      <circle cx="40" cy="28" r="2.5" fill="#1A0000"/>
+      <circle cx="60" cy="28" r="2.5" fill="#1A0000"/>
+      <circle cx="41" cy="26" r="1.2" fill="white"/>
+      <circle cx="61" cy="26" r="1.2" fill="white"/>
+      <!-- crown feathers -->
+      <path d="M50 12 Q44 0 46 -10 Q50 -4 50 12Z" fill="#FFD700"/>
+      <path d="M50 12 Q38 2 34 -8 Q42 -2 50 12Z" fill="#FF8C00"/>
+      <path d="M50 12 Q62 2 66 -8 Q58 -2 50 12Z" fill="#FF8C00"/>
+      <path d="M50 12 Q30 6 28 -4 Q38 4 50 12Z" fill="#FF6600"/>
+      <path d="M50 12 Q70 6 72 -4 Q62 4 50 12Z" fill="#FF6600"/>
+      <!-- flame particles -->
+      <circle cx="22" cy="45" r="3" fill="#FFD700" opacity="0.8"/>
+      <circle cx="78" cy="45" r="3" fill="#FFD700" opacity="0.8"/>
+      <circle cx="14" cy="62" r="2" fill="#FF6600" opacity="0.6"/>
+      <circle cx="86" cy="62" r="2" fill="#FF6600" opacity="0.6"/>
+      ${hat}`,
+
+    skin_ultra_void: `
+      <!-- VOID WALKER SUPREMUS — cosmic dark entity -->
+      <defs>
+        <radialGradient id="vglow${n}" cx="50%" cy="40%" r="55%">
+          <stop offset="0%" stop-color="#9B00FF" stop-opacity="0.6"/>
+          <stop offset="60%" stop-color="#3300AA" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#000033" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="veye${n}" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#FF00FF"/>
+          <stop offset="50%" stop-color="#9900CC"/>
+          <stop offset="100%" stop-color="#220044"/>
+        </radialGradient>
+        <linearGradient id="vbody${n}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1A0033"/>
+          <stop offset="50%" stop-color="#0D0026"/>
+          <stop offset="100%" stop-color="#000011"/>
+        </linearGradient>
+      </defs>
+      <!-- cosmic aura -->
+      <ellipse cx="50" cy="80" rx="55" ry="80" fill="url(#vglow${n})"/>
+      <!-- shadow -->
+      <ellipse cx="50" cy="158" rx="22" ry="5" fill="rgba(80,0,160,.5)"/>
+      <!-- VOID TENDRILS — tentacle-like dark energy arms -->
+      <path d="M20 80 Q-10 60 -20 30 Q-12 28 -8 38 Q0 50 12 68 Q14 56 6 40 Q14 36 20 48 Q24 62 18 80Z" fill="#3300AA" opacity="0.85"/>
+      <path d="M80 80 Q110 60 120 30 Q112 28 108 38 Q100 50 88 68 Q86 56 94 40 Q86 36 80 48 Q76 62 82 80Z" fill="#3300AA" opacity="0.85"/>
+      <!-- extra void wisp -->
+      <path d="M16 95 Q-6 85 -12 70" stroke="#7700FF" stroke-width="3" fill="none" opacity="0.7" stroke-linecap="round"/>
+      <path d="M84 95 Q106 85 112 70" stroke="#7700FF" stroke-width="3" fill="none" opacity="0.7" stroke-linecap="round"/>
+      <!-- BODY — dark crystalline -->
+      <path d="M24 88 Q26 68 50 62 Q74 68 76 88 L74 130 Q50 140 26 130Z" fill="url(#vbody${n})"/>
+      <!-- crystal facets on body -->
+      <path d="M36 88 L50 70 L64 88 L64 115 L50 126 L36 115Z" fill="#220044" stroke="#9900CC" stroke-width="1" opacity="0.8"/>
+      <path d="M44 88 L50 76 L56 88" stroke="#FF00FF" stroke-width="1" fill="none" opacity="0.6"/>
+      <!-- void runes on chest -->
+      <circle cx="50" cy="98" r="10" fill="none" stroke="#9B00FF" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="50" cy="98" r="6" fill="none" stroke="#FF00FF" stroke-width="1" opacity="0.5"/>
+      <line x1="50" y1="88" x2="50" y2="108" stroke="#9B00FF" stroke-width="1" opacity="0.6"/>
+      <line x1="40" y1="98" x2="60" y2="98" stroke="#9B00FF" stroke-width="1" opacity="0.6"/>
+      <!-- LEGS — dark crystalline -->
+      <rect x="31" y="128" width="14" height="30" rx="5" fill="#150025"/>
+      <rect x="55" y="128" width="14" height="30" rx="5" fill="#150025"/>
+      <ellipse cx="38" cy="158" rx="12" ry="6" fill="#0D0020"/>
+      <ellipse cx="62" cy="158" rx="12" ry="6" fill="#0D0020"/>
+      <!-- crystal leg detail -->
+      <line x1="38" y1="130" x2="38" y2="156" stroke="#7700FF" stroke-width="1" opacity="0.5"/>
+      <line x1="62" y1="130" x2="62" y2="156" stroke="#7700FF" stroke-width="1" opacity="0.5"/>
+      <!-- NECK -->
+      <rect x="43" y="46" width="14" height="20" rx="4" fill="#110022"/>
+      <!-- HEAD — dark skull-like with void energy -->
+      <ellipse cx="50" cy="30" rx="22" ry="20" fill="#0D0020"/>
+      <!-- void crack details on head -->
+      <path d="M34 26 Q38 18 46 22" stroke="#9B00FF" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <path d="M66 26 Q62 18 54 22" stroke="#9B00FF" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <!-- EYES — massive glowing void eyes -->
+      <ellipse cx="38" cy="30" rx="9" ry="8" fill="#220033"/>
+      <ellipse cx="62" cy="30" rx="9" ry="8" fill="#220033"/>
+      <ellipse cx="38" cy="30" rx="7" ry="6" fill="url(#veye${n})"/>
+      <ellipse cx="62" cy="30" rx="7" ry="6" fill="url(#veye${n})"/>
+      <circle cx="38" cy="30" r="3.5" fill="#FF00FF" opacity="0.9"/>
+      <circle cx="62" cy="30" r="3.5" fill="#FF00FF" opacity="0.9"/>
+      <circle cx="38" cy="30" r="1.5" fill="white"/>
+      <circle cx="62" cy="30" r="1.5" fill="white"/>
+      <!-- void crown -->
+      <path d="M34 12 L30 -2 L36 4 L42 -6 L46 6 L50 -8 L54 6 L58 -6 L64 4 L70 -2 L66 12Z" fill="#3300AA" stroke="#7700FF" stroke-width="0.8"/>
+      <!-- floating void orbs -->
+      <circle cx="16" cy="50" r="5" fill="#9B00FF" opacity="0.7"/>
+      <circle cx="84" cy="50" r="5" fill="#9B00FF" opacity="0.7"/>
+      <circle cx="16" cy="50" r="2.5" fill="#FF00FF" opacity="0.9"/>
+      <circle cx="84" cy="50" r="2.5" fill="#FF00FF" opacity="0.9"/>
+      <circle cx="12" cy="72" r="3" fill="#7700FF" opacity="0.6"/>
+      <circle cx="88" cy="72" r="3" fill="#7700FF" opacity="0.6"/>
+      <!-- star particles -->
+      <circle cx="8" cy="40" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="92" cy="38" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="4" cy="58" r="1" fill="white" opacity="0.6"/>
+      <circle cx="96" cy="56" r="1" fill="white" opacity="0.6"/>
+      ${hat}`,
+
+    skin_ultra_cosmos: `
+      <!-- COSMICUS ABSOLUTUS REX — king of the universe -->
+      <defs>
+        <radialGradient id="cglow${n}" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#00CFFF" stop-opacity="0.55"/>
+          <stop offset="50%" stop-color="#0044FF" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#000033" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="cbody${n}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#001A3A"/>
+          <stop offset="50%" stop-color="#000D22"/>
+          <stop offset="100%" stop-color="#00050F"/>
+        </linearGradient>
+        <linearGradient id="cring${n}" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00E5FF"/>
+          <stop offset="30%" stop-color="#0088FF"/>
+          <stop offset="70%" stop-color="#AA44FF"/>
+          <stop offset="100%" stop-color="#00E5FF"/>
+        </linearGradient>
+      </defs>
+      <!-- cosmic nebula aura -->
+      <ellipse cx="50" cy="80" rx="58" ry="82" fill="url(#cglow${n})"/>
+      <!-- PLANETARY RINGS around body -->
+      <ellipse cx="50" cy="95" rx="48" ry="12" fill="none" stroke="url(#cring${n})" stroke-width="3" opacity="0.6" transform="rotate(-15 50 95)"/>
+      <ellipse cx="50" cy="95" rx="56" ry="14" fill="none" stroke="url(#cring${n})" stroke-width="1.5" opacity="0.35" transform="rotate(-15 50 95)"/>
+      <!-- shadow -->
+      <ellipse cx="50" cy="158" rx="24" ry="5" fill="rgba(0,50,100,.5)"/>
+      <!-- COSMIC CAPE -->
+      <path d="M26 78 Q10 100 8 138 Q20 148 28 130 L30 128Z" fill="#000D22" stroke="#0055AA" stroke-width="1" opacity="0.9"/>
+      <path d="M74 78 Q90 100 92 138 Q80 148 72 130 L70 128Z" fill="#000D22" stroke="#0055AA" stroke-width="1" opacity="0.9"/>
+      <!-- cape star detail -->
+      <circle cx="14" cy="108" r="1.5" fill="#00CFFF" opacity="0.8"/>
+      <circle cx="22" cy="120" r="1" fill="white" opacity="0.7"/>
+      <circle cx="18" cy="132" r="1.5" fill="#AA44FF" opacity="0.8"/>
+      <circle cx="86" cy="108" r="1.5" fill="#00CFFF" opacity="0.8"/>
+      <circle cx="78" cy="120" r="1" fill="white" opacity="0.7"/>
+      <circle cx="82" cy="132" r="1.5" fill="#AA44FF" opacity="0.8"/>
+      <!-- BODY -->
+      <path d="M26 88 Q28 68 50 62 Q72 68 74 88 L72 130 Q50 140 28 130Z" fill="url(#cbody${n})"/>
+      <!-- cosmic armor plates -->
+      <path d="M34 88 Q50 78 66 88 L64 108 Q50 114 36 108Z" fill="#001433" stroke="#00CFFF" stroke-width="1.5" opacity="0.9"/>
+      <path d="M38 92 Q50 86 62 92 L60 106 Q50 110 40 106Z" fill="#002255" stroke="#0099FF" stroke-width="1" opacity="0.7"/>
+      <!-- pulsing core on chest -->
+      <circle cx="50" cy="98" r="8" fill="#001A3A"/>
+      <circle cx="50" cy="98" r="6" fill="#003366" stroke="#00CFFF" stroke-width="1.5"/>
+      <circle cx="50" cy="98" r="3.5" fill="#00CFFF" opacity="0.9"/>
+      <circle cx="50" cy="98" r="1.5" fill="white"/>
+      <!-- ARMS -->
+      <path d="M26 88 Q6 96 2 118 Q8 124 14 118 Q16 100 24 90Z" fill="#001022"/>
+      <path d="M74 88 Q94 96 98 118 Q92 124 86 118 Q84 100 76 90Z" fill="#001022"/>
+      <!-- gauntlet glow -->
+      <ellipse cx="4" cy="120" rx="9" ry="7" fill="#001A3A" stroke="#00CFFF" stroke-width="1.5"/>
+      <ellipse cx="96" cy="120" rx="9" ry="7" fill="#001A3A" stroke="#00CFFF" stroke-width="1.5"/>
+      <circle cx="4" cy="120" r="3.5" fill="#00CFFF" opacity="0.7"/>
+      <circle cx="96" cy="120" r="3.5" fill="#00CFFF" opacity="0.7"/>
+      <!-- LEGS -->
+      <rect x="32" y="128" width="14" height="30" rx="5" fill="#00060F"/>
+      <rect x="54" y="128" width="14" height="30" rx="5" fill="#00060F"/>
+      <!-- leg armor line -->
+      <line x1="39" y1="130" x2="39" y2="156" stroke="#00CFFF" stroke-width="1" opacity="0.5"/>
+      <line x1="61" y1="130" x2="61" y2="156" stroke="#00CFFF" stroke-width="1" opacity="0.5"/>
+      <ellipse cx="39" cy="158" rx="12" ry="6" fill="#00040C"/>
+      <ellipse cx="61" cy="158" rx="12" ry="6" fill="#00040C"/>
+      <!-- NECK -->
+      <rect x="43" y="46" width="14" height="20" rx="5" fill="#001022"/>
+      <!-- HEAD — cosmic emperor -->
+      <ellipse cx="50" cy="30" rx="22" ry="20" fill="#001022"/>
+      <!-- nebula pattern on head -->
+      <ellipse cx="40" cy="28" rx="6" ry="5" fill="#002244" opacity="0.6"/>
+      <ellipse cx="62" cy="26" rx="5" ry="4" fill="#001A33" opacity="0.5"/>
+      <!-- EYES — stellar blue -->
+      <ellipse cx="38" cy="30" rx="9" ry="8" fill="#001A33"/>
+      <ellipse cx="62" cy="30" rx="9" ry="8" fill="#001A33"/>
+      <ellipse cx="38" cy="30" rx="7" ry="6" fill="#003366"/>
+      <ellipse cx="62" cy="30" rx="7" ry="6" fill="#003366"/>
+      <circle cx="38" cy="30" r="4.5" fill="#00CFFF" opacity="0.95"/>
+      <circle cx="62" cy="30" r="4.5" fill="#00CFFF" opacity="0.95"/>
+      <circle cx="38" cy="30" r="2.5" fill="#0044FF"/>
+      <circle cx="62" cy="30" r="2.5" fill="#0044FF"/>
+      <circle cx="39" cy="28" r="1.2" fill="white"/>
+      <circle cx="63" cy="28" r="1.2" fill="white"/>
+      <!-- COSMIC CROWN — elaborate -->
+      <path d="M28 16 L28 4 L34 10 L38 0 L44 8 L50 -6 L56 8 L62 0 L66 10 L72 4 L72 16Z" fill="#002244" stroke="#00CFFF" stroke-width="1.2"/>
+      <!-- crown gems -->
+      <circle cx="50" cy="2" r="3.5" fill="#00CFFF"/>
+      <circle cx="50" cy="2" r="1.8" fill="white"/>
+      <circle cx="38" cy="6" r="2.5" fill="#AA44FF"/>
+      <circle cx="62" cy="6" r="2.5" fill="#AA44FF"/>
+      <circle cx="29" cy="10" r="2" fill="#0088FF"/>
+      <circle cx="71" cy="10" r="2" fill="#0088FF"/>
+      <!-- floating cosmic particles -->
+      <circle cx="10" cy="40" r="2.5" fill="#00CFFF" opacity="0.8"/>
+      <circle cx="90" cy="40" r="2.5" fill="#00CFFF" opacity="0.8"/>
+      <circle cx="6" cy="58" r="2" fill="#AA44FF" opacity="0.7"/>
+      <circle cx="94" cy="58" r="2" fill="#AA44FF" opacity="0.7"/>
+      <!-- star field -->
+      <circle cx="4" cy="30" r="1" fill="white" opacity="0.9"/>
+      <circle cx="96" cy="32" r="1" fill="white" opacity="0.9"/>
+      <circle cx="8" cy="74" r="1" fill="white" opacity="0.7"/>
+      <circle cx="92" cy="76" r="1" fill="white" opacity="0.7"/>
+      <circle cx="2" cy="88" r="1.5" fill="#00CFFF" opacity="0.6"/>
+      <circle cx="98" cy="86" r="1.5" fill="#00CFFF" opacity="0.6"/>
       ${hat}`
   };
   return skins[skinKey] || skins['skin_npc'];
@@ -2965,6 +3302,7 @@ async function loadHome() {
   if(lb) { renderCommunity(lb); renderLB(lb); }
   loadSpin();
   loadMissions();
+  loadSocialFeed();
 }
 
 function renderHomeCardWidget() {
@@ -3078,6 +3416,7 @@ const SKINS_WITH_ART = new Set([
   'skin_glazing','skin_looksmax','skin_slay','skin_bussin','skin_based','skin_vibe',
   'skin_hawk','skin_ratio','skin_cringe','skin_frigo','skin_lirili','skin_gyat',
   'skin_chocco_bunny','skin_sealo_regalo','skin_orangutini','skin_rhino_toast',
+  'skin_ultra_phoenix','skin_ultra_void','skin_ultra_cosmos',
 ]);
 
 function cardArtSVG(cardId, item, isOwned) {
@@ -3271,7 +3610,7 @@ function renderLB(rows) {
     const isMe = u.id===me?.id;
     const d = document.createElement('div');
     d.className='lb-row'+(isMe?' me-row':'');
-    d.innerHTML=`<div class="lb-rank ${i<3?'r'+(i+1):''}">${i<3?medals[i]:i+1}</div><div style="flex-shrink:0;border-radius:10px;overflow:hidden">${charSVG(u,44,70)}</div><div class="lb-name">${esc(u.username)}</div>${u.streak>0?`<span class="lb-streak">🔥${u.streak}</span>`:''}<div class="lb-pts">${u.points}p</div>`;
+    d.innerHTML=`<div class="lb-rank ${i<3?'r'+(i+1):''}">${i<3?medals[i]:i+1}</div><div style="flex-shrink:0;border-radius:10px;overflow:hidden">${charSVG(u,44,70)}</div><div class="lb-name">${esc(u.username)}</div>${u.streak>0?`<span class="lb-streak" style="display:flex;align-items:center;gap:2px"><svg viewBox="0 0 24 24" width="11" height="11" fill="#FF9F1C"><path d="M12 23c4.97 0 9-3.58 9-8 0-2.7-1.4-5.09-3.5-6.5.28 1.06.5 2.24.5 3.5 0 3.31-2.69 6-6 6S6 15.31 6 12c0-1.26.22-2.44.5-3.5C4.4 9.91 3 12.3 3 15c0 4.42 4.03 8 9 8z"/></svg>${u.streak}</span>`:''}<div class="lb-pts">${u.points}p</div>`;
     d.onclick=()=>openOverlay(u.id);
     el.appendChild(d);
   });
@@ -3315,7 +3654,7 @@ async function loadPop() {
     updateCD();
     countdownInterval = setInterval(updateCD, 1000);
     area.innerHTML=`<div style="text-align:center;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:0">
-      <div style="font-size:64px;margin-bottom:14px;animation:bounce .8s cubic-bezier(.34,1.56,.64,1)">🎉</div>
+      <div style="width:64px;height:64px;margin:0 auto 14px;animation:bounce .8s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="64" height="64" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,215,0,.2)" stroke="var(--gold)" stroke-width="1.5"/><path d="M8 12l3 3 5-5" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div style="font-size:20px;font-weight:900;margin-bottom:6px">Toate baloanele sparte!</div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:22px">Revino maine pentru mai multe puncte</div>
       <div class="countdown-wrap">
@@ -3323,7 +3662,7 @@ async function loadPop() {
         <div class="countdown-time" id="cdTime">00:00:00</div>
       </div>
       <div style="margin-top:20px">
-        <button onclick="goTab('cards')" style="background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:800;padding:13px 24px;cursor:pointer">🃏 Vezi colectia de carti</button>
+        <button onclick="goTab('cards')" style="background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:800;padding:13px 24px;cursor:pointer;display:flex;align-items:center;gap:7px;margin:0 auto"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg> Vezi colectia de carti</button>
       </div>
     </div>`;
     return;
@@ -3358,7 +3697,7 @@ async function doPop(idx, type, el) {
   if(comboCount > 0) {
     const combo = document.createElement('div');
     combo.className = 'combo-fx';
-    combo.textContent = comboCount===1 ? '🔥 COMBO x2!' : '💥 ULTRA x3!';
+    combo.textContent = comboCount===1 ? 'COMBO x2!' : 'ULTRA x3!';
     document.body.appendChild(combo);
     setTimeout(()=>combo.remove(), 900);
   }
@@ -3396,10 +3735,10 @@ async function doPop(idx, type, el) {
   checkAchievements(res);
 
   if(res.streak_bonus > 0) {
-    setTimeout(() => showAchievement('🎁', '🔥 Streak ' + res.streak + ' zile → +' + res.streak_bonus + 'p bonus!'), 600);
+    setTimeout(() => showAchievement('streak', 'Streak ' + res.streak + ' zile - +' + res.streak_bonus + 'p bonus!'), 600);
   }
   if(res.all_done) {
-    showToast('🎉 Toate baloanele sparte! +'+res.bonus+' bonus!');
+    showToast('Toate baloanele sparte! +'+res.bonus+' bonus!');
   } else {
     showToast('+'+res.points_earned+' puncte!');
   }
@@ -3408,27 +3747,38 @@ async function doPop(idx, type, el) {
 }
 
 // ─── ACHIEVEMENTS ───
+const ACH_SVG = {
+  star: `<svg viewBox="0 0 24 24" width="22" height="22" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  fire: `<svg viewBox="0 0 24 24" width="22" height="22" fill="#FF9F1C" stroke="none"><path d="M12 23c4.97 0 9-3.58 9-8 0-2.7-1.4-5.09-3.5-6.5.28 1.06.5 2.24.5 3.5 0 3.31-2.69 6-6 6S6 15.31 6 12c0-1.26.22-2.44.5-3.5C4.4 9.91 3 12.3 3 15c0 4.42 4.03 8 9 8z"/><path d="M12 17c2.21 0 4-1.79 4-4 0-1.2-.52-2.27-1.34-3 .13.47.34 1 .34 1.5 0 1.66-1.34 3-3 3s-3-1.34-3-3c0-.5.21-1.03.34-1.5C8.52 10.73 8 11.8 8 13c0 2.21 1.79 4 4 4z"/></svg>`,
+  trophy: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2 2 0 000 4H6"/><path d="M18 9h1.5a2 2 0 010 4H18"/><path d="M6 9V4h12v5"/><path d="M6 13v7h12v-7"/><path d="M9 17h6"/></svg>`,
+  pop: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  crown: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M5 20L3 8l5 4 4-7 4 7 5-4-2 12z"/></svg>`,
+  streak: `<svg viewBox="0 0 24 24" width="22" height="22" fill="#FF9F1C" stroke="none"><path d="M12 23c4.97 0 9-3.58 9-8 0-2.7-1.4-5.09-3.5-6.5.28 1.06.5 2.24.5 3.5 0 3.31-2.69 6-6 6S6 15.31 6 12c0-1.26.22-2.44.5-3.5C4.4 9.91 3 12.3 3 15c0 4.42 4.03 8 9 8z"/></svg>`,
+  diamond: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 22 8 22 16 12 22 2 16 2 8"/><line x1="2" y1="8" x2="22" y2="8"/><polyline points="7 8 12 3 17 8"/></svg>`,
+  balloon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round"><path d="M12 18c4.4 0 8-3.6 8-8a8 8 0 00-16 0c0 4.4 3.6 8 8 8z"/><path d="M12 18v4"/><path d="M9 22h6"/></svg>`,
+  gift: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`,
+};
 const ACHIEVEMENTS = [
-  {id:'first_pop',   icon:'💥', name:'Primul Pop!',          check:(res,me)=>me.total_pops===1},
-  {id:'triple_pop',  icon:'🎯', name:'Triple Pop!',           check:(res,me)=>res.all_done===true},
-  {id:'streak_3',    icon:'🔥', name:'3 Zile Streak!',        check:(res,me)=>res.streak===3},
-  {id:'streak_7',    icon:'🔥', name:'7 Zile Streak!',        check:(res,me)=>res.streak===7},
-  {id:'streak_14',   icon:'💫', name:'14 Zile Streak!',       check:(res,me)=>res.streak===14},
-  {id:'streak_30',   icon:'⚡', name:'30 Zile Streak!',       check:(res,me)=>res.streak===30},
-  {id:'streak_60',   icon:'🌟', name:'60 Zile Streak!',       check:(res,me)=>res.streak===60},
-  {id:'streak_100',  icon:'👑', name:'100 Zile Streak!!',     check:(res,me)=>res.streak===100},
-  {id:'pts_100',     icon:'💎', name:'100 Puncte!',           check:(res,me)=>me.points>=100&&me.points-(res.points_earned+(res.bonus||0))< 100},
-  {id:'pts_500',     icon:'💎', name:'500 Puncte!',           check:(res,me)=>me.points>=500&&me.points-(res.points_earned+(res.bonus||0))<500},
-  {id:'pts_1000',    icon:'👑', name:'1000 Puncte!',          check:(res,me)=>me.points>=1000&&me.points-(res.points_earned+(res.bonus||0))<1000},
-  {id:'pts_5000',    icon:'🏆', name:'5000 Puncte!',          check:(res,me)=>me.points>=5000&&me.points-(res.points_earned+(res.bonus||0))<5000},
-  {id:'pts_10000',   icon:'💎', name:'10.000 Puncte!',        check:(res,me)=>me.points>=10000&&me.points-(res.points_earned+(res.bonus||0))<10000},
-  {id:'rainbow_pop', icon:'🌈', name:'Pop Curcubeu!',         check:(res,me)=>res.balloon_type==='rainbow'},
-  {id:'gold_pop',    icon:'✨', name:'Pop Auriu!',             check:(res,me)=>res.balloon_type==='gold'},
-  {id:'pops_10',     icon:'🎈', name:'10 Pops Total!',        check:(res,me)=>me.total_pops>=10&&me.total_pops-1<10},
-  {id:'pops_50',     icon:'🎈', name:'50 Pops Total!',        check:(res,me)=>me.total_pops>=50&&me.total_pops-1<50},
-  {id:'pops_100',    icon:'🎆', name:'100 Pops Total!',       check:(res,me)=>me.total_pops>=100&&me.total_pops-1<100},
-  {id:'pops_365',    icon:'🎊', name:'365 Pops Total!',       check:(res,me)=>me.total_pops>=365&&me.total_pops-1<365},
-  {id:'streak_bonus',icon:'🎁', name:'Bonus Streak Primit!',  check:(res,me)=>res.streak_bonus>0},
+  {id:'first_pop',   icon:'pop',     name:'Primul Pop!',          check:(res,me)=>me.total_pops===1},
+  {id:'triple_pop',  icon:'pop',     name:'Triple Pop!',           check:(res,me)=>res.all_done===true},
+  {id:'streak_3',    icon:'fire',    name:'3 Zile Streak!',        check:(res,me)=>res.streak===3},
+  {id:'streak_7',    icon:'fire',    name:'7 Zile Streak!',        check:(res,me)=>res.streak===7},
+  {id:'streak_14',   icon:'streak',  name:'14 Zile Streak!',       check:(res,me)=>res.streak===14},
+  {id:'streak_30',   icon:'streak',  name:'30 Zile Streak!',       check:(res,me)=>res.streak===30},
+  {id:'streak_60',   icon:'star',    name:'60 Zile Streak!',       check:(res,me)=>res.streak===60},
+  {id:'streak_100',  icon:'crown',   name:'100 Zile Streak!!',     check:(res,me)=>res.streak===100},
+  {id:'pts_100',     icon:'diamond', name:'100 Puncte!',           check:(res,me)=>me.points>=100&&me.points-(res.points_earned+(res.bonus||0))< 100},
+  {id:'pts_500',     icon:'diamond', name:'500 Puncte!',           check:(res,me)=>me.points>=500&&me.points-(res.points_earned+(res.bonus||0))<500},
+  {id:'pts_1000',    icon:'crown',   name:'1000 Puncte!',          check:(res,me)=>me.points>=1000&&me.points-(res.points_earned+(res.bonus||0))<1000},
+  {id:'pts_5000',    icon:'trophy',  name:'5000 Puncte!',          check:(res,me)=>me.points>=5000&&me.points-(res.points_earned+(res.bonus||0))<5000},
+  {id:'pts_10000',   icon:'diamond', name:'10.000 Puncte!',        check:(res,me)=>me.points>=10000&&me.points-(res.points_earned+(res.bonus||0))<10000},
+  {id:'rainbow_pop', icon:'star',    name:'Pop Curcubeu!',         check:(res,me)=>res.balloon_type==='rainbow'},
+  {id:'gold_pop',    icon:'star',    name:'Pop Auriu!',             check:(res,me)=>res.balloon_type==='gold'},
+  {id:'pops_10',     icon:'balloon', name:'10 Pops Total!',        check:(res,me)=>me.total_pops>=10&&me.total_pops-1<10},
+  {id:'pops_50',     icon:'balloon', name:'50 Pops Total!',        check:(res,me)=>me.total_pops>=50&&me.total_pops-1<50},
+  {id:'pops_100',    icon:'balloon', name:'100 Pops Total!',       check:(res,me)=>me.total_pops>=100&&me.total_pops-1<100},
+  {id:'pops_365',    icon:'trophy',  name:'365 Pops Total!',       check:(res,me)=>me.total_pops>=365&&me.total_pops-1<365},
+  {id:'streak_bonus',icon:'gift',    name:'Bonus Streak Primit!',  check:(res,me)=>res.streak_bonus>0},
 ];
 
 function checkAchievements(res) {
@@ -3446,7 +3796,8 @@ function checkAchievements(res) {
 let achTimer = null;
 function showAchievement(icon, name) {
   const t = document.getElementById('achToast');
-  document.getElementById('achIcon').textContent = icon;
+  const iconEl = document.getElementById('achIcon');
+  iconEl.innerHTML = ACH_SVG[icon] || ACH_SVG['star'];
   document.getElementById('achName').textContent = name;
   t.classList.add('show');
   clearTimeout(achTimer);
@@ -3698,7 +4049,7 @@ function renderShop() {
     });
   });
 
-  if(!hasContent) sec.innerHTML='<div style="padding:24px;text-align:center;color:var(--text2);font-size:14px">🎉 Ai toate itemele!</div>';
+  if(!hasContent) sec.innerHTML='<div style="padding:24px;text-align:center;color:var(--text2);font-size:14px">Ai toate itemele!</div>';
 }
 
 // ─── BUY MODAL ───
@@ -3727,8 +4078,8 @@ async function confirmBuy() {
     if(item.slot==='frame') me.char_frame=id;
     if(item.slot==='cardstyle') me.char_card_style=id;
     await refreshMe();
-    showAchievement('🛍️','Prima achizitie!');
-    showToast('🃏 Cumparat '+item.name+'!');
+    showAchievement('gift','Prima achizitie!');
+    showToast('Cumparat '+item.name+'!');
     loadProfile();
     renderShop();
     renderHomeCardWidget();
@@ -3814,9 +4165,15 @@ async function doSpin() {
   if (btn.disabled) return;
   btn.textContent = '...';
   btn.disabled = true;
-  const EMOJIS = ['🎰','7️⃣','💎','🌟','🎯','💥','🔥','🌈'];
+  const spinIconEl = document.querySelector('.spin-icon');
+  const SPIN_ICONS = [
+    `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="36" height="36" fill="var(--accent2)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 22 8 22 16 12 22 2 16 2 8"/></svg>`,
+    `<svg viewBox="0 0 24 24" width="36" height="36" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  ];
   let i = 0;
-  const anim = setInterval(()=>{ document.querySelector('.spin-icon').textContent=EMOJIS[i++%EMOJIS.length]; },80);
+  const anim = setInterval(()=>{ if(spinIconEl) spinIconEl.innerHTML=SPIN_ICONS[i++%SPIN_ICONS.length]; },120);
   const r = await apiPost('/api/spin', {});
   clearInterval(anim);
   if (!r || r.error) {
@@ -3825,16 +4182,16 @@ async function doSpin() {
     btn.textContent = '✗';
     return;
   }
-  document.querySelector('.spin-icon').textContent = '🎉';
+  if(spinIconEl) spinIconEl.innerHTML = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>`;
   btn.textContent = '✓ Facut';
   btn.style.background = 'rgba(82,215,38,.2)';
   btn.style.color = '#52D726';
-  document.getElementById('spinSub').innerHTML = `<span class="spin-result">+${r.reward} puncte! 🎉</span>`;
+  document.getElementById('spinSub').innerHTML = `<span class="spin-result">+${r.reward} puncte!</span>`;
   document.getElementById('spinCard').style.cursor = 'default';
   document.getElementById('spinCard').onclick = null;
   me.points = r.total_points;
   document.getElementById('hPtsVal').textContent = me.points + ' puncte';
-  showToast('🎰 +' + r.reward + ' puncte din spin!');
+  showToast('+' + r.reward + ' puncte din spin!');
 }
 
 // ─── MISSIONS ───
@@ -4012,18 +4369,25 @@ let arcadeState = null;
 function showArcadeCardReveal(id, item) {
   const tier = cardTier(item.cost);
   const banner = document.createElement('div');
-  banner.style.cssText = `position:fixed;top:60px;left:12px;right:12px;z-index:9999;background:linear-gradient(135deg,rgba(124,92,252,.25),rgba(252,92,125,.2));border:1px solid ${tier.text||'rgba(124,92,252,.5)'};border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(16px);animation:cardRevealPop .4s cubic-bezier(.34,1.56,.64,1);cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.5)`;
+  banner.style.cssText = `position:fixed;top:70px;right:16px;left:auto;max-width:220px;z-index:9999;background:rgba(18,16,36,.92);border:1px solid ${tier.text||'rgba(124,92,252,.5)'};border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.6);transform:translateX(260px);transition:transform .4s cubic-bezier(.34,1.1,.64,1);cursor:pointer`;
   banner.innerHTML = `
-    <div style="width:60px;height:93px;flex-shrink:0;border-radius:8px;overflow:hidden">${cardArtSVG(id,item,true)}</div>
+    <div style="width:44px;height:68px;flex-shrink:0;border-radius:6px;overflow:hidden">${cardArtSVG(id,item,true)}</div>
     <div style="flex:1;min-width:0">
-      <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:${tier.text||'#FFD700'};text-transform:uppercase;margin-bottom:4px">✦ Carte Castigata!</div>
-      <div style="font-size:16px;font-weight:900;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.emoji} ${item.name}</div>
-      <div style="font-size:11px;font-weight:700;color:${tier.text||'#aaa'};opacity:.8;margin-top:2px">${tier.label}</div>
+      <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;color:${tier.text||'#FFD700'};text-transform:uppercase;margin-bottom:3px">Carte Castigata!</div>
+      <div style="font-size:12px;font-weight:900;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</div>
+      <div style="font-size:10px;font-weight:700;color:${tier.text||'#aaa'};opacity:.8;margin-top:2px">${tier.label}</div>
     </div>
-    <div style="font-size:20px;color:rgba(255,255,255,.4);flex-shrink:0">✕</div>`;
-  banner.onclick = () => banner.remove();
+    <button onclick="this.closest('[data-card-toast]').remove()" style="position:absolute;top:6px;right:6px;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0">x</button>`;
+  banner.dataset.cardToast = '1';
+  banner.onclick = (e) => { if (!e.target.closest('button')) banner.remove(); };
   document.body.appendChild(banner);
-  setTimeout(() => { if(banner.parentNode) banner.remove(); }, 5000);
+  requestAnimationFrame(() => { banner.style.transform = 'translateX(0)'; });
+  setTimeout(() => {
+    if (banner.parentNode) {
+      banner.style.transform = 'translateX(260px)';
+      setTimeout(() => { if (banner.parentNode) banner.remove(); }, 400);
+    }
+  }, 4000);
 }
 
 function loadArcade() {
@@ -4072,11 +4436,32 @@ function arcadeBegin() {
   arcadeRenderLevel();
 }
 
+function arcadeGetStageConfig(lvl) {
+  const stages = [
+    null, // 0-index placeholder
+    { need: 20, maxMiss: 3 },  // Stage 1
+    { need: 35, maxMiss: 5 },  // Stage 2
+    { need: 40, maxMiss: 6 },  // Stage 3
+    { need: 50, maxMiss: 7 },  // Stage 4
+    { need: 60, maxMiss: 8 },  // Stage 5
+    { need: 70, maxMiss: 9 },  // Stage 6
+    { need: 80, maxMiss: 10 }, // Stage 7
+    { need: 90, maxMiss: 11 }, // Stage 8
+    { need: 100, maxMiss: 12 },// Stage 9
+    { need: 120, maxMiss: 14 } // Stage 10
+  ];
+  if (lvl >= 1 && lvl <= 10) return stages[lvl];
+  return { need: 120 + (lvl - 10) * 15, maxMiss: 14 + (lvl - 10) * 2 };
+}
+
 function arcadeRenderLevel() {
   const inner = document.getElementById('arcadeInner');
   if (!inner) return;
   const lvl = arcadeState.level;
-  const total = Math.min(8 + (lvl - 1) * 3, 32);
+  const stageCfg = arcadeGetStageConfig(lvl);
+  const total = stageCfg.need;
+  const maxMisses = stageCfg.maxMiss;
+  arcadeState.maxMisses = maxMisses;
   const fallMs = Math.max(8000 - (lvl - 1) * 250, 2500);
 
   arcadeState.remaining = total;
@@ -4102,8 +4487,8 @@ function arcadeRenderLevel() {
         <div style="font-size:15px;font-weight:900;color:var(--text)" id="arcLeft">${total}</div>
       </div>
       <div style="padding:0 16px 4px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;color:var(--text2);font-weight:700">RATATE ❌</div>
-        <div style="font-size:13px;font-weight:900;color:${arcadeState.misses>=3?'var(--accent2)':'var(--text)'}" id="arcMisses">${arcadeState.misses} / 5</div>
+        <div style="font-size:11px;color:var(--text2);font-weight:700">RATATE</div>
+        <div style="font-size:13px;font-weight:900;color:${arcadeState.misses>=(maxMisses-2)?'var(--accent2)':'var(--text)'}" id="arcMisses">${arcadeState.misses} / ${maxMisses}</div>
       </div>
       <div class="arcade-field" id="arcadeField"></div>
     </div>`;
@@ -4197,12 +4582,13 @@ function arcadeSpawnBalloon(fallMs, lvl) {
     // Count as miss only for pts/card balloons (not empty/skull — skull is intentional to avoid)
     if (btype !== 'empty' && btype !== 'skull' && arcadeState.phase === 'playing') {
       arcadeState.misses = (arcadeState.misses || 0) + 1;
+      const curMax = arcadeState.maxMisses || 5;
       const missEl = document.getElementById('arcMisses');
       if (missEl) {
-        missEl.textContent = arcadeState.misses + ' / 5';
-        if (arcadeState.misses >= 3) missEl.style.color = 'var(--accent2)';
+        missEl.textContent = arcadeState.misses + ' / ' + curMax;
+        if (arcadeState.misses >= curMax - 2) missEl.style.color = 'var(--accent2)';
       }
-      if (arcadeState.misses >= 5) {
+      if (arcadeState.misses >= curMax) {
         arcadeState.phase = 'gameover';
         setTimeout(() => arcadeGameOver(), 400);
         return;
@@ -4425,7 +4811,7 @@ function arcadeGameOver() {
   ov.innerHTML = `
     <div style="font-size:52px">💥</div>
     <div style="font-size:22px;font-weight:900;color:var(--accent2)">Game Over!</div>
-    <div style="font-size:14px;color:var(--text2)">5 baloane ratate</div>
+    <div style="font-size:14px;color:var(--text2)">${arcadeState.maxMisses||5} baloane ratate</div>
     <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Stagiu ${reachedStage}</div>
     <div style="font-size:14px;color:var(--text2)">Scor: ${arcadeState.score} puncte</div>
     <button class="btn btn-primary" style="width:100%;font-size:17px;padding:16px" onclick="arcadeGameOverSave(${reachedStage})">💾 Salveaza si Incearca Din Nou</button>
@@ -4452,8 +4838,103 @@ async function arcadeGameOverSave(stage) {
     await refreshMe();
     loadProfile();
   }
-  arcadeState = { phase: 'playing', level: 1, score: 0, ptsEarned: 0, cardWon: null, misses: 0, stageStreak: 0 };
+  arcadeState = { phase: 'playing', level: 1, score: 0, ptsEarned: 0, cardWon: null, cardsWon: [], misses: 0, stageStreak: 0, bossMap: {}, bossCounter: 0, frozenUntil: 0 };
   arcadeRenderLevel();
+}
+
+// ─── SOCIAL FEED ───
+async function loadSocialFeed() {
+  const wrap = document.getElementById('socialFeedWrap');
+  if (!wrap) return;
+  const data = await api('/api/users/feed');
+  if (!data || !data.length) {
+    wrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-width:80px;color:var(--text2);font-size:12px;padding:8px">Niciun jucator</div>';
+    return;
+  }
+  wrap.innerHTML = data.map(u => {
+    const initials = (u.username || '?').slice(0, 1).toUpperCase();
+    const skinKey = u.skin || 'chibi';
+    let avatarHtml;
+    if (shopData[skinKey]) {
+      avatarHtml = `<div style="width:52px;height:52px">${renderBrainrot(skinKey, 52, 'none', '#3B6FE8', '#0A1A6B', 'blue')}</div>`;
+    } else {
+      const colors = ['#7C5CFC','#FF4D94','#00AAFF','#00CC55','#FF6B00','#00E5FF'];
+      const col = colors[u.id % colors.length];
+      avatarHtml = `<div style="width:52px;height:52px;background:${col};border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff">${initials}</div>`;
+    }
+    const lvl = Math.floor((u.points || 0) / 1000) + 1;
+    const displayName = (u.username || '').slice(0, 10);
+    return `<div class="feed-card" onclick="openUserSheet(${u.id})">
+      <div class="feed-avatar">${avatarHtml}</div>
+      <div class="feed-name">${esc(displayName)}</div>
+      <div class="feed-lvl">Niv ${lvl}</div>
+    </div>`;
+  }).join('');
+}
+
+async function openUserSheet(userId) {
+  const sheet = document.getElementById('userSheet');
+  const content = document.getElementById('userSheetContent');
+  if (!sheet || !content) return;
+  content.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text2)">Se incarca...</div>';
+  sheet.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const data = await api('/api/users/feed');
+  const u = data ? data.find(x => x.id === userId) : null;
+  if (!u) { content.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text2)">Eroare</div>'; return; }
+
+  const skinKey = u.skin || 'chibi';
+  let avatarHtml;
+  if (shopData[skinKey]) {
+    avatarHtml = `<div style="width:80px;height:80px">${renderBrainrot(skinKey, 80, 'none', '#3B6FE8', '#0A1A6B', 'blue')}</div>`;
+  } else {
+    const colors = ['#7C5CFC','#FF4D94','#00AAFF','#00CC55','#FF6B00','#00E5FF'];
+    const col = colors[u.id % colors.length];
+    const initials = (u.username || '?').slice(0, 1).toUpperCase();
+    avatarHtml = `<div style="width:80px;height:80px;background:${col};border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff">${initials}</div>`;
+  }
+
+  const lvl = Math.floor((u.points || 0) / 1000) + 1;
+  const totalCards = Object.keys(shopData).filter(k => shopData[k].slot === 'skin').length;
+  const cardsCount = u.cards_count || 0;
+
+  const topCardsHtml = (u.top_cards || []).slice(0, 3).map(cid => {
+    const citem = shopData[cid];
+    if (!citem) return '';
+    return `<div style="width:60px;height:93px;border-radius:8px;overflow:hidden;border:1px solid var(--border)">${cardArtSVG(cid, citem, true)}</div>`;
+  }).join('');
+
+  content.innerHTML = `
+    <div class="user-sheet-avatar">${avatarHtml}</div>
+    <div class="user-sheet-name">${esc(u.username)}</div>
+    <div class="user-sheet-pts">
+      <svg viewBox="0 0 24 24" width="13" height="13" style="fill:var(--gold);display:inline-block;vertical-align:middle;margin-right:4px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      ${u.points || 0} puncte &middot; Nivel ${lvl}
+    </div>
+    <div class="user-sheet-stats">
+      <div class="user-sheet-stat">
+        <div class="user-sheet-stat-val fire-text">${u.streak || 0}</div>
+        <div class="user-sheet-stat-lbl">Streak</div>
+      </div>
+      <div class="user-sheet-stat">
+        <div class="user-sheet-stat-val" style="background:linear-gradient(135deg,#00E5FF,#FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${u.arcade_stage || 0}</div>
+        <div class="user-sheet-stat-lbl">Stagiu</div>
+      </div>
+      <div class="user-sheet-stat">
+        <div class="user-sheet-stat-val purple-text">${cardsCount}/${totalCards}</div>
+        <div class="user-sheet-stat-lbl">Carti</div>
+      </div>
+    </div>
+    ${topCardsHtml ? `<div class="user-sheet-cards-title">Top carti</div><div class="user-sheet-top-cards">${topCardsHtml}</div>` : ''}
+  `;
+}
+
+function closeUserSheet(e, force) {
+  if (force || (e && e.target === document.getElementById('userSheet'))) {
+    document.getElementById('userSheet').classList.remove('open');
+    document.body.style.overflow = '';
+  }
 }
 
 // ─── FORGOT PASSWORD ───

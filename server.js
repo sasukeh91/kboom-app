@@ -566,6 +566,11 @@ const SHOP = {
 
   // --- OG (5000000+) ---
   'skin_og_original':     { name: 'OG Original Brainrot',     cost: 5000000, slot: 'skin', emoji: '🏆' },
+
+  // --- ULTRA RARE (Arcade drop only, cannot be bought, ~0.1% chance) ---
+  'skin_ultra_phoenix':   { name: 'Phoenixus Infernalis',     cost: 0, slot: 'skin', emoji: '🔥', arcadeOnly: true, rarity: 'ultra' },
+  'skin_ultra_void':      { name: 'Void Walker Supremus',     cost: 0, slot: 'skin', emoji: '🌀', arcadeOnly: true, rarity: 'ultra' },
+  'skin_ultra_cosmos':    { name: 'Cosmicus Absolutus Rex',   cost: 0, slot: 'skin', emoji: '🌌', arcadeOnly: true, rarity: 'ultra' },
 };
 
 app.get('/api/shop', (req, res) => res.json(SHOP));
@@ -673,6 +678,54 @@ app.post('/api/arcade/reward', auth, (req, res) => {
       });
     });
   }
+});
+
+// ─── SOCIAL FEED ────────────────────────────────────────────────────────────
+app.get('/api/users/feed', auth, (req, res) => {
+  db.all(
+    `SELECT id, username, points, streak, best_arcade_stage, char_skin
+     FROM users
+     WHERE id != ?
+     ORDER BY points DESC
+     LIMIT 20`,
+    [req.user.id],
+    (err, users) => {
+      if (err || !users) return res.json([]);
+      const ids = users.map(u => u.id);
+      if (!ids.length) return res.json([]);
+      db.all(
+        `SELECT user_id, item_id FROM owned_items
+         WHERE user_id IN (${ids.map(() => '?').join(',')})
+         AND item_id LIKE 'skin_%'`,
+        ids,
+        (err2, items) => {
+          const byUser = {};
+          (items || []).forEach(i => {
+            if (!byUser[i.user_id]) byUser[i.user_id] = [];
+            byUser[i.user_id].push(i.item_id);
+          });
+          const result = users.map(u => {
+            const owned = byUser[u.id] || [];
+            // top 3 cards: prioritise expensive ones
+            const sorted = owned
+              .filter(id => SHOP[id])
+              .sort((a, b) => (SHOP[b]?.cost || 0) - (SHOP[a]?.cost || 0));
+            return {
+              id: u.id,
+              username: u.username,
+              points: u.points || 0,
+              streak: u.streak || 0,
+              arcade_stage: u.best_arcade_stage || 0,
+              skin: u.char_skin || null,
+              cards_count: owned.length,
+              top_cards: sorted.slice(0, 3)
+            };
+          });
+          res.json(result);
+        }
+      );
+    }
+  );
 });
 
 app.post('/api/arcade/stage', auth, (req, res) => {
