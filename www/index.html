@@ -3,21 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>KBoom</title>
+<title>K-Boom Brainrot</title>
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="apple-mobile-web-app-title" content="K-Boom">
+<meta name="application-name" content="K-Boom Brainrot">
+<meta name="theme-color" content="#0D0612">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#06060F;--bg2:#0E0E20;--card:#13132A;--card2:#1C1C38;--border:#25254A;
-  --accent:#7C5CFC;--accent2:#FC5C7D;--gold:#FFD700;--green:#52D726;
-  --text:#EEEEFF;--text2:#7777AA;--text3:#4444AA;
+  --bg:#070710;--bg2:#0E0E1C;--card:#13132A;--card2:#1B1B36;--border:#28284A;
+  --accent:#7C5CFC;--accent2:#FF4D94;--gold:#FFD700;--green:#52D726;
+  --text:#F0F0FF;--text2:#6868A8;--text3:#363660;
   --nav-h:70px;--safe-b:env(safe-area-inset-bottom,0px);
-  --glow-p:rgba(124,92,252,.35);--glow-r:rgba(252,92,125,.35);
+  --glow-p:rgba(124,92,252,.4);--glow-r:rgba(255,77,148,.4);
+  --bg-g1:rgba(0,20,80,.75);--bg-g2:rgba(0,0,60,.6);--bg-g3:rgba(5,5,30,.5);
+  --auth-g1:rgba(0,15,70,.7);--auth-g2:rgba(10,0,50,.6);
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;overflow:hidden}
+[data-theme="ocean"]{
+  --bg:#010D16;--bg2:#021525;--card:#031E34;--card2:#052A47;--border:#094068;
+  --accent:#00AAFF;--accent2:#00DDFF;--text:#D6F4FF;--text2:#3A8CB5;--text3:#1A567A;
+  --glow-p:rgba(0,170,255,.35);--glow-r:rgba(0,221,255,.35);
+  --bg-g1:rgba(0,30,80,.8);--bg-g2:rgba(0,10,50,.6);--bg-g3:rgba(0,5,30,.5);
+  --auth-g1:rgba(0,20,70,.7);--auth-g2:rgba(0,5,40,.6);
+}
+[data-theme="green"]{
+  --bg:#010E06;--bg2:#02160A;--card:#032010;--card2:#062E17;--border:#094D22;
+  --accent:#00CC55;--accent2:#66FF99;--text:#D6FFE6;--text2:#3AAD6E;--text3:#1A6B40;
+  --glow-p:rgba(0,204,85,.35);--glow-r:rgba(102,255,153,.35);
+  --bg-g1:rgba(0,60,20,.7);--bg-g2:rgba(0,30,5,.6);--bg-g3:rgba(0,15,5,.5);
+  --auth-g1:rgba(0,50,15,.7);--auth-g2:rgba(0,20,5,.6);
+}
+[data-theme="fire"]{
+  --bg:#0A0500;--bg2:#150800;--card:#200A00;--card2:#2D1000;--border:#4A1800;
+  --accent:#FF6B00;--accent2:#FF3D00;--gold:#FFD700;--green:#52D726;
+  --text:#FFF0E6;--text2:#AA5A30;--text3:#662000;
+  --glow-p:rgba(255,107,0,.45);--glow-r:rgba(255,61,0,.4);
+  --bg-g1:rgba(100,20,0,.8);--bg-g2:rgba(60,5,0,.7);--bg-g3:rgba(20,5,0,.5);
+  --auth-g1:rgba(80,15,0,.7);--auth-g2:rgba(40,0,0,.6);
+}
+[data-theme="cyber"]{
+  --bg:#000A0A;--bg2:#001215;--card:#001A1F;--card2:#00222A;--border:#003A45;
+  --accent:#00E5FF;--accent2:#FF00AA;--gold:#FFD700;--green:#52D726;
+  --text:#E0FFFF;--text2:#2A8899;--text3:#005566;
+  --glow-p:rgba(0,229,255,.4);--glow-r:rgba(255,0,170,.4);
+  --bg-g1:rgba(0,50,80,.7);--bg-g2:rgba(0,10,40,.6);--bg-g3:rgba(0,5,20,.5);
+  --auth-g1:rgba(0,40,60,.7);--auth-g2:rgba(0,5,30,.6);
+}
+html,body{height:100%;background:radial-gradient(ellipse at 15% 0%,var(--bg-g1) 0%,transparent 45%),radial-gradient(ellipse at 85% 100%,var(--bg-g2) 0%,transparent 45%),radial-gradient(ellipse at 50% 50%,var(--bg-g3) 0%,transparent 70%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;overflow:hidden}
 
 /* ─── AUTH ─── */
 #auth{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;
-  background:radial-gradient(ellipse at 30% -10%,#1E0060 0%,transparent 60%),radial-gradient(ellipse at 80% 110%,#3D0030 0%,transparent 60%),var(--bg)}
+  background:radial-gradient(ellipse at 30% -10%,var(--auth-g1) 0%,transparent 60%),radial-gradient(ellipse at 80% 110%,var(--auth-g2) 0%,transparent 60%),var(--bg)}
 .logo{text-align:center;margin-bottom:32px}
 .logo-icon{width:90px;height:90px;margin:0 auto 14px;animation:floatIcon 3s ease-in-out infinite;filter:drop-shadow(0 8px 24px var(--glow-p))}
 @keyframes floatIcon{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-14px) rotate(5deg)}}
@@ -207,6 +244,8 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .shop-card:active{transform:scale(.95)}
 .shop-card.owned{border-color:rgba(124,92,252,.4);background:rgba(124,92,252,.06)}
 .shop-card.cant-afford{opacity:.6}
+.shop-card.shop-card-owned{border-color:rgba(82,215,38,.4);background:rgba(82,215,38,.05)}
+.shop-card.shop-card-equipped{border-color:var(--gold)!important;background:rgba(255,215,0,.08);box-shadow:0 0 12px rgba(255,215,0,.25)}
 .shop-emoji{font-size:38px;line-height:1}
 .shop-name{font-size:12px;font-weight:700;text-align:center;color:var(--text)}
 .shop-price{font-size:13px;font-weight:800;color:var(--gold);display:flex;align-items:center;gap:3px}
@@ -240,12 +279,11 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ─── ACHIEVEMENT TOAST ─── */
-.ach-toast{position:fixed;top:calc(52px + var(--safe-b));left:16px;right:16px;background:linear-gradient(135deg,rgba(124,92,252,.2),rgba(252,92,125,.2));border:1px solid rgba(124,92,252,.4);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:9998;transform:translateY(-120px);transition:transform .4s cubic-bezier(.34,1.1,.64,1);backdrop-filter:blur(12px)}
-.ach-toast.show{transform:translateY(0)}
-.ach-icon{font-size:28px;flex-shrink:0}
-.ach-text{}
-.ach-title{font-size:13px;color:var(--text2);font-weight:600}
-.ach-name{font-size:15px;font-weight:800}
+.ach-toast{position:fixed;top:14px;right:12px;left:auto;max-width:220px;background:linear-gradient(135deg,rgba(124,92,252,.25),rgba(252,92,125,.2));border:1px solid rgba(124,92,252,.45);border-radius:14px;padding:8px 12px;display:flex;align-items:center;gap:8px;z-index:9998;transform:translateX(260px);transition:transform .4s cubic-bezier(.34,1.1,.64,1);backdrop-filter:blur(12px);pointer-events:none}
+.ach-toast.show{transform:translateX(0)}
+.ach-icon{font-size:22px;flex-shrink:0}
+.ach-title{font-size:11px;color:var(--text2);font-weight:600}
+.ach-name{font-size:13px;font-weight:800}
 
 /* ─── SPIN WHEEL ─── */
 .spin-card{margin:14px 16px 0;background:linear-gradient(135deg,rgba(124,92,252,.12),rgba(252,92,125,.12));border:1px solid rgba(124,92,252,.3);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .15s}
@@ -337,6 +375,21 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .bcard-price.free{color:var(--green)}
 .bcard-badge{position:absolute;top:4px;right:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:5px;padding:2px 5px;font-size:7px;font-weight:800;color:#fff}
 .bcard-equipped-badge{position:absolute;top:4px;left:4px;background:var(--gold);border-radius:5px;padding:2px 5px;font-size:7px;font-weight:800;color:#000}
+.bcard.mystery{filter:saturate(.15)brightness(.5)}
+/* Card frames */
+.bcard.frame-gold{border-color:#FFD700!important;box-shadow:0 0 14px rgba(255,215,0,.5)!important}
+.bcard.frame-neon{border-color:#A855FF!important;box-shadow:0 0 18px rgba(168,85,255,.6),0 0 30px rgba(168,85,255,.3)!important}
+.bcard.frame-fire{border-color:#FF4500!important;box-shadow:0 0 16px rgba(255,69,0,.6),0 0 28px rgba(255,140,0,.3)!important}
+.bcard.frame-ice{border-color:#88EEFF!important;box-shadow:0 0 16px rgba(136,238,255,.5),0 0 28px rgba(100,200,255,.2)!important}
+.bcard.frame-holo{border-image:linear-gradient(45deg,#FF0080,#FF8C00,#FFD700,#00FF80,#00BFFF,#8000FF,#FF0080) 1!important;box-shadow:0 0 20px rgba(255,0,128,.4),0 0 30px rgba(0,191,255,.3)!important}
+.bcard.frame-shadow{border-color:#333!important;box-shadow:0 0 20px rgba(0,0,0,.9),inset 0 0 15px rgba(0,0,0,.5)!important}
+.bcard.frame-star{border-color:#FFF8DC!important;box-shadow:0 0 14px rgba(255,248,220,.4),0 0 25px rgba(255,215,0,.2)!important}
+.bcard.frame-diamond{border-color:#B9F2FF!important;box-shadow:0 0 20px rgba(185,242,255,.6),0 0 40px rgba(100,200,255,.4)!important}
+@keyframes cardFlip{0%{transform:rotateY(0) scale(1)}40%{transform:rotateY(90deg) scale(.9)}41%{transform:rotateY(-90deg) scale(.9)}100%{transform:rotateY(0) scale(1)}}
+.bcard.flipping{animation:cardFlip .5s ease forwards;pointer-events:none}
+@keyframes cardRevealPop{0%{transform:scale(0) rotate(-15deg);opacity:0}70%{transform:scale(1.08) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes cardRevealBg{0%{opacity:0}100%{opacity:1}}
+@keyframes shimmer{0%,100%{opacity:.6}50%{opacity:1}}
 
 /* ─── HOME CARD WIDGET ─── */
 .home-card-widget{margin:14px 16px 0;background:var(--card);border-radius:22px;padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
@@ -351,6 +404,53 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
 .home-card-stat-val{font-size:16px;font-weight:900;line-height:1;color:var(--accent)}
 .home-card-stat-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
 .home-card-arrow{color:var(--text3);flex-shrink:0;font-size:18px;line-height:1}
+
+/* ─── THEMES ─── */
+.theme-picker{display:flex;gap:8px;padding:12px 16px;margin-bottom:4px}
+.theme-btn{flex:1;padding:10px 6px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:11px;font-weight:700;color:var(--text2);text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.theme-btn.active{border-color:var(--accent);color:var(--text);background:rgba(124,92,252,.12)}
+.theme-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0}
+
+/* ─── ARCADE ─── */
+#arcade-screen{overflow:hidden}
+#arcade-screen .screen-inner{display:flex;flex-direction:column;height:100%}
+.arcade-hdr{display:flex;justify-content:space-between;align-items:center;padding:52px 16px 10px;flex-shrink:0;background:linear-gradient(180deg,rgba(6,6,15,.9) 0%,transparent 100%);position:relative;z-index:2}
+.arcade-score-wrap{text-align:center}
+.arcade-score{font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.arcade-score-lbl{font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.arcade-level-badge{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;padding:8px 14px;text-align:center}
+.arcade-level-badge span{display:block;font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px}
+.arcade-level-badge strong{font-size:18px;font-weight:900;color:#fff}
+.arcade-field{flex:1;position:relative;overflow:hidden;min-height:200px}
+.arcade-balloon{position:absolute;cursor:pointer;user-select:none;-webkit-user-select:none;animation:arcadeFall linear forwards;transform-origin:center bottom}
+@keyframes arcadeFall{0%{top:-130px;opacity:0}5%{opacity:1}90%{opacity:1}100%{top:110%;opacity:0}}
+.arcade-balloon.arc-popped{animation:arcadePop .35s forwards!important;pointer-events:none}
+@keyframes arcadePop{0%{transform:scale(1);opacity:1;filter:brightness(1)}35%{transform:scale(2.5);opacity:.9;filter:brightness(4)}100%{transform:scale(0);opacity:0}}
+.arc-badge{position:absolute;top:-2px;right:-2px;border-radius:8px;font-size:9px;padding:2px 5px;font-weight:800;pointer-events:none;white-space:nowrap}
+.arc-badge-pts{background:linear-gradient(135deg,#FFD700,#FF9F1C);color:#000}
+.arc-badge-card{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;animation:cardPulse .8s ease-in-out infinite alternate}
+@keyframes cardPulse{from{box-shadow:0 0 4px var(--glow-p)}to{box-shadow:0 0 14px var(--accent),0 0 28px var(--glow-p)}}
+.arcade-start-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:18px;padding:32px;text-align:center}
+.arcade-start-screen h2{font-size:28px;font-weight:900}
+.arcade-legend{display:flex;gap:20px;margin-top:4px}
+.arcade-legend-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--text2);font-weight:700}
+.arcade-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,6,15,.88);backdrop-filter:blur(10px);z-index:10;gap:14px;padding:28px;text-align:center}
+/* Boss balloon */
+.arc-boss-ring{position:absolute;inset:-4px;border-radius:50%;border:3px solid #FFD700;animation:bossRing 1s ease-in-out infinite alternate;pointer-events:none}
+@keyframes bossRing{from{box-shadow:0 0 8px #FFD700,0 0 20px rgba(255,215,0,.5)}to{box-shadow:0 0 16px #FF9F1C,0 0 40px rgba(255,159,28,.7)}}
+.arc-boss-hp{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);border-radius:6px;padding:2px 6px;font-size:9px;font-weight:900;color:#FFD700;white-space:nowrap}
+/* Freeze balloon */
+.arc-freeze-ring{position:absolute;inset:-4px;border-radius:50%;border:3px solid #88EEFF;animation:freezeRing 1.2s ease-in-out infinite alternate;pointer-events:none}
+@keyframes freezeRing{from{box-shadow:0 0 8px #88EEFF,0 0 20px rgba(136,238,255,.4)}to{box-shadow:0 0 18px #00BFFF,0 0 40px rgba(0,191,255,.6)}}
+/* Freeze effect on field */
+.arcade-field.frozen .arcade-balloon{animation-play-state:paused!important}
+.freeze-banner{position:fixed;top:55px;left:50%;transform:translateX(-50%);background:rgba(0,180,255,.2);border:1px solid rgba(136,238,255,.6);border-radius:12px;padding:7px 20px;font-size:13px;font-weight:800;color:#88EEFF;pointer-events:none;z-index:9997;animation:fadeOut 3s ease forwards;white-space:nowrap}
+@keyframes fadeOut{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+/* Skull balloon */
+.arc-skull-ring{position:absolute;inset:-4px;border-radius:50%;border:3px solid #FF2222;animation:skullRing .6s ease-in-out infinite alternate;pointer-events:none}
+@keyframes skullRing{from{box-shadow:0 0 8px #FF2222,0 0 16px rgba(255,34,34,.5)}to{box-shadow:0 0 18px #FF0000,0 0 36px rgba(255,0,0,.7)}}
+.arc-skull-badge{position:absolute;top:-4px;right:-4px;border-radius:8px;font-size:11px;font-weight:900;pointer-events:none;z-index:2;filter:drop-shadow(0 0 4px rgba(255,0,0,.8))}
+.pts-minus-fx{position:fixed;pointer-events:none;z-index:9997;font-size:36px;font-weight:900;color:#FF3333;animation:ptsOut 1.1s ease-out forwards;transform:translateX(-50%);filter:drop-shadow(0 2px 8px rgba(255,0,0,.6))}
 </style>
 </head>
 <body>
@@ -386,6 +486,35 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
     <input type="password" id="ap" placeholder="Parola" autocomplete="current-password">
     <button class="btn btn-primary" onclick="doAuth()">Intra</button>
     <div class="err" id="aerr"></div>
+    <div style="text-align:center;margin-top:10px">
+      <span style="font-size:13px;color:var(--text2);cursor:pointer;text-decoration:underline" onclick="openForgotPassword()">Am uitat parola</span>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div id="forgot-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px;width:100%;max-width:380px">
+    <div style="font-size:18px;font-weight:900;margin-bottom:8px">🔑 Resetare parola</div>
+    <div id="forgot-view-1">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Introdu username-ul tau. Daca ai email salvat, vei primi un link de resetare.</p>
+      <input type="text" id="fuser" placeholder="Username" style="width:100%;padding:14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:15px;margin-bottom:12px;outline:none;box-sizing:border-box">
+      <div id="ferr" style="color:var(--accent2);font-size:13px;min-height:18px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeForgotPassword()" style="flex:1;padding:14px;border-radius:14px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:14px;font-weight:700;cursor:pointer">Anuleaza</button>
+        <button onclick="doForgotPassword()" style="flex:1;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:14px;font-weight:700;cursor:pointer">Trimite</button>
+      </div>
+    </div>
+    <div id="forgot-view-2" style="display:none">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Introdu token-ul primit + noua parola:</p>
+      <input type="text" id="freset-token" placeholder="Token de resetare" style="width:100%;padding:14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
+      <input type="password" id="freset-pass" placeholder="Parola noua (min 4 caractere)" style="width:100%;padding:14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:13px;color:var(--text);font-size:15px;margin-bottom:12px;outline:none;box-sizing:border-box">
+      <div id="ferr2" style="color:var(--accent2);font-size:13px;min-height:18px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeForgotPassword()" style="flex:1;padding:14px;border-radius:14px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:14px;font-weight:700;cursor:pointer">Anuleaza</button>
+        <button onclick="doResetPassword()" style="flex:1;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:14px;font-weight:700;cursor:pointer">Schimba</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -427,7 +556,6 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       <div class="home-card-widget" onclick="goTab('cards')" id="homeCardWidget">
         <div class="home-card-img" id="homeCardImg"></div>
         <div class="home-card-details">
-          <div class="home-card-label">Carta ta</div>
           <div class="home-card-name" id="homeCardName">—</div>
           <div class="home-card-stats">
             <div class="home-card-stat">
@@ -465,13 +593,12 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       </div>
       <div class="missions-wrap" id="missionsWrap"></div>
 
-      <div class="section-head">
-        <div class="section-title">Comunitate</div>
+      <div class="section-head" style="padding-bottom:4px">
+        <div class="section-title">🏆 Clasament</div>
       </div>
-      <div class="community-scroll" id="commScroll"></div>
-
-      <div class="section-head">
-        <div class="section-title">Clasament</div>
+      <div style="display:flex;gap:6px;padding:4px 16px 10px">
+        <button id="lbTabGlobal" onclick="switchLbTab('global')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;cursor:pointer">🌍 Global</button>
+        <button id="lbTabWeekly" onclick="switchLbTab('weekly')" style="flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:800;cursor:pointer">📅 Saptamanal</button>
       </div>
       <div class="lb-list" id="lbList"></div>
       <div style="height:16px"></div>
@@ -514,18 +641,38 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
             <div class="pstat-val" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="pstatCards">0</div>
             <div class="pstat-lbl">🃏 Carti</div>
           </div>
+          <div class="pstat">
+            <div class="pstat-val" style="background:linear-gradient(135deg,#00E5FF,#FF6B00);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="pstatStage">0</div>
+            <div class="pstat-lbl">🎮 Stagiu</div>
+          </div>
         </div>
       </div>
 
       <div class="section-head" style="padding-bottom:4px">
-        <div class="section-title">Personalizare</div>
+        <div class="section-title">Tema aplicatie</div>
       </div>
-      <div class="customize-wrap" id="customizeWrap"></div>
-
-      <div class="section-head">
-        <div class="section-title">Magazin</div>
+      <div class="theme-picker" style="flex-wrap:wrap;gap:6px">
+        <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">
+          <div class="theme-dot" style="background:linear-gradient(135deg,#7C5CFC,#4D90FF)"></div>
+          Dark
+        </button>
+        <button class="theme-btn" data-theme="ocean" onclick="setTheme('ocean')">
+          <div class="theme-dot" style="background:linear-gradient(135deg,#00AAFF,#00DDFF)"></div>
+          Ocean
+        </button>
+        <button class="theme-btn" data-theme="green" onclick="setTheme('green')">
+          <div class="theme-dot" style="background:linear-gradient(135deg,#00CC55,#66FF99)"></div>
+          Green
+        </button>
+        <button class="theme-btn" data-theme="fire" onclick="setTheme('fire')">
+          <div class="theme-dot" style="background:linear-gradient(135deg,#FF6B00,#FF3D00)"></div>
+          Fire
+        </button>
+        <button class="theme-btn" data-theme="cyber" onclick="setTheme('cyber')">
+          <div class="theme-dot" style="background:linear-gradient(135deg,#00E5FF,#FF00AA)"></div>
+          Cyber
+        </button>
       </div>
-      <div class="shop-section" id="shopSection"></div>
 
       <!-- INVITE -->
       <div class="section-head" style="padding-top:18px">
@@ -544,6 +691,17 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
         </div>
       </div>
 
+      <div class="section-head" style="padding-top:18px">
+        <div class="section-title">🃏 Cartile Mele</div>
+        <div class="section-link" onclick="goTab('cards')">Toate →</div>
+      </div>
+      <div id="profOwnedCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px 8px"></div>
+
+      <div class="section-head" style="padding-top:18px">
+        <div class="section-title">👥 Jucatori</div>
+      </div>
+      <div id="profPlayers" style="display:flex;flex-direction:column;gap:8px;padding:0 16px 8px"></div>
+
       <div style="display:flex;flex-direction:column;gap:10px;margin:16px 16px 90px">
         <button class="share-btn" onclick="shareProfile()">
           <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -552,6 +710,17 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
         <button onclick="doLogout()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:13px;color:#ccc;font-size:14px;font-weight:700;cursor:pointer;">Ieși din cont</button>
         <button onclick="openDeleteModal()" style="background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.3);border-radius:14px;padding:13px;color:#ef4444;font-size:14px;font-weight:700;cursor:pointer;">Șterge contul</button>
       </div>
+    </div>
+  </div>
+
+  <!-- CARD PICKER MODAL -->
+  <div id="cardPickerModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow-y:auto">
+    <div style="padding:20px 16px 90px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:17px;font-weight:900">🃏 Alege Cartea de Profil</div>
+        <button onclick="closeCardPicker()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:var(--text);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:15px;font-weight:700">✕</button>
+      </div>
+      <div id="cardPickerGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
     </div>
   </div>
 
@@ -582,11 +751,20 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 8h10M7 12h6"/></svg>
       Carti
     </button>
+    <button class="nb" id="nb-arcade" onclick="goTab('arcade')">
+      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      Arcade
+    </button>
     <button class="nb" id="nb-profile" onclick="goTab('profile')">
       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profil
     </button>
   </nav>
+</div>
+
+<!-- ARCADE SCREEN -->
+<div class="screen" id="arcade-screen">
+  <div class="screen-inner" id="arcadeInner"></div>
 </div>
 
 <!-- CARDS SCREEN -->
@@ -607,6 +785,8 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
     <button class="cf-btn" onclick="filterCards('affordable',this)">Pot cumpara</button>
   </div>
   <div class="cards-grid" id="cardsGrid"></div>
+  <div style="padding:6px 16px 4px;font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-top:8px">🛍️ Magazin</div>
+  <div class="shop-section" id="shopSection"></div>
   <div style="height:20px"></div>
 </div>
 
@@ -638,8 +818,14 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.18)
       <div class="ov-stat-val gold-text" id="ovBest">0</div>
       <div class="ov-stat-lbl">🏆 Record</div>
     </div>
+    <div class="ov-stat">
+      <div class="ov-stat-val" style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="ovCards">0</div>
+      <div class="ov-stat-lbl">🃏 Carti</div>
+    </div>
   </div>
-  <div style="padding:14px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">Trimite reactie</div>
+  <div style="padding:14px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">🃏 Colectie</div>
+  <div id="ovCardsGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 16px 12px"></div>
+  <div style="padding:2px 20px 6px;font-size:12px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.6px">Trimite reactie</div>
   <div class="reactions-wrap" id="ovReactions"></div>
   <div id="ovReactionCounts" style="padding:4px 20px 20px;font-size:13px;color:var(--text2)"></div>
 </div>
@@ -735,11 +921,11 @@ function bgDecorations(bgKey, n) {
     <circle cx="90" cy="40" r="1" fill="rgba(255,255,200,.3)"/>`;
   return '';
 }
-const SLOT_NAMES = {hat:'Palarie',eyes:'Ochi',outfit:'Outfit',bg:'Fundal',skin:'Personaj'};
-const SLOT_KEYS  = {hat:'char_hat',eyes:'char_eyes',outfit:'char_outfit',bg:'char_bg',skin:'char_skin'};
+const SLOT_NAMES = {hat:'Palarie',eyes:'Ochi',outfit:'Outfit',bg:'Fundal',skin:'Personaj',frame:'Rama Carte',cardstyle:'Stil Carti'};
+const SLOT_KEYS  = {hat:'char_hat',eyes:'char_eyes',outfit:'char_outfit',bg:'char_bg',skin:'char_skin',frame:'char_frame',cardstyle:'char_card_style'};
 const DEFAULT_VAL= {hat:'none',eyes:'normal',outfit:'default',bg:'blue',skin:'chibi'};
 const DEFAULT_LBL= {hat:'Fara palarie',eyes:'Normal',outfit:'Default',bg:'Albastru',skin:'Chibi (default)'};
-const SHOP_CATEGORIES = {hat:'Palarii',eyes:'Ochi',outfit:'Outfituri',bg:'Fundaluri',skin:'Carti Brainrot'};
+const SHOP_CATEGORIES = {frame:'Rame Carti',hat:'Palarii',eyes:'Ochi',outfit:'Outfituri',bg:'Fundaluri',skin:'Carti Brainrot'};
 
 let token = localStorage.getItem('kb_t'), me = null, shopData = {}, pending = null, svgN = 0;
 let comboCount = 0, comboTimer = null;
@@ -2210,6 +2396,176 @@ function renderBrainrot(skinKey, n, hk, bg1, bg2, bgKey) {
       <path d="M74 38 L75 34 M69 36 L70 32 M64 35 L64 31" stroke="#1a0f0f" stroke-width="2" stroke-linecap="round"/>
       <path d="M36 62 Q44 68 50 64 Q56 68 64 62" stroke="#CC0044" stroke-width="3" fill="none" stroke-linecap="round"/>
       <text x="50" y="116" text-anchor="middle" fill="rgba(255,0,100,.4)" font-size="8" font-weight="bold">GYAT</text>
+      ${hat}`,
+
+    skin_chocco_bunny: `
+      <!-- CHOCCO BUNNY - chocolate rabbit -->
+      <ellipse cx="50" cy="155" rx="22" ry="4" fill="rgba(0,0,0,.3)"/>
+      <ellipse cx="37" cy="152" rx="14" ry="7" fill="#5C3010"/>
+      <ellipse cx="63" cy="152" rx="14" ry="7" fill="#5C3010"/>
+      <rect x="30" y="118" width="15" height="34" rx="7" fill="#7B4215"/>
+      <rect x="55" y="118" width="15" height="34" rx="7" fill="#7B4215"/>
+      <path d="M20 80 Q24 68 50 64 Q76 68 80 80 L80 120 Q50 128 20 120Z" fill="#8B5220"/>
+      <ellipse cx="50" cy="96" rx="22" ry="26" fill="#C4874A"/>
+      <path d="M20 82 Q6 90 5 110 Q9 116 15 113 Q16 96 22 86Z" fill="#8B5220"/>
+      <ellipse cx="5" cy="114" rx="9" ry="8" fill="#C4874A"/>
+      <path d="M80 82 Q94 90 95 110 Q91 116 85 113 Q84 96 78 86Z" fill="#8B5220"/>
+      <ellipse cx="95" cy="114" rx="9" ry="8" fill="#C4874A"/>
+      <rect x="88" y="106" width="15" height="10" rx="2" fill="#2D0E00"/>
+      <path d="M91 106 L91 116 M95 106 L95 116" stroke="#3D1800" stroke-width="1.2"/>
+      <rect x="40" y="62" width="20" height="16" rx="7" fill="#9A5E28"/>
+      <!-- big floppy ears behind head -->
+      <ellipse cx="30" cy="24" rx="11" ry="30" fill="#6B3812"/>
+      <ellipse cx="70" cy="24" rx="11" ry="30" fill="#6B3812"/>
+      <ellipse cx="30" cy="24" rx="6.5" ry="22" fill="#FF9FC8" opacity=".8"/>
+      <ellipse cx="70" cy="24" rx="6.5" ry="22" fill="#FF9FC8" opacity=".8"/>
+      <!-- chocolate drips -->
+      <path d="M26 2 Q24 12 26 22" stroke="#1E0800" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="26" cy="22" r="3" fill="#1E0800"/>
+      <path d="M68 0 Q70 10 68 18" stroke="#1E0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="68" cy="18" r="2.5" fill="#1E0800"/>
+      <circle cx="50" cy="48" r="36" fill="#9A5E28"/>
+      <ellipse cx="50" cy="56" rx="26" ry="22" fill="#C4874A"/>
+      <circle cx="34" cy="44" r="10" fill="white"/>
+      <circle cx="66" cy="44" r="10" fill="white"/>
+      <circle cx="35" cy="45" r="7" fill="#1a0800"/>
+      <circle cx="67" cy="45" r="7" fill="#1a0800"/>
+      <circle cx="35" cy="45" r="4" fill="#5C2D00"/>
+      <circle cx="67" cy="45" r="4" fill="#5C2D00"/>
+      <circle cx="37" cy="42" r="3" fill="white"/>
+      <circle cx="69" cy="42" r="3" fill="white"/>
+      <ellipse cx="50" cy="57" rx="5" ry="4" fill="#FF8FAB"/>
+      <path d="M46 63 Q50 69 54 63" stroke="#8B3A50" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M18 54 L36 57 M18 60 L36 60" stroke="#5C3010" stroke-width="1.2" opacity=".7"/>
+      <path d="M64 57 L82 54 M64 60 L82 60" stroke="#5C3010" stroke-width="1.2" opacity=".7"/>
+      ${hat}`,
+
+    skin_sealo_regalo: `
+      <!-- SEALO REGALO - gift seal -->
+      <ellipse cx="50" cy="155" rx="22" ry="4" fill="rgba(0,0,0,.3)"/>
+      <!-- rear flippers -->
+      <path d="M30 126 Q22 140 18 152 Q26 156 34 148 Q36 138 38 128Z" fill="#1A4A8B"/>
+      <path d="M70 126 Q78 140 82 152 Q74 156 66 148 Q64 138 62 128Z" fill="#1A4A8B"/>
+      <!-- round seal body -->
+      <path d="M16 80 Q20 58 50 52 Q80 58 84 80 L86 128 Q50 140 14 128Z" fill="#1A4A8B"/>
+      <ellipse cx="50" cy="98" rx="28" ry="34" fill="#D8ECFF"/>
+      <!-- gift box on belly -->
+      <rect x="35" y="82" width="30" height="26" rx="4" fill="#CC2222"/>
+      <rect x="35" y="91" width="30" height="4" fill="#FFD700"/>
+      <rect x="48" y="82" width="4" height="26" fill="#FFD700"/>
+      <path d="M50 82 Q42 74 38 76 Q36 80 42 82Z" fill="#FF6666"/>
+      <path d="M50 82 Q58 74 62 76 Q64 80 58 82Z" fill="#FF6666"/>
+      <circle cx="50" cy="82" r="4" fill="#FFD700"/>
+      <!-- front flippers -->
+      <path d="M16 82 Q2 90 1 110 Q5 116 11 113 Q12 96 18 86Z" fill="#1A4A8B"/>
+      <path d="M84 82 Q98 90 99 110 Q95 116 89 113 Q88 96 82 86Z" fill="#1A4A8B"/>
+      <rect x="40" y="50" width="20" height="14" rx="6" fill="#2260AA"/>
+      <!-- seal head -->
+      <circle cx="50" cy="36" r="32" fill="#1A4A8B"/>
+      <ellipse cx="50" cy="40" rx="22" ry="18" fill="#D8ECFF"/>
+      <circle cx="34" cy="30" r="11" fill="white"/>
+      <circle cx="66" cy="30" r="11" fill="white"/>
+      <circle cx="35" cy="31" r="8" fill="#0a0a1e"/>
+      <circle cx="67" cy="31" r="8" fill="#0a0a1e"/>
+      <circle cx="35" cy="31" r="5" fill="#1a2280"/>
+      <circle cx="67" cy="31" r="5" fill="#1a2280"/>
+      <circle cx="37" cy="27" r="3.5" fill="white"/>
+      <circle cx="69" cy="27" r="3.5" fill="white"/>
+      <ellipse cx="50" cy="44" rx="5" ry="3.5" fill="#0a0a1e"/>
+      <path d="M44 49 Q50 55 56 49" stroke="#0a0a1e" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M20 42 L38 45 M20 48 L38 48" stroke="#aaa" stroke-width="1.2" opacity=".8"/>
+      <path d="M62 45 L80 42 M62 48 L80 48" stroke="#aaa" stroke-width="1.2" opacity=".8"/>
+      ${hat}`,
+
+    skin_orangutini: `
+      <!-- ORANGUTINI ANANASSINI - orangutan with pineapple -->
+      <ellipse cx="50" cy="155" rx="24" ry="4" fill="rgba(0,0,0,.3)"/>
+      <ellipse cx="37" cy="151" rx="13" ry="6" fill="#8B3800"/>
+      <ellipse cx="63" cy="151" rx="13" ry="6" fill="#8B3800"/>
+      <rect x="29" y="114" width="16" height="38" rx="7" fill="#CC5500"/>
+      <rect x="55" y="114" width="16" height="38" rx="7" fill="#CC5500"/>
+      <path d="M14 76 Q18 60 50 56 Q82 60 86 76 L88 118 Q50 128 12 118Z" fill="#CC5500"/>
+      <ellipse cx="50" cy="92" rx="26" ry="28" fill="#E87020"/>
+      <!-- very long ape arms -->
+      <path d="M14 78 Q-6 88 -8 116 Q-2 124 6 120 Q8 100 18 84Z" fill="#CC5500"/>
+      <ellipse cx="-6" cy="120" rx="12" ry="9" fill="#D4692A"/>
+      <path d="M86 78 Q106 88 108 116 Q102 124 94 120 Q92 100 82 84Z" fill="#CC5500"/>
+      <ellipse cx="108" cy="120" rx="12" ry="9" fill="#D4692A"/>
+      <!-- pineapple in right hand -->
+      <rect x="98" y="98" width="18" height="28" rx="5" fill="#F5C842"/>
+      <path d="M102 98 Q107 88 112 98 M106 96 Q108 86 110 96" stroke="#4CAF50" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M100 103 L116 109 M100 110 L116 115 M100 117 L116 121" stroke="#E6A000" stroke-width="1.2" opacity=".7"/>
+      <rect x="40" y="54" width="20" height="14" rx="7" fill="#D46010"/>
+      <!-- big orangutan head -->
+      <circle cx="50" cy="40" r="38" fill="#CC5500"/>
+      <!-- muzzle -->
+      <ellipse cx="50" cy="54" rx="22" ry="16" fill="#8B3800"/>
+      <ellipse cx="50" cy="56" rx="18" ry="12" fill="#C46828"/>
+      <!-- ears -->
+      <circle cx="12" cy="40" r="12" fill="#CC5500"/>
+      <circle cx="12" cy="40" r="7" fill="#D46010"/>
+      <circle cx="88" cy="40" r="12" fill="#CC5500"/>
+      <circle cx="88" cy="40" r="7" fill="#D46010"/>
+      <circle cx="35" cy="36" r="8" fill="white"/>
+      <circle cx="65" cy="36" r="8" fill="white"/>
+      <circle cx="36" cy="37" r="6" fill="#1a0800"/>
+      <circle cx="66" cy="37" r="6" fill="#1a0800"/>
+      <circle cx="36" cy="37" r="3.5" fill="#8B3800"/>
+      <circle cx="66" cy="37" r="3.5" fill="#8B3800"/>
+      <circle cx="38" cy="34" r="2.5" fill="white"/>
+      <circle cx="68" cy="34" r="2.5" fill="white"/>
+      <path d="M24 28 Q36 24 46 27" stroke="#5C2000" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M54 27 Q64 24 76 28" stroke="#5C2000" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="50" cy="52" rx="8" ry="5" fill="#5C2000"/>
+      <circle cx="46" cy="52" r="3" fill="#3a1200"/>
+      <circle cx="54" cy="52" r="3" fill="#3a1200"/>
+      <path d="M40 62 Q50 68 60 62" stroke="#5C2000" stroke-width="2" fill="none" stroke-linecap="round"/>
+      ${hat}`,
+
+    skin_rhino_toast: `
+      <!-- RHINO TOASTERINO -->
+      <ellipse cx="50" cy="155" rx="24" ry="5" fill="rgba(0,0,0,.3)"/>
+      <ellipse cx="35" cy="152" rx="16" ry="8" fill="#555"/>
+      <ellipse cx="65" cy="152" rx="16" ry="8" fill="#555"/>
+      <rect x="26" y="116" width="18" height="36" rx="8" fill="#666"/>
+      <rect x="56" y="116" width="18" height="36" rx="8" fill="#666"/>
+      <!-- broad rhino body -->
+      <path d="M14 78 Q18 62 50 58 Q82 62 86 78 L88 120 Q50 130 12 120Z" fill="#808080"/>
+      <path d="M14 90 Q50 96 86 90" stroke="rgba(0,0,0,.2)" stroke-width="3" fill="none"/>
+      <path d="M16 104 Q50 110 84 104" stroke="rgba(0,0,0,.2)" stroke-width="3" fill="none"/>
+      <!-- heavy arms -->
+      <path d="M14 80 Q0 90 -2 112 Q2 118 8 114 Q8 96 16 84Z" fill="#808080"/>
+      <ellipse cx="-1" cy="115" rx="10" ry="8" fill="#707070"/>
+      <path d="M86 80 Q100 90 102 112 Q98 118 92 114 Q92 96 84 84Z" fill="#808080"/>
+      <ellipse cx="103" cy="115" rx="10" ry="8" fill="#707070"/>
+      <!-- toaster held right -->
+      <rect x="92" y="86" width="20" height="26" rx="4" fill="#C8C8C8"/>
+      <rect x="94" y="88" width="16" height="22" rx="3" fill="#AAAAAA"/>
+      <rect x="97" y="84" width="6" height="12" rx="2" fill="#8B6914"/>
+      <rect x="97" y="76" width="6" height="12" rx="2" fill="#D4A830"/>
+      <path d="M99 77 L99 85 M102 76 L102 85" stroke="#FF8C00" stroke-width="1.2"/>
+      <circle cx="105" cy="106" r="3" fill="#FF4444"/>
+      <rect x="40" y="56" width="20" height="14" rx="6" fill="#767676"/>
+      <!-- blocky rhino head -->
+      <path d="M10 44 Q10 18 50 12 Q90 18 90 44 L90 68 Q80 84 50 86 Q20 84 10 68Z" fill="#888"/>
+      <!-- main horn -->
+      <path d="M50 12 Q46 -4 50 -16 Q54 -4 50 12Z" fill="#B8A050"/>
+      <path d="M50 12 Q48 4 50 -2 Q52 4 50 12Z" fill="#9A8030"/>
+      <!-- second horn -->
+      <path d="M50 22 Q47 14 50 8 Q53 14 50 22Z" fill="#C8B060"/>
+      <!-- wrinkles -->
+      <path d="M10 52 Q8 44 12 38" stroke="#666" stroke-width="2.5" fill="none"/>
+      <path d="M90 52 Q92 44 88 38" stroke="#666" stroke-width="2.5" fill="none"/>
+      <!-- brow ridges -->
+      <path d="M22 40 L36 36 L36 42" stroke="#444" stroke-width="2.5" fill="none"/>
+      <path d="M64 42 L64 36 L78 40" stroke="#444" stroke-width="2.5" fill="none"/>
+      <ellipse cx="29" cy="46" rx="9" ry="8" fill="#444"/>
+      <ellipse cx="71" cy="46" rx="9" ry="8" fill="#444"/>
+      <circle cx="30" cy="46" r="5" fill="#222"/>
+      <circle cx="72" cy="46" r="5" fill="#222"/>
+      <circle cx="32" cy="43" r="2.5" fill="white"/>
+      <circle cx="74" cy="43" r="2.5" fill="white"/>
+      <path d="M22 70 Q36 76 50 76 Q64 76 78 70" stroke="#666" stroke-width="2.5" fill="none"/>
       ${hat}`
   };
   return skins[skinKey] || skins['skin_npc'];
@@ -2397,36 +2753,64 @@ function getCtx() {
 }
 function playPop(type) {
   try {
+    if(['gold','rainbow','purple'].includes(type)) { playPopSpecial(type); return; }
     const ctx = getCtx(); const t = ctx.currentTime;
-    const baseFreq = {red:220,green:262,blue:294,orange:330,purple:349,pink:392,gold:523,rainbow:587}[type]||300;
-    const master = ctx.createGain(); master.gain.value = .75; master.connect(ctx.destination);
-    // Noise burst - longer tail
-    const bsz = Math.floor(ctx.sampleRate*.12);
-    const buf = ctx.createBuffer(1,bsz,ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for(let i=0;i<bsz;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/bsz, 1.5);
-    const noise=ctx.createBufferSource(); noise.buffer=buf;
-    const nf=ctx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=1200; nf.Q.value=.4;
-    const ng=ctx.createGain(); ng.gain.setValueAtTime(.8,t); ng.gain.exponentialRampToValueAtTime(.001,t+.12);
-    noise.connect(nf); nf.connect(ng); ng.connect(master); noise.start(t);
-    // Main tone - longer, swooping down
+    // Satisfying bubble pop — descending pitch sweep + sparkle overtone
+    const baseFreq = {red:440,green:523,blue:587,orange:659,pink:784}[type]||523;
+    const master = ctx.createGain(); master.gain.value = .30; master.connect(ctx.destination);
+    // Main bubble: sine wave sweeping from high to low (bloop!)
     const o1=ctx.createOscillator(); o1.type='sine';
-    o1.frequency.setValueAtTime(baseFreq*1.1,t);
-    o1.frequency.exponentialRampToValueAtTime(baseFreq*2.2,t+.06);
-    o1.frequency.exponentialRampToValueAtTime(baseFreq*.35,t+.9);
-    const g1=ctx.createGain(); g1.gain.setValueAtTime(0,t); g1.gain.linearRampToValueAtTime(.55,t+.02); g1.gain.exponentialRampToValueAtTime(.001,t+.95);
-    o1.connect(g1); g1.connect(master); o1.start(t); o1.stop(t+1.0);
-    // Bright overtone
+    o1.frequency.setValueAtTime(baseFreq*2.4,t);
+    o1.frequency.exponentialRampToValueAtTime(baseFreq*0.45,t+.14);
+    const g1=ctx.createGain(); g1.gain.setValueAtTime(0.9,t); g1.gain.exponentialRampToValueAtTime(.001,t+.28);
+    o1.connect(g1); g1.connect(master); o1.start(t); o1.stop(t+.32);
+    // Warm harmonic for fullness
     const o2=ctx.createOscillator(); o2.type='triangle';
-    o2.frequency.setValueAtTime(baseFreq*3.5,t+.04);
-    o2.frequency.exponentialRampToValueAtTime(baseFreq*1.8,t+.7);
-    const g2=ctx.createGain(); g2.gain.setValueAtTime(.18,t+.04); g2.gain.exponentialRampToValueAtTime(.001,t+.75);
-    o2.connect(g2); g2.connect(master); o2.start(t+.04); o2.stop(t+.8);
-    // Low thud
+    o2.frequency.setValueAtTime(baseFreq*1.2,t+.01);
+    o2.frequency.exponentialRampToValueAtTime(baseFreq*0.7,t+.1);
+    const g2=ctx.createGain(); g2.gain.setValueAtTime(0.4,t+.01); g2.gain.exponentialRampToValueAtTime(.001,t+.22);
+    o2.connect(g2); g2.connect(master); o2.start(t+.01); o2.stop(t+.26);
+    // Tiny sparkle ping at end
     const o3=ctx.createOscillator(); o3.type='sine';
-    o3.frequency.setValueAtTime(80,t); o3.frequency.exponentialRampToValueAtTime(30,t+.3);
-    const g3=ctx.createGain(); g3.gain.setValueAtTime(.5,t); g3.gain.exponentialRampToValueAtTime(.001,t+.35);
-    o3.connect(g3); g3.connect(master); o3.start(t); o3.stop(t+.4);
+    o3.frequency.setValueAtTime(baseFreq*4.2,t+.06);
+    const g3=ctx.createGain(); g3.gain.setValueAtTime(0.18,t+.06); g3.gain.exponentialRampToValueAtTime(.001,t+.38);
+    o3.connect(g3); g3.connect(master); o3.start(t+.06); o3.stop(t+.42);
+  } catch(e) {}
+}
+
+function playPopSpecial(type) {
+  try {
+    const ctx = getCtx(); const t = ctx.currentTime;
+    const master = ctx.createGain(); master.gain.value = .38; master.connect(ctx.destination);
+    // Ascending arpeggio cascade — magical chime sound
+    const scales = {
+      gold:    [523, 659, 784, 1047, 1319],   // C5 E5 G5 C6 E6 — bright golden major
+      rainbow: [466, 587, 740, 932, 1175],    // Bb4 D5 F#5 Bb5 D6 — sparkly tritone
+      purple:  [415, 523, 622, 830, 1047],    // Ab4 C5 Eb5 Ab5 C6 — mysterious minor
+    };
+    const freqs = scales[type] || scales.gold;
+    freqs.forEach((freq, i) => {
+      const d = i * 0.085;
+      const vol = 0.75 - i * 0.1;
+      // main note
+      const o=ctx.createOscillator(); o.type='triangle';
+      o.frequency.setValueAtTime(freq, t+d);
+      const g=ctx.createGain();
+      g.gain.setValueAtTime(0, t+d); g.gain.linearRampToValueAtTime(vol, t+d+.005); g.gain.exponentialRampToValueAtTime(.001, t+d+.7);
+      o.connect(g); g.connect(master); o.start(t+d); o.stop(t+d+.75);
+      // sparkle (2 octaves up, very soft)
+      const os=ctx.createOscillator(); os.type='sine';
+      os.frequency.setValueAtTime(freq*2, t+d+.01);
+      const gs=ctx.createGain();
+      gs.gain.setValueAtTime(0, t+d+.01); gs.gain.linearRampToValueAtTime(.08, t+d+.02); gs.gain.exponentialRampToValueAtTime(.001, t+d+.35);
+      os.connect(gs); gs.connect(master); os.start(t+d+.01); os.stop(t+d+.4);
+    });
+    // Final shimmer note at top
+    const shimmer=ctx.createOscillator(); shimmer.type='sine';
+    const sf = {gold:2093, rainbow:2217, purple:1661}[type]||2093;
+    shimmer.frequency.setValueAtTime(sf, t+.42);
+    const sg=ctx.createGain(); sg.gain.setValueAtTime(0,t+.42); sg.gain.linearRampToValueAtTime(.14,t+.43); sg.gain.exponentialRampToValueAtTime(.001,t+.9);
+    shimmer.connect(sg); sg.connect(master); shimmer.start(t+.42); shimmer.stop(t+.95);
   } catch(e) {}
 }
 
@@ -2552,6 +2936,7 @@ function goTab(tab) {
   if(tab==='pop') loadPop();
   if(tab==='profile') loadProfile();
   if(tab==='cards') loadCards();
+  if(tab==='arcade') loadArcade();
 }
 
 // ─── HOME ───
@@ -2594,7 +2979,10 @@ function renderHomeCardWidget() {
   const countEl = document.getElementById('homeCardCount');
   const ptsEl = document.getElementById('homeCardPts');
 
-  if(imgEl) imgEl.innerHTML = charSVG(me, 64, 101);
+  if(imgEl) {
+    const skin = shopData[skinKey];
+    imgEl.innerHTML = skin ? cardArtSVG(skinKey, skin, true) : charSVG(me, 64, 101);
+  }
   if(nameEl) nameEl.textContent = cardName;
   if(countEl) countEl.textContent = owned.length;
   if(ptsEl) ptsEl.textContent = me.points||0;
@@ -2615,6 +3003,7 @@ function loadCards() {
   if(ptsEl) ptsEl.textContent = (me.points||0) + ' puncte';
 
   renderCardsGrid(cardsFilter);
+  renderShop();
 }
 
 function filterCards(type, btn) {
@@ -2622,6 +3011,159 @@ function filterCards(type, btn) {
   document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderCardsGrid(type);
+}
+
+const CARD_IMAGES = {
+  skin_tralalero:      '/cards/tralalero.png',
+  skin_bombardiro:     '/cards/bombardiro.png',
+  skin_bombardiro_croc:'/cards/bombardiro.png',
+  skin_ballerina:      '/cards/ballerina.png',
+  skin_tung:           '/cards/tung.png',
+  skin_ta_sahur:       '/cards/tung.png',
+  skin_ti_sahur:       '/cards/tung.png',
+  skin_frigo:          '/cards/frigo.png',
+  skin_frigo_camelo:   '/cards/frigo.png',
+  skin_lirili:         '/cards/lirili.png',
+  skin_lirili_la:      '/cards/lirili.png',
+  skin_chimpazini:     '/cards/chimpazini.png',
+  skin_cappuccino_ass: '/cards/cappuccino.png',
+  skin_bombombini_gus: '/cards/bombombini.png',
+  skin_brr_patapim:    '/cards/brr.png',
+  skin_boneca_amb:     '/cards/boneca.png',
+  skin_trippi_troppi:  '/cards/trippi.png',
+  skin_merluzzini:     '/cards/merluzzini.png',
+  skin_frulli:         '/cards/frulli.png',
+  skin_giraffa:        '/cards/giraffa.png',
+  skin_cavallo:        '/cards/cavallo.png',
+};
+
+function cardTier(cost) {
+  if(cost >= 5000000) return {label:'OG',      c1:'#C0E8FF',c2:'#88CCFF',c3:'#4499FF',text:'#002244'};
+  if(cost >= 999999)  return {label:'SECRET',   c1:'#0A0010',c2:'#180025',c3:'#28003A',text:'rgba(220,120,255,.95)'};
+  if(cost >= 100000)  return {label:'BRAINROT GOD', c1:'#1A0040',c2:'#5C0080',c3:'#FF0060',text:'#FFD700'};
+  if(cost >= 25000)   return {label:'MYTHIC',   c1:'#1A0500',c2:'#5C1800',c3:'#FF4500',text:'#FF9F1C'};
+  if(cost >= 6000)    return {label:'LEGENDARY',c1:'#1A1000',c2:'#3D2500',c3:'#6B4200',text:'#FFD700'};
+  if(cost >= 2500)    return {label:'EPIC',     c1:'#0D0020',c2:'#250050',c3:'#3A0070',text:'#C890FF'};
+  if(cost >= 800)     return {label:'RARE',     c1:'#001030',c2:'#002070',c3:'#0030A0',text:'#70B0FF'};
+  return                     {label:'COMMON',   c1:'#141414',c2:'#252525',c3:'#333',    text:'#AAAAAA'};
+}
+
+function getCardStyleFilter(uid) {
+  const cs = (typeof me !== 'undefined' && me) ? (me.char_card_style||'none') : 'none';
+  if(cs==='none') return {def:'', wrap_open:'', wrap_close:''};
+  const fid = 'csf_'+uid;
+  const filters = {
+    style_gold:  `<filter id="${fid}"><feColorMatrix type="matrix" values="1.3 0.2 0 0 0  0.8 1.1 0 0 0  0 0 0.3 0 0  0 0 0 1 0"/></filter>`,
+    style_neon:  `<filter id="${fid}"><feColorMatrix type="saturate" values="3"/><feComponentTransfer><feFuncR type="linear" slope="0.8"/><feFuncB type="linear" slope="1.5"/></feComponentTransfer></filter>`,
+    style_dark:  `<filter id="${fid}"><feColorMatrix type="matrix" values="0.3 0.1 0.1 0 0  0.1 0.3 0.1 0 0  0.1 0.1 0.4 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncA type="linear" slope="1"/></feComponentTransfer></filter>`,
+    style_fire:  `<filter id="${fid}"><feColorMatrix type="matrix" values="1.5 0.3 0 0 0  0.4 0.8 0 0 0  0 0 0.2 0 0  0 0 0 1 0"/></filter>`,
+    style_holo:  `<filter id="${fid}"><feColorMatrix type="saturate" values="2.5"/></filter>`,
+  };
+  const f = filters[cs]||'';
+  if(!f) return {def:'', wrap_open:'', wrap_close:''};
+  return {def:f, wrap_open:`<g filter="url(#${fid})">`, wrap_close:`</g>`};
+}
+
+// Cards that have inline SVG character artwork in renderBrainrot
+const CARD_SKIN_MAP = {
+  skin_frigo_camelo:'skin_frigo', skin_bombardiro_croc:'skin_bombardiro',
+  skin_ta_sahur:'skin_tung', skin_ti_sahur:'skin_tung', skin_lirili_la:'skin_lirili',
+};
+const SKINS_WITH_ART = new Set([
+  'skin_gigachad','skin_npc','skin_capy','skin_tralalero','skin_bombardiro',
+  'skin_mewing','skin_rizz','skin_pepe','skin_doge','skin_skibidi','skin_tung',
+  'skin_bonk','skin_sigma','skin_sus','skin_karen','skin_chad','skin_crycat',
+  'skin_ballerina','skin_rizzler','skin_ohio','skin_copium','skin_bozo','skin_delulu',
+  'skin_drip','skin_goat','skin_pookie','skin_cooked','skin_fanum','skin_yapping',
+  'skin_glazing','skin_looksmax','skin_slay','skin_bussin','skin_based','skin_vibe',
+  'skin_hawk','skin_ratio','skin_cringe','skin_frigo','skin_lirili','skin_gyat',
+  'skin_chocco_bunny','skin_sealo_regalo','skin_orangutini','skin_rhino_toast',
+]);
+
+function cardArtSVG(cardId, item, isOwned) {
+  const uid = cardId.replace(/[^a-z0-9]/gi,'_');
+  if(!isOwned) {
+    return `<svg viewBox="0 0 100 155" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="mg${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#120020"/><stop offset="100%" stop-color="#060008"/></linearGradient>
+        <radialGradient id="mgr${uid}" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="rgba(168,85,255,.08)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      </defs>
+      <rect width="100" height="155" rx="10" fill="url(#mg${uid})"/>
+      <rect width="100" height="155" rx="10" fill="url(#mgr${uid})"/>
+      ${[...Array(20)].map((_,i)=>`<circle cx="${10+i%5*20}" cy="${20+Math.floor(i/5)*22}" r="1" fill="rgba(168,85,255,.12)"/>`).join('')}
+      <rect x="3" y="3" width="94" height="149" rx="8" fill="none" stroke="rgba(168,85,255,.2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="50" y="12" text-anchor="middle" font-family="Arial Black" font-size="5" fill="rgba(168,85,255,.35)" font-weight="900" letter-spacing="1.5">K-BOOM BRAINROT</text>
+      <circle cx="50" cy="72" r="28" fill="rgba(168,85,255,.07)" stroke="rgba(168,85,255,.18)" stroke-width="1"/>
+      <text x="50" y="85" text-anchor="middle" font-size="38" font-family="serif">❓</text>
+      <rect x="18" y="110" width="64" height="19" rx="8" fill="rgba(168,85,255,.1)" stroke="rgba(168,85,255,.2)" stroke-width="1"/>
+      <text x="50" y="123" text-anchor="middle" font-family="Arial Black" font-size="9.5" fill="rgba(168,85,255,.6)" font-weight="900">???</text>
+      <text x="50" y="143" text-anchor="middle" font-family="Arial" font-size="5.5" fill="rgba(168,85,255,.25)" letter-spacing="2">M I S T E R</text>
+    </svg>`;
+  }
+  const t = cardTier(item.cost);
+  const name = item.name.length > 13 ? item.name.substring(0,13)+'…' : item.name;
+  const sf = getCardStyleFilter(uid);
+
+  // Use inline SVG character art if available
+  const skinKey = CARD_SKIN_MAP[cardId] || cardId;
+  if(SKINS_WITH_ART.has(skinKey)) {
+    const skinContent = renderBrainrot(skinKey, svgN++, 'none', t.c1, t.c3, 'blue');
+    return `<svg viewBox="0 0 100 155" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cg${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${t.c1}"/><stop offset="100%" stop-color="${t.c3}"/></linearGradient>
+        <radialGradient id="sh${uid}" cx="30%" cy="10%" r="65%"><stop offset="0%" stop-color="rgba(255,255,255,.22)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+        ${sf.def}
+      </defs>
+      ${sf.wrap_open}
+      <rect width="100" height="155" rx="10" fill="url(#cg${uid})"/>
+      <rect width="100" height="155" rx="10" fill="url(#sh${uid})"/>
+      <rect x="3" y="3" width="94" height="149" rx="8" fill="none" stroke="${t.text}" stroke-opacity=".28" stroke-width="1.5"/>
+      <text x="50" y="11" text-anchor="middle" font-family="Arial Black" font-size="4.5" fill="${t.text}" opacity=".5" font-weight="900" letter-spacing="1.5">K-BOOM BRAINROT</text>
+      <svg x="3" y="11" width="94" height="95" viewBox="0 0 100 165" preserveAspectRatio="xMidYMid meet">${skinContent}</svg>
+      <rect x="5" y="107" width="90" height="1" fill="${t.text}" opacity=".15"/>
+      <text x="50" y="120" text-anchor="middle" font-family="Arial Black" font-size="7" fill="${t.text}" font-weight="900" opacity=".92">${name}</text>
+      <rect x="18" y="125" width="64" height="15" rx="6.5" fill="${t.text}" opacity=".15"/>
+      <text x="50" y="136" text-anchor="middle" font-family="Arial" font-size="7" fill="${t.text}" font-weight="800" opacity=".9">${t.label}</text>
+      <text x="50" y="151" text-anchor="middle" font-family="Arial" font-size="5" fill="${t.text}" opacity=".3">✦ ${item.cost} pts ✦</text>
+      ${sf.wrap_close}
+    </svg>`;
+  }
+
+  const emoji = item.emoji || '❓';
+  // tier-specific decorative elements
+  const deco = item.cost >= 5000000  ? `<circle cx="50" cy="55" r="40" fill="none" stroke="${t.text}" stroke-opacity=".08" stroke-width="12"/><circle cx="50" cy="55" r="32" fill="none" stroke="${t.text}" stroke-opacity=".06" stroke-width="6"/>` // OG rings
+    : item.cost >= 999999  ? `${[...Array(8)].map((_,i)=>`<circle cx="${15+i*10}" cy="${8+i%3*4}" r="1.5" fill="${t.text}" opacity=".3"/>`).join('')}` // secret dots
+    : item.cost >= 100000  ? `<path d="M50 20 L55 35 L70 35 L58 44 L63 59 L50 50 L37 59 L42 44 L30 35 L45 35Z" fill="${t.text}" opacity=".12"/><path d="M50 24 L54 34 L65 34 L56 41 L60 53 L50 46 L40 53 L44 41 L35 34 L46 34Z" fill="${t.text}" opacity=".08"/>` // star
+    : item.cost >= 25000   ? `<path d="M10 100 Q25 85 15 70 Q30 60 20 45" stroke="${t.text}" stroke-opacity=".15" stroke-width="2" fill="none"/><path d="M90 100 Q75 85 85 70 Q70 60 80 45" stroke="${t.text}" stroke-opacity=".15" stroke-width="2" fill="none"/>` // mythic lines
+    : item.cost >= 6000    ? `<polygon points="50,18 54,28 65,28 56,35 60,46 50,39 40,46 44,35 35,28 46,28" fill="${t.text}" opacity=".1"/>` // legendary star
+    : item.cost >= 2500    ? `<circle cx="50" cy="40" r="22" fill="${t.text}" opacity=".06" stroke="${t.text}" stroke-opacity=".1" stroke-width="1"/>` // epic circle
+    : item.cost >= 800     ? `<rect x="10" y="22" width="80" height="3" rx="1.5" fill="${t.text}" opacity=".08"/><rect x="10" y="115" width="80" height="3" rx="1.5" fill="${t.text}" opacity=".08"/>` // rare lines
+    : ``;
+  return `<svg viewBox="0 0 100 155" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cg${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${t.c1}"/><stop offset="50%" stop-color="${t.c2}"/><stop offset="100%" stop-color="${t.c3}"/></linearGradient>
+      <radialGradient id="sh${uid}" cx="25%" cy="15%" r="70%"><stop offset="0%" stop-color="rgba(255,255,255,.18)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      <radialGradient id="glow${uid}" cx="50%" cy="55%" r="45%"><stop offset="0%" stop-color="${t.text}" stop-opacity=".08"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+      ${sf.def}
+    </defs>
+    ${sf.wrap_open}
+    <rect width="100" height="155" rx="10" fill="url(#cg${uid})"/>
+    <rect width="100" height="155" rx="10" fill="url(#sh${uid})"/>
+    <rect width="100" height="155" rx="10" fill="url(#glow${uid})"/>
+    ${deco}
+    <rect x="3" y="3" width="94" height="149" rx="8" fill="none" stroke="${t.text}" stroke-opacity=".25" stroke-width="1.5"/>
+    <text x="50" y="12" text-anchor="middle" font-family="Arial Black" font-size="5" fill="${t.text}" opacity=".5" font-weight="900" letter-spacing="1.5">K-BOOM BRAINROT</text>
+    <!-- emoji caricature in circle -->
+    <circle cx="50" cy="60" r="33" fill="${t.text}" fill-opacity=".07" stroke="${t.text}" stroke-opacity=".15" stroke-width="1"/>
+    <text x="50" y="76" text-anchor="middle" font-size="44" font-family="serif">${emoji}</text>
+    <!-- name bar -->
+    <rect x="6" y="100" width="88" height="1" fill="${t.text}" opacity=".12"/>
+    <text x="50" y="113" text-anchor="middle" font-family="Arial Black" font-size="7" fill="${t.text}" font-weight="900" opacity=".92">${name}</text>
+    <rect x="20" y="119" width="60" height="15" rx="6.5" fill="${t.text}" opacity=".14"/>
+    <text x="50" y="130" text-anchor="middle" font-family="Arial" font-size="7" fill="${t.text}" font-weight="800" opacity=".9">${t.label}</text>
+    <text x="50" y="148" text-anchor="middle" font-family="Arial" font-size="5" fill="${t.text}" opacity=".3">✦ ${item.cost} pts ✦</text>
+    ${sf.wrap_close}
+  </svg>`;
 }
 
 function renderCardsGrid(filter) {
@@ -2649,25 +3191,21 @@ function renderCardsGrid(filter) {
     const isEquipped = equippedSkin === id;
     const canAfford = (me.points||0) >= item.cost;
 
-    const fakeUser = { ...me, char_skin: id, char_bg: me.char_bg||'blue', char_hat: 'none', char_eyes: 'normal', char_outfit: 'default' };
-    const cardImg = charSVG(fakeUser, 100, 158);
+    const cardImg = cardArtSVG(id, item, isOwned || isEquipped);
+    const activeFrame = me.char_frame||'none';
+    const frameClass = (isOwned||isEquipped) && activeFrame !== 'none' ? ` frame-${activeFrame.replace('frame_','')}` : '';
 
     const card = document.createElement('div');
-    card.className = 'bcard' + (isOwned?' owned':'') + (isEquipped?' equipped-card':'') + (!isOwned&&!canAfford?' locked':'');
+    card.dataset.id = id;
+    card.className = 'bcard' + (isOwned||isEquipped?' owned':'') + (isEquipped?' equipped-card':'') + (!isOwned&&!isEquipped?' mystery':'') + (!isOwned&&!isEquipped&&!canAfford?' locked':'') + frameClass;
 
     let badge = '';
     if(isEquipped) badge += `<div class="bcard-equipped-badge">✓ Activa</div>`;
-    else if(isOwned) badge += `<div class="bcard-badge">Detinuta</div>`;
 
     card.innerHTML = `
       ${badge}
       <div class="bcard-img">${cardImg}</div>
-      <div class="bcard-info">
-        <div class="bcard-name">${item.name}</div>
-        <div class="bcard-price${isOwned?' free':''}">
-          ${isOwned ? '✓ Detinuta' : `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${item.cost}`}
-        </div>
-      </div>`;
+      ${!isOwned && !isEquipped ? `<div class="bcard-info"><div class="bcard-price"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${item.cost}</div></div>` : ''}`;
 
     card.onclick = () => {
       if(isEquipped) { showToast('Deja activa!'); return; }
@@ -2857,6 +3395,9 @@ async function doPop(idx, type, el) {
   // Achievement checks
   checkAchievements(res);
 
+  if(res.streak_bonus > 0) {
+    setTimeout(() => showAchievement('🎁', '🔥 Streak ' + res.streak + ' zile → +' + res.streak_bonus + 'p bonus!'), 600);
+  }
   if(res.all_done) {
     showToast('🎉 Toate baloanele sparte! +'+res.bonus+' bonus!');
   } else {
@@ -2868,14 +3409,26 @@ async function doPop(idx, type, el) {
 
 // ─── ACHIEVEMENTS ───
 const ACHIEVEMENTS = [
-  {id:'first_pop',  icon:'💥', name:'Primul Pop!',        check:(res,me)=>me.total_pops===1},
-  {id:'triple_pop', icon:'🎯', name:'Triple Pop!',         check:(res,me)=>res.all_done===true},
-  {id:'streak_7',   icon:'🔥', name:'7 Zile Streak!',      check:(res,me)=>res.streak===7},
-  {id:'streak_30',  icon:'⚡', name:'30 Zile Streak!',     check:(res,me)=>res.streak===30},
-  {id:'pts_100',    icon:'💎', name:'100 Puncte!',         check:(res,me)=>me.points>=100&&me.points-res.points_earned<100},
-  {id:'pts_1000',   icon:'👑', name:'1000 Puncte!',        check:(res,me)=>me.points>=1000&&me.points-res.points_earned<1000},
-  {id:'rainbow_pop',icon:'🌈', name:'Pop Curcubeu!',       check:(res,me)=>res.balloon_type==='rainbow'},
-  {id:'gold_pop',   icon:'✨', name:'Pop Auriu!',           check:(res,me)=>res.balloon_type==='gold'},
+  {id:'first_pop',   icon:'💥', name:'Primul Pop!',          check:(res,me)=>me.total_pops===1},
+  {id:'triple_pop',  icon:'🎯', name:'Triple Pop!',           check:(res,me)=>res.all_done===true},
+  {id:'streak_3',    icon:'🔥', name:'3 Zile Streak!',        check:(res,me)=>res.streak===3},
+  {id:'streak_7',    icon:'🔥', name:'7 Zile Streak!',        check:(res,me)=>res.streak===7},
+  {id:'streak_14',   icon:'💫', name:'14 Zile Streak!',       check:(res,me)=>res.streak===14},
+  {id:'streak_30',   icon:'⚡', name:'30 Zile Streak!',       check:(res,me)=>res.streak===30},
+  {id:'streak_60',   icon:'🌟', name:'60 Zile Streak!',       check:(res,me)=>res.streak===60},
+  {id:'streak_100',  icon:'👑', name:'100 Zile Streak!!',     check:(res,me)=>res.streak===100},
+  {id:'pts_100',     icon:'💎', name:'100 Puncte!',           check:(res,me)=>me.points>=100&&me.points-(res.points_earned+(res.bonus||0))< 100},
+  {id:'pts_500',     icon:'💎', name:'500 Puncte!',           check:(res,me)=>me.points>=500&&me.points-(res.points_earned+(res.bonus||0))<500},
+  {id:'pts_1000',    icon:'👑', name:'1000 Puncte!',          check:(res,me)=>me.points>=1000&&me.points-(res.points_earned+(res.bonus||0))<1000},
+  {id:'pts_5000',    icon:'🏆', name:'5000 Puncte!',          check:(res,me)=>me.points>=5000&&me.points-(res.points_earned+(res.bonus||0))<5000},
+  {id:'pts_10000',   icon:'💎', name:'10.000 Puncte!',        check:(res,me)=>me.points>=10000&&me.points-(res.points_earned+(res.bonus||0))<10000},
+  {id:'rainbow_pop', icon:'🌈', name:'Pop Curcubeu!',         check:(res,me)=>res.balloon_type==='rainbow'},
+  {id:'gold_pop',    icon:'✨', name:'Pop Auriu!',             check:(res,me)=>res.balloon_type==='gold'},
+  {id:'pops_10',     icon:'🎈', name:'10 Pops Total!',        check:(res,me)=>me.total_pops>=10&&me.total_pops-1<10},
+  {id:'pops_50',     icon:'🎈', name:'50 Pops Total!',        check:(res,me)=>me.total_pops>=50&&me.total_pops-1<50},
+  {id:'pops_100',    icon:'🎆', name:'100 Pops Total!',       check:(res,me)=>me.total_pops>=100&&me.total_pops-1<100},
+  {id:'pops_365',    icon:'🎊', name:'365 Pops Total!',       check:(res,me)=>me.total_pops>=365&&me.total_pops-1<365},
+  {id:'streak_bonus',icon:'🎁', name:'Bonus Streak Primit!',  check:(res,me)=>res.streak_bonus>0},
 ];
 
 function checkAchievements(res) {
@@ -2900,25 +3453,113 @@ function showAchievement(icon, name) {
   achTimer = setTimeout(()=>t.classList.remove('show'), 3000);
 }
 
+// ─── CARD PICKER ───
+function openCardPicker() {
+  const ownedSkins = (me.owned_items||[]).filter(id=>shopData[id]?.slot==='skin');
+  const grid = document.getElementById('cardPickerGrid');
+  grid.innerHTML = '';
+  if(!ownedSkins.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:40px 20px;font-size:14px">Nu ai carti inca.<br>Cumpara din magazin!</div>';
+  } else {
+    ownedSkins.forEach(id => {
+      const item = shopData[id]; if(!item) return;
+      const isSelected = (me.char_skin||'chibi') === id;
+      const d = document.createElement('div');
+      d.style.cssText = `cursor:pointer;border-radius:12px;overflow:hidden;box-shadow:${isSelected?'0 0 0 3px var(--accent),0 8px 24px rgba(168,85,255,.45)':'0 4px 12px rgba(0,0,0,.4)'};opacity:${isSelected?'1':'.82'};transition:transform .12s`;
+      d.innerHTML = cardArtSVG(id, item, true);
+      d.onpointerdown = () => { d.style.transform='scale(.93)'; };
+      d.onpointerup = () => { d.style.transform=''; };
+      d.onclick = async () => {
+        await doEquip(id,'skin',id);
+        closeCardPicker();
+      };
+      grid.appendChild(d);
+    });
+  }
+  document.getElementById('cardPickerModal').style.display = 'block';
+}
+function closeCardPicker() { document.getElementById('cardPickerModal').style.display = 'none'; }
+
 // ─── PROFILE ───
 async function loadProfile() {
   if(!me) return;
   await refreshMe();
   document.getElementById('profName').textContent = me.username;
   document.getElementById('profPtsVal').textContent = me.points||0;
-  document.getElementById('profChar').innerHTML = charSVG(me,110,174);
+  const pSkinKey = me.char_skin||'chibi';
+  const pSkinItem = shopData[pSkinKey];
+  const cardsOwnedCount = (me.owned_items||[]).filter(id=>shopData[id]?.slot==='skin').length;
+  if(pSkinItem) {
+    document.getElementById('profChar').innerHTML = `<div onclick="openCardPicker()" style="width:90px;height:140px;cursor:pointer;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(168,85,255,.55);transition:transform .15s;position:relative" onpointerdown="this.style.transform='scale(.95)'" onpointerup="this.style.transform=''" title="Tap pentru a schimba">
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:4px;text-align:center;font-size:9px;color:rgba(255,255,255,.7);font-weight:700">✏️ Schimba</div>
+      <div style="position:absolute;top:5px;right:5px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;padding:2px 7px;font-size:9px;font-weight:900;color:#fff;z-index:2">🃏${cardsOwnedCount}</div>
+      ${cardArtSVG(pSkinKey,pSkinItem,true)}</div>`;
+  } else {
+    document.getElementById('profChar').innerHTML = `<div onclick="openCardPicker()" style="width:90px;height:140px;cursor:pointer;border-radius:12px;box-shadow:0 8px 28px rgba(124,92,252,.4);transition:transform .15s;position:relative;background:linear-gradient(135deg,var(--card2),var(--bg2));border:2px dashed rgba(124,92,252,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px" onpointerdown="this.style.transform='scale(.95)'" onpointerup="this.style.transform=''">
+      <div style="position:absolute;top:5px;right:5px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;padding:2px 7px;font-size:9px;font-weight:900;color:#fff;z-index:2">🃏${cardsOwnedCount}</div>
+      <div style="font-size:32px;opacity:.5">🃏</div>
+      <div style="font-size:9px;font-weight:800;color:var(--text2);text-align:center;padding:0 6px;line-height:1.3">Alege o carte!</div>
+      <div style="font-size:8px;color:var(--accent);font-weight:700">✏️ Tap</div>
+    </div>`;
+  }
   document.getElementById('pstatStreak').textContent = me.streak||0;
   document.getElementById('pstatPops').textContent = me.total_pops||0;
   document.getElementById('pstatBest').textContent = me.best_streak||0;
   const cardsOwned = (me.owned_items||[]).filter(id=>shopData[id]?.slot==='skin').length;
   document.getElementById('pstatCards').textContent = cardsOwned;
+  const stageEl = document.getElementById('pstatStage');
+  if(stageEl) stageEl.textContent = me.best_arcade_stage||0;
 
   const bgKey = me.char_bg||'blue';
   const bgd = BG_DATA[bgKey] || BG_DATA.blue;
   document.getElementById('profHdr').style.background = bgd.hdr;
-  renderCustomize();
-  renderShop();
+
+  // Render owned cards mini-grid on profile
+  const ownedCardsEl = document.getElementById('profOwnedCards');
+  if(ownedCardsEl) {
+    const ownedSkins = (me.owned_items||[]).filter(id=>shopData[id]?.slot==='skin').slice(0,8);
+    if(!ownedSkins.length) {
+      ownedCardsEl.innerHTML = '<div style="grid-column:1/-1;padding:16px;text-align:center;color:var(--text2);font-size:13px">Nu ai carti inca. Joaca arcade sau cumpara din magazin!</div>';
+    } else {
+      ownedCardsEl.innerHTML = ownedSkins.map(id=>{
+        const item = shopData[id];
+        const isEquipped = (me.char_skin||'chibi') === id;
+        return `<div onclick="doEquipCard('${id}',${JSON.stringify(item).replace(/"/g,'&quot;')})" style="cursor:pointer;border-radius:10px;overflow:hidden;border:2px solid ${isEquipped?'var(--gold)':'transparent'};box-shadow:${isEquipped?'0 0 12px rgba(255,215,0,.4)':'none'}">${cardArtSVG(id,item,true)}</div>`;
+      }).join('');
+    }
+  }
+
   loadInvite();
+
+  // Render players list on profile
+  const playersEl = document.getElementById('profPlayers');
+  if(playersEl) {
+    const lb = await api('/api/leaderboard');
+    if(lb) {
+      const others = lb.filter(u=>u.id!==me?.id);
+      if(!others.length) {
+        playersEl.innerHTML='<div style="padding:12px;text-align:center;color:var(--text2);font-size:13px">Niciun alt jucator inca.</div>';
+      } else {
+        playersEl.innerHTML = others.map((u,i)=>{
+          const ownedCount = (u.owned_items||[]).length;
+          const skinKey = u.char_skin||'chibi';
+          const skinItem = shopData[skinKey];
+          const cardThumb = skinItem ? `<div style="width:44px;height:68px;border-radius:8px;overflow:hidden;flex-shrink:0">${cardArtSVG(skinKey,skinItem,true)}</div>` : `<div style="flex-shrink:0;border-radius:10px;overflow:hidden">${charSVG(u,44,70)}</div>`;
+          return `<div onclick="openOverlay(${u.id})" style="background:var(--card);border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid var(--border);transition:transform .15s;active:scale(.98)">
+            ${cardThumb}
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(u.username)}</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:2px;display:flex;gap:8px;align-items:center">
+                <span style="color:var(--gold);font-weight:700">${u.points}p</span>
+                ${u.streak>0?`<span>🔥${u.streak}</span>`:''}
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--accent);font-weight:700">Vezi →</div>
+          </div>`;
+        }).join('');
+      }
+    }
+  }
 }
 
 function renderCustomize() {
@@ -2977,23 +3618,72 @@ async function doEquip(itemId, slot, val) {
 }
 
 function renderShop() {
-  const sec = document.getElementById('shopSection'); sec.innerHTML='';
-  const categories = ['skin','hat','eyes','outfit','bg'];
-  let anyUnowned = false;
+  const sec = document.getElementById('shopSection'); if(!sec) return; sec.innerHTML='';
+  // show frame section (owned + unowned), then skin/hat/etc unowned only
+  const owned = me.owned_items||[];
+  let hasContent = false;
 
-  categories.forEach(catSlot=>{
-    const items = Object.entries(shopData).filter(([,item])=>item.slot===catSlot && !(me.owned_items||[]).includes(Object.entries(shopData).find(([k,v])=>v===item)?.[0]));
-    const unownedItems = Object.entries(shopData).filter(([id,item])=>item.slot===catSlot&&!(me.owned_items||[]).includes(id));
-    if(!unownedItems.length) return;
-    anyUnowned = true;
-
+  // Card Styles - show all (owned can be equipped, unowned can be bought)
+  const allStyles = Object.entries(shopData).filter(([,item])=>item.slot==='cardstyle');
+  if(allStyles.length) {
+    hasContent = true;
     const catDiv = document.createElement('div');
-    catDiv.innerHTML=`<div class="shop-category">${SHOP_CATEGORIES[catSlot]}</div>`;
+    catDiv.innerHTML=`<div class="shop-category">✨ Stiluri Carti</div>`;
     const grid = document.createElement('div');
     grid.className='shop-grid';
     catDiv.appendChild(grid);
     sec.appendChild(catDiv);
+    allStyles.forEach(([id,item])=>{
+      const isOwned = owned.includes(id);
+      const isEquipped = (me.char_card_style||'none') === id;
+      const canAfford = (me.points||0) >= item.cost;
+      const d=document.createElement('div');
+      d.className='shop-card'+(isEquipped?' shop-card-equipped':isOwned?' shop-card-owned':canAfford?'':' cant-afford');
+      d.innerHTML=`<div class="shop-emoji">${item.emoji}</div><div class="shop-name">${item.name}</div>
+        <div class="shop-price${isOwned?'':canAfford?'':' cant'}">
+          ${isEquipped ? '✓ Activa' : isOwned ? '<span style="color:var(--green);font-size:11px">Aplica</span>' : `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${item.cost}`}
+        </div>`;
+      d.onclick=()=>{ if(isEquipped) { doEquip('none','cardstyle','none'); } else if(isOwned) doEquip(id,'cardstyle',id); else openBuy(id,item); };
+      grid.appendChild(d);
+    });
+  }
 
+  // Frames - show all (owned can be equipped, unowned can be bought)
+  const allFrames = Object.entries(shopData).filter(([,item])=>item.slot==='frame');
+  if(allFrames.length) {
+    hasContent = true;
+    const catDiv = document.createElement('div');
+    catDiv.innerHTML=`<div class="shop-category">🖼️ Rame Carti</div>`;
+    const grid = document.createElement('div');
+    grid.className='shop-grid';
+    catDiv.appendChild(grid);
+    sec.appendChild(catDiv);
+    allFrames.forEach(([id,item])=>{
+      const isOwned = owned.includes(id);
+      const isEquipped = (me.char_frame||'none') === id;
+      const canAfford = (me.points||0) >= item.cost;
+      const d=document.createElement('div');
+      d.className='shop-card'+(isEquipped?' shop-card-equipped':isOwned?' shop-card-owned':canAfford?'':' cant-afford');
+      d.innerHTML=`<div class="shop-emoji">${item.emoji}</div><div class="shop-name">${item.name}</div>
+        <div class="shop-price${isOwned?'':canAfford?'':' cant'}">
+          ${isEquipped ? '✓ Activa' : isOwned ? '<span style="color:var(--green);font-size:11px">Aplica</span>' : `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${item.cost}`}
+        </div>`;
+      d.onclick=()=>{ if(isEquipped) return; if(isOwned) doEquip(id,'frame',id); else openBuy(id,item); };
+      grid.appendChild(d);
+    });
+  }
+
+  // Other categories - only unowned
+  ['skin','hat','eyes','outfit','bg'].forEach(catSlot=>{
+    const unownedItems = Object.entries(shopData).filter(([id,item])=>item.slot===catSlot&&!owned.includes(id));
+    if(!unownedItems.length) return;
+    hasContent = true;
+    const catDiv = document.createElement('div');
+    catDiv.innerHTML=`<div class="shop-category">${SHOP_CATEGORIES[catSlot]||catSlot}</div>`;
+    const grid = document.createElement('div');
+    grid.className='shop-grid';
+    catDiv.appendChild(grid);
+    sec.appendChild(catDiv);
     unownedItems.forEach(([id,item])=>{
       const canAfford = (me.points||0) >= item.cost;
       const d=document.createElement('div');
@@ -3008,9 +3698,7 @@ function renderShop() {
     });
   });
 
-  if(!anyUnowned) {
-    sec.innerHTML='<div style="padding:24px;text-align:center;color:var(--text2);font-size:14px">🎉 Ai toate itemele din magazin!</div>';
-  }
+  if(!hasContent) sec.innerHTML='<div style="padding:24px;text-align:center;color:var(--text2);font-size:14px">🎉 Ai toate itemele!</div>';
 }
 
 // ─── BUY MODAL ───
@@ -3036,12 +3724,22 @@ async function confirmBuy() {
     me.owned_items.push(id);
     await apiPost('/api/equip',{item_id:id,slot:item.slot});
     if(item.slot==='skin') me.char_skin=id;
+    if(item.slot==='frame') me.char_frame=id;
+    if(item.slot==='cardstyle') me.char_card_style=id;
     await refreshMe();
     showAchievement('🛍️','Prima achizitie!');
     showToast('🃏 Cumparat '+item.name+'!');
     loadProfile();
-    renderCardsGrid(cardsFilter);
+    renderShop();
     renderHomeCardWidget();
+    // flip animation before reveal for skin cards
+    if(item.slot==='skin') {
+      const cardEl = document.querySelector(`.bcard[data-id="${id}"]`);
+      if(cardEl) {
+        cardEl.classList.add('flipping');
+        setTimeout(()=>renderCardsGrid(cardsFilter), 260);
+      } else renderCardsGrid(cardsFilter);
+    } else renderCardsGrid(cardsFilter);
   } else showToast(r?.error||'Eroare');
 }
 document.getElementById('buyModal').addEventListener('click',e=>{ if(e.target===document.getElementById('buyModal')) closeModal(); });
@@ -3057,6 +3755,29 @@ async function openOverlay(uid) {
   document.getElementById('ovStreak').textContent=u.streak||0;
   document.getElementById('ovPops').textContent=u.total_pops||0;
   document.getElementById('ovBest').textContent=u.best_streak||0;
+  const ovOwnedCards = (u.owned_items||[]).filter(id=>shopData[id]?.slot==='skin');
+  document.getElementById('ovCards').textContent=ovOwnedCards.length;
+  // render mini card collection
+  const ovGrid = document.getElementById('ovCardsGrid');
+  ovGrid.innerHTML = '';
+  if(ovOwnedCards.length === 0) {
+    ovGrid.innerHTML = '<div style="grid-column:1/-1;padding:12px 0;color:var(--text3);font-size:12px">Nicio carta inca</div>';
+  } else {
+    ovOwnedCards.slice(0,12).forEach(id => {
+      const item = shopData[id];
+      if(!item) return;
+      const d = document.createElement('div');
+      d.style.cssText = 'border-radius:8px;overflow:hidden;border:1px solid var(--border)';
+      d.innerHTML = cardArtSVG(id, item, true);
+      ovGrid.appendChild(d);
+    });
+    if(ovOwnedCards.length > 12) {
+      const more = document.createElement('div');
+      more.style.cssText = 'border-radius:8px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text2)';
+      more.textContent = '+' + (ovOwnedCards.length - 12);
+      ovGrid.appendChild(more);
+    }
+  }
   document.getElementById('overlay-prof').style.display='block';
   loadReactionsForUser(uid);
 }
@@ -3221,6 +3942,47 @@ async function setupPush() {
   }
 }
 
+// ─── WEEKLY LEADERBOARD ───
+let currentLbTab = 'global';
+async function switchLbTab(tab) {
+  currentLbTab = tab;
+  const globalBtn = document.getElementById('lbTabGlobal');
+  const weeklyBtn = document.getElementById('lbTabWeekly');
+  if (!globalBtn) return;
+  if (tab === 'global') {
+    globalBtn.style.cssText = 'flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;cursor:pointer';
+    weeklyBtn.style.cssText = 'flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:800;cursor:pointer';
+    loadLeaderboard();
+  } else {
+    weeklyBtn.style.cssText = 'flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--accent);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:800;cursor:pointer';
+    globalBtn.style.cssText = 'flex:1;padding:9px;border-radius:12px;border:1.5px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:800;cursor:pointer';
+    loadWeeklyLeaderboard();
+  }
+}
+
+async function loadWeeklyLeaderboard() {
+  const list = document.getElementById('lbList');
+  if (!list) return;
+  list.innerHTML = '<div class="spinner"></div>';
+  const rows = await api('/api/leaderboard/weekly');
+  if (!rows || !rows.length) {
+    list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text2);font-size:14px">Nicio activitate saptamana aceasta.<br>Sparge baloane ca sa apari!</div>';
+    return;
+  }
+  const MEDAL = ['🥇','🥈','🥉'];
+  list.innerHTML = rows.slice(0, 10).map((u, i) => {
+    const isMe = me && u.id === me.id;
+    return `<div class="lb-row${isMe?' me-row':''}" onclick="openOverlay(${u.id})">
+      <div class="lb-rank${i<3?' r'+(i+1):''}">${MEDAL[i]||('#'+(i+1))}</div>
+      <div class="lb-name">${esc(u.username)}</div>
+      <div class="lb-pts">
+        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        ${u.weekly_points||0}p
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // ─── TOAST ───
 let tTimer;
 function showToast(msg) {
@@ -3230,6 +3992,512 @@ function showToast(msg) {
 }
 
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── THEMES ───
+function setTheme(name) {
+  document.documentElement.setAttribute('data-theme', name === 'dark' ? '' : name);
+  localStorage.setItem('kb_theme', name);
+  document.querySelectorAll('.theme-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === name);
+  });
+}
+(function initTheme() {
+  const saved = localStorage.getItem('kb_theme') || 'dark';
+  setTheme(saved);
+})();
+
+// ─── ARCADE ───
+let arcadeState = null;
+
+function showArcadeCardReveal(id, item) {
+  const tier = cardTier(item.cost);
+  const banner = document.createElement('div');
+  banner.style.cssText = `position:fixed;top:60px;left:12px;right:12px;z-index:9999;background:linear-gradient(135deg,rgba(124,92,252,.25),rgba(252,92,125,.2));border:1px solid ${tier.text||'rgba(124,92,252,.5)'};border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(16px);animation:cardRevealPop .4s cubic-bezier(.34,1.56,.64,1);cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.5)`;
+  banner.innerHTML = `
+    <div style="width:60px;height:93px;flex-shrink:0;border-radius:8px;overflow:hidden">${cardArtSVG(id,item,true)}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:${tier.text||'#FFD700'};text-transform:uppercase;margin-bottom:4px">✦ Carte Castigata!</div>
+      <div style="font-size:16px;font-weight:900;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.emoji} ${item.name}</div>
+      <div style="font-size:11px;font-weight:700;color:${tier.text||'#aaa'};opacity:.8;margin-top:2px">${tier.label}</div>
+    </div>
+    <div style="font-size:20px;color:rgba(255,255,255,.4);flex-shrink:0">✕</div>`;
+  banner.onclick = () => banner.remove();
+  document.body.appendChild(banner);
+  setTimeout(() => { if(banner.parentNode) banner.remove(); }, 5000);
+}
+
+function loadArcade() {
+  const inner = document.getElementById('arcadeInner');
+  if (!inner) return;
+  arcadeState = arcadeState || { phase: 'idle' };
+  if (arcadeState.phase === 'idle') {
+    inner.innerHTML = `
+      <div class="arcade-start-screen">
+        <div style="font-size:72px;animation:floatIcon 3s ease-in-out infinite">🎈</div>
+        <h2>Mod Arcade</h2>
+        <p style="color:var(--text2);font-size:14px;line-height:1.7;max-width:300px">Sparge baloanele care cad din cer!<br>Fiecare nivel devine mai rapid.</p>
+        <div class="arcade-legend">
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#FFD700,#FF9F1C);border-radius:50%"></div>
+            Puncte
+          </div>
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#7C5CFC,#FC5C7D);border-radius:50%;box-shadow:0 0 12px rgba(124,92,252,.6)"></div>
+            Carte 🃏
+          </div>
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;border:2px solid rgba(255,255,255,.2)"></div>
+            Gol
+          </div>
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:radial-gradient(circle,#FFF8DC,#FFD700);border-radius:50%;border:3px solid #FFD700;box-shadow:0 0 12px rgba(255,215,0,.7)"></div>
+            Boss 💀
+          </div>
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:radial-gradient(circle,#E0FFFF,#00BFFF);border-radius:50%;border:3px solid #88EEFF;box-shadow:0 0 12px rgba(136,238,255,.6)"></div>
+            Freeze ❄️
+          </div>
+          <div class="arcade-legend-item">
+            <div style="width:36px;height:36px;background:radial-gradient(circle,#444,#111);border-radius:50%;border:3px solid #FF2222;box-shadow:0 0 12px rgba(255,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:18px">💀</div>
+            -10p ☠️
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;font-size:18px;padding:18px;margin-top:8px" onclick="arcadeBegin()">INCEPE!</button>
+      </div>`;
+  }
+}
+
+function arcadeBegin() {
+  arcadeState = { phase: 'playing', level: 1, score: 0, ptsEarned: 0, cardWon: null, cardsWon: [], misses: 0, stageStreak: 0, bossMap: {}, bossCounter: 0, frozenUntil: 0 };
+  arcadeRenderLevel();
+}
+
+function arcadeRenderLevel() {
+  const inner = document.getElementById('arcadeInner');
+  if (!inner) return;
+  const lvl = arcadeState.level;
+  const total = Math.min(8 + (lvl - 1) * 3, 32);
+  const fallMs = Math.max(8000 - (lvl - 1) * 250, 2500);
+
+  arcadeState.remaining = total;
+  arcadeState.phase = 'playing';
+  arcadeState.cardWonThisLevel = false;
+  arcadeState.misses = arcadeState.misses || 0;
+
+  inner.innerHTML = `
+    <div class="screen-inner">
+      <div class="arcade-hdr">
+        <div class="arcade-level-badge">
+          <span>Stagiu</span>
+          <strong>${lvl}</strong>
+        </div>
+        <div class="arcade-score-wrap">
+          <div class="arcade-score" id="arcScore">${arcadeState.score}</div>
+          <div class="arcade-score-lbl">puncte</div>
+        </div>
+        <button onclick="arcadeQuit()" style="background:rgba(252,92,125,.12);border:1px solid rgba(252,92,125,.25);border-radius:10px;padding:8px 12px;color:var(--accent2);font-size:12px;font-weight:700;cursor:pointer;">✕ Iesi</button>
+      </div>
+      <div style="padding:0 16px 6px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:11px;color:var(--text2);font-weight:700">BALOANE RAMASE</div>
+        <div style="font-size:15px;font-weight:900;color:var(--text)" id="arcLeft">${total}</div>
+      </div>
+      <div style="padding:0 16px 4px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:11px;color:var(--text2);font-weight:700">RATATE ❌</div>
+        <div style="font-size:13px;font-weight:900;color:${arcadeState.misses>=3?'var(--accent2)':'var(--text)'}" id="arcMisses">${arcadeState.misses} / 5</div>
+      </div>
+      <div class="arcade-field" id="arcadeField"></div>
+    </div>`;
+
+  const spawnGap = Math.max(Math.floor(fallMs * 0.65 / total), 350);
+  let spawned = 0;
+
+  function spawnNext() {
+    if (arcadeState.phase !== 'playing') return;
+    if (spawned >= total) return;
+    arcadeSpawnBalloon(fallMs, lvl);
+    spawned++;
+    if (spawned < total) setTimeout(spawnNext, spawnGap);
+  }
+  setTimeout(spawnNext, 500);
+}
+
+function arcadeSpawnBalloon(fallMs, lvl) {
+  const field = document.getElementById('arcadeField');
+  if (!field || arcadeState.phase !== 'playing') return;
+
+  const rand = Math.random();
+  let btype;
+  // Card: 10% chance, max 1 per level
+  if (rand < 0.10 && !arcadeState.cardWonThisLevel) {
+    const unowned = Object.entries(shopData).filter(([id, item]) => item.slot === 'skin' && !(me.owned_items || []).includes(id));
+    btype = unowned.length > 0 ? 'card' : 'pts';
+  } else if (rand < 0.15 && lvl >= 2) {
+    btype = 'skull'; // trap: -10 pts if popped
+  } else if (rand < 0.20 && lvl >= 3) {
+    btype = 'boss';
+  } else if (rand < 0.24 && lvl >= 5) {
+    btype = 'freeze';
+  } else if (rand < 0.62) {
+    btype = 'pts';
+  } else {
+    btype = 'empty';
+  }
+
+  const skullPenalty = Math.min(10 + lvl * 2, 30); // -10 to -30 pts depending on level
+  const pts = btype === 'pts' ? Math.max(lvl * 4 + Math.floor(Math.random() * lvl * 3), 5)
+            : btype === 'boss' ? Math.max(lvl * 15 + 20, 30)
+            : btype === 'skull' ? skullPenalty : 0;
+  const sz = btype === 'boss' ? 75 + Math.floor(Math.random() * 15)
+           : btype === 'skull' ? 60 + Math.floor(Math.random() * 15)
+           : 54 + Math.floor(Math.random() * 22);
+  const leftPct = 4 + Math.random() * 82;
+  const actualFall = btype === 'skull'
+    ? fallMs * (0.6 + Math.random() * 0.25)  // skull falls faster — harder to avoid
+    : fallMs * (0.85 + Math.random() * 0.3);
+
+  const colors = { card: ['purple', 'rainbow'], pts: ['gold', 'orange', 'green', 'blue'], empty: ['red', 'pink', 'blue'], boss: ['gold', 'orange'], freeze: ['blue', 'rainbow'], skull: ['red', 'purple'] };
+  const palette = colors[btype] || colors.empty;
+  const bc = palette[Math.floor(Math.random() * palette.length)];
+
+  const bossId = 'boss_' + (arcadeState.bossCounter = (arcadeState.bossCounter || 0) + 1);
+  if (btype === 'boss') {
+    arcadeState.bossMap = arcadeState.bossMap || {};
+    arcadeState.bossMap[bossId] = 2; // 2 hits needed
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'arcade-balloon';
+  wrap.style.cssText = `left:${leftPct}%;width:${sz}px;animation-duration:${actualFall}ms`;
+  if (btype === 'boss') {
+    wrap.dataset.bossId = bossId;
+    wrap.innerHTML = `<div style="position:relative;display:inline-block">${bsvg(bc, sz)}<div class="arc-boss-ring"></div><div class="arc-boss-hp" id="${bossId}-hp">HP: 2/2</div></div>`;
+  } else if (btype === 'freeze') {
+    wrap.innerHTML = `<div style="position:relative;display:inline-block">${bsvg(bc, sz)}<div class="arc-freeze-ring"></div><div class="arc-badge" style="background:linear-gradient(135deg,#00BFFF,#88EEFF);color:#000;top:-2px;right:-2px;border-radius:8px;font-size:9px;padding:2px 5px;font-weight:800;pointer-events:none;position:absolute">❄️</div></div>`;
+  } else if (btype === 'skull') {
+    wrap.innerHTML = `<div style="position:relative;display:inline-block;filter:saturate(.3) brightness(.7);">${bsvg(bc, sz)}<div class="arc-skull-ring"></div><div class="arc-skull-badge" style="position:absolute;top:-4px;right:-4px;font-size:${Math.round(sz*0.35)}px;line-height:1">💀</div></div>`;
+  } else {
+    wrap.innerHTML = `<div style="position:relative;display:inline-block">${bsvg(bc, sz)}</div>`;
+  }
+
+  field.appendChild(wrap);
+
+  wrap.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    arcadeHitBalloon(wrap, btype, pts, bc);
+  }, { once: true });
+
+  wrap.addEventListener('animationend', () => {
+    if (!wrap.parentNode) return;
+    wrap.remove();
+    arcadeState.remaining = Math.max(0, (arcadeState.remaining || 1) - 1);
+    const leftEl2 = document.getElementById('arcLeft');
+    if (leftEl2) leftEl2.textContent = arcadeState.remaining;
+
+    // Count as miss only for pts/card balloons (not empty/skull — skull is intentional to avoid)
+    if (btype !== 'empty' && btype !== 'skull' && arcadeState.phase === 'playing') {
+      arcadeState.misses = (arcadeState.misses || 0) + 1;
+      const missEl = document.getElementById('arcMisses');
+      if (missEl) {
+        missEl.textContent = arcadeState.misses + ' / 5';
+        if (arcadeState.misses >= 3) missEl.style.color = 'var(--accent2)';
+      }
+      if (arcadeState.misses >= 5) {
+        arcadeState.phase = 'gameover';
+        setTimeout(() => arcadeGameOver(), 400);
+        return;
+      }
+    }
+
+    if (arcadeState.remaining <= 0 && arcadeState.phase === 'playing') {
+      setTimeout(() => arcadeLevelDone(), 600);
+    }
+  });
+}
+
+function arcadeHitBalloon(el, btype, pts, bc) {
+  if (arcadeState.phase !== 'playing') return;
+  if (navigator.vibrate) navigator.vibrate(25);
+  playPop(bc);
+
+  // Boss balloon: needs 2 hits
+  if (btype === 'boss') {
+    const bossId = el.dataset.bossId;
+    if (bossId && arcadeState.bossMap && arcadeState.bossMap[bossId] > 0) {
+      arcadeState.bossMap[bossId]--;
+      const hp = arcadeState.bossMap[bossId];
+      const hpEl = document.getElementById(bossId + '-hp');
+      if (hp > 0) {
+        // First hit: flash effect, update HP
+        el.style.filter = 'brightness(3)';
+        setTimeout(() => { if (el.parentNode) el.style.filter = ''; }, 150);
+        if (hpEl) hpEl.textContent = 'HP: ' + hp + '/2';
+        // Re-add listener for second hit
+        el.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          arcadeHitBalloon(el, btype, pts, bc);
+        }, { once: true });
+        return; // Don't pop yet
+      }
+      // HP = 0: destroy boss
+      delete arcadeState.bossMap[bossId];
+    }
+    el.classList.add('arc-popped');
+    arcadeState.remaining = Math.max(0, (arcadeState.remaining || 1) - 1);
+    const leftEl = document.getElementById('arcLeft');
+    if (leftEl) leftEl.textContent = arcadeState.remaining;
+    arcadeState.score += pts;
+    arcadeState.ptsEarned += pts;
+    const scoreEl = document.getElementById('arcScore');
+    if (scoreEl) scoreEl.textContent = arcadeState.score;
+    const rect = el.getBoundingClientRect();
+    const pf = document.createElement('div');
+    pf.className = 'pts-fx';
+    pf.textContent = '💀 +' + pts + 'p!';
+    pf.style.cssText = `left:${rect.left + rect.width / 2}px;top:${rect.top + 10}px;font-size:28px`;
+    document.body.appendChild(pf);
+    setTimeout(() => pf.remove(), 1300);
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 380);
+    if (arcadeState.remaining <= 0 && arcadeState.phase === 'playing') setTimeout(() => arcadeLevelDone(), 600);
+    return;
+  }
+
+  // Skull balloon: deducts points
+  if (btype === 'skull') {
+    el.classList.add('arc-popped');
+    if (navigator.vibrate) navigator.vibrate([80, 30, 80]);
+    arcadeState.remaining = Math.max(0, (arcadeState.remaining || 1) - 1);
+    const leftEl = document.getElementById('arcLeft');
+    if (leftEl) leftEl.textContent = arcadeState.remaining;
+    arcadeState.score = Math.max(0, arcadeState.score - pts);
+    arcadeState.ptsEarned = Math.max(0, arcadeState.ptsEarned - pts);
+    const scoreEl = document.getElementById('arcScore');
+    if (scoreEl) {
+      scoreEl.textContent = arcadeState.score;
+      scoreEl.style.color = '#FF3333';
+      setTimeout(() => { scoreEl.style.color = ''; }, 600);
+    }
+    const rect = el.getBoundingClientRect();
+    const pf = document.createElement('div');
+    pf.className = 'pts-minus-fx';
+    pf.textContent = '💀 -' + pts + 'p!';
+    pf.style.cssText = `left:${rect.left + rect.width / 2}px;top:${rect.top + 10}px`;
+    document.body.appendChild(pf);
+    setTimeout(() => pf.remove(), 1200);
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 380);
+    if (arcadeState.remaining <= 0 && arcadeState.phase === 'playing') setTimeout(() => arcadeLevelDone(), 600);
+    return;
+  }
+
+  // Freeze balloon: pause all balloons for 3 seconds
+  if (btype === 'freeze') {
+    el.classList.add('arc-popped');
+    arcadeState.remaining = Math.max(0, (arcadeState.remaining || 1) - 1);
+    const leftEl = document.getElementById('arcLeft');
+    if (leftEl) leftEl.textContent = arcadeState.remaining;
+    const field = document.getElementById('arcadeField');
+    if (field) {
+      field.classList.add('frozen');
+      arcadeState.frozenUntil = Date.now() + 3000;
+      const fb = document.createElement('div');
+      fb.className = 'freeze-banner';
+      fb.textContent = '❄️ FREEZE! 3 secunde!';
+      document.body.appendChild(fb);
+      setTimeout(() => { field.classList.remove('frozen'); arcadeState.frozenUntil = 0; fb.remove(); }, 3000);
+    }
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 380);
+    if (arcadeState.remaining <= 0 && arcadeState.phase === 'playing') setTimeout(() => arcadeLevelDone(), 600);
+    return;
+  }
+
+  el.classList.add('arc-popped');
+
+  arcadeState.remaining = Math.max(0, (arcadeState.remaining || 1) - 1);
+  const leftEl = document.getElementById('arcLeft');
+  if (leftEl) leftEl.textContent = arcadeState.remaining;
+
+  if (btype === 'pts') {
+    arcadeState.score += pts;
+    arcadeState.ptsEarned += pts;
+    const scoreEl = document.getElementById('arcScore');
+    if (scoreEl) scoreEl.textContent = arcadeState.score;
+    const rect = el.getBoundingClientRect();
+    const pf = document.createElement('div');
+    pf.className = 'pts-fx';
+    pf.textContent = '+' + pts + 'p';
+    pf.style.cssText = `left:${rect.left + rect.width / 2}px;top:${rect.top + 10}px`;
+    document.body.appendChild(pf);
+    setTimeout(() => pf.remove(), 1100);
+  } else if (btype === 'card') {
+    arcadeState.cardWonThisLevel = true;
+    const unowned = Object.entries(shopData).filter(([id, item]) => item.slot === 'skin' && !(me.owned_items || []).includes(id));
+    if (unowned.length > 0 && !arcadeState.cardWon) {
+      const [cid, citem] = unowned[Math.floor(Math.random() * unowned.length)];
+      arcadeState.cardWon = { id: cid, item: citem };
+      arcadeState.cardsWon = arcadeState.cardsWon || [];
+      arcadeState.cardsWon.push({ id: cid, item: citem });
+      setTimeout(() => showArcadeCardReveal(cid, citem), 400);
+    }
+  }
+
+  setTimeout(() => { if (el.parentNode) el.remove(); }, 380);
+
+  if (arcadeState.remaining <= 0 && arcadeState.phase === 'playing') {
+    setTimeout(() => arcadeLevelDone(), 600);
+  }
+}
+
+function arcadeLevelDone() {
+  if (arcadeState.phase !== 'playing') return;
+  arcadeState.phase = 'done';
+  const field = document.getElementById('arcadeField');
+  if (!field) return;
+
+  const cardHtml = arcadeState.cardWon
+    ? `<div style="background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.4);border-radius:14px;padding:10px 16px;font-size:13px;color:var(--accent2)">🃏 Ai castigat: <strong>${arcadeState.cardWon.item.emoji} ${arcadeState.cardWon.item.name}</strong></div>`
+    : '';
+
+  const isLast = arcadeState.level >= 25;
+  const ov = document.createElement('div');
+  ov.className = 'arcade-overlay';
+  ov.innerHTML = `
+    <div style="font-size:52px">🎉</div>
+    <div style="font-size:22px;font-weight:900">Stagiu ${arcadeState.level} completat!</div>
+    <div style="font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent">+${arcadeState.score}p total</div>
+    ${cardHtml}
+    ${isLast
+      ? `<div style="font-size:14px;color:var(--gold);font-weight:700">👑 Nivel maxim atins! Esti legendar!</div>
+         <button class="btn btn-primary" style="width:100%;font-size:17px;padding:16px" onclick="arcadeSaveQuit()">💾 Salveaza punctele</button>`
+      : `<button class="btn btn-primary" style="width:100%;font-size:17px;padding:16px" onclick="arcadeNext()">Stagiu ${arcadeState.level + 1} →</button>
+         <button class="btn btn-ghost" style="width:100%" onclick="arcadeSaveQuit()">💾 Salveaza si iesi</button>`
+    }`;
+  field.appendChild(ov);
+}
+
+async function arcadeNext() {
+  arcadeState.level++;
+  arcadeState.cardWon = null;       // reset pentru display nivel curent
+  arcadeState.cardWonThisLevel = false;
+  arcadeState.misses = 0;
+  // arcadeState.cardsWon NU se reseteaza — acumuleaza pe toata sesiunea
+  arcadeRenderLevel();
+}
+
+async function arcadeSaveQuit() {
+  const pts = arcadeState.ptsEarned || 0;
+  const cardsWon = (arcadeState.cardsWon || []).slice();
+  const stage = arcadeState.level || 1;
+  arcadeState = { phase: 'idle' };
+
+  await apiPost('/api/arcade/stage', { stage });
+  // Salveaza prima carta + puncte
+  const firstCardId = cardsWon[0]?.id || null;
+  const r = await apiPost('/api/arcade/reward', { points: pts, card_id: firstCardId });
+  // Salveaza cartele suplimentare (fara puncte)
+  for (let i = 1; i < cardsWon.length; i++) {
+    await apiPost('/api/arcade/reward', { points: 0, card_id: cardsWon[i].id });
+  }
+  if (r?.success) {
+    me.points = r.total_points;
+    document.getElementById('hPtsVal').textContent = me.points + ' puncte';
+    if (pts > 0) showToast('💰 +' + pts + ' puncte salvate!');
+    if (cardsWon.length > 0) setTimeout(() => showToast('🃏 ' + cardsWon.length + ' carte(i) adaugate la colectie!'), 1200);
+    await refreshMe();
+    loadProfile();
+  }
+  loadArcade();
+}
+
+function arcadeQuit() {
+  arcadeState = { phase: 'idle' };
+  loadArcade();
+}
+
+function arcadeGameOver() {
+  if (arcadeState.phase !== 'gameover') return;
+  const field = document.getElementById('arcadeField');
+  if (!field) return;
+  const reachedStage = arcadeState.level;
+
+  const ov = document.createElement('div');
+  ov.className = 'arcade-overlay';
+  ov.innerHTML = `
+    <div style="font-size:52px">💥</div>
+    <div style="font-size:22px;font-weight:900;color:var(--accent2)">Game Over!</div>
+    <div style="font-size:14px;color:var(--text2)">5 baloane ratate</div>
+    <div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Stagiu ${reachedStage}</div>
+    <div style="font-size:14px;color:var(--text2)">Scor: ${arcadeState.score} puncte</div>
+    <button class="btn btn-primary" style="width:100%;font-size:17px;padding:16px" onclick="arcadeGameOverSave(${reachedStage})">💾 Salveaza si Incearca Din Nou</button>
+    <button class="btn btn-ghost" style="width:100%" onclick="arcadeQuit()">Iesi</button>`;
+  field.appendChild(ov);
+}
+
+async function arcadeGameOverSave(stage) {
+  const pts = arcadeState.ptsEarned || 0;
+  const cardsWon = (arcadeState.cardsWon || []).slice();
+
+  await apiPost('/api/arcade/stage', { stage });
+  const firstCardId = cardsWon[0]?.id || null;
+  const r = await apiPost('/api/arcade/reward', { points: pts, card_id: firstCardId });
+  for (let i = 1; i < cardsWon.length; i++) {
+    await apiPost('/api/arcade/reward', { points: 0, card_id: cardsWon[i].id });
+  }
+  if (r?.success) {
+    me.points = r.total_points;
+    if(me.best_arcade_stage === undefined || stage > me.best_arcade_stage) me.best_arcade_stage = stage;
+    document.getElementById('hPtsVal').textContent = me.points + ' puncte';
+    if (pts > 0) showToast('💰 +' + pts + ' puncte salvate!');
+    if (cardsWon.length > 0) setTimeout(() => showToast('🃏 ' + cardsWon.length + ' carte(i) adaugate!'), 1200);
+    await refreshMe();
+    loadProfile();
+  }
+  arcadeState = { phase: 'playing', level: 1, score: 0, ptsEarned: 0, cardWon: null, misses: 0, stageStreak: 0 };
+  arcadeRenderLevel();
+}
+
+// ─── FORGOT PASSWORD ───
+function openForgotPassword() {
+  document.getElementById('forgot-view-1').style.display = 'block';
+  document.getElementById('forgot-view-2').style.display = 'none';
+  document.getElementById('fuser').value = document.getElementById('au').value || '';
+  document.getElementById('ferr').textContent = '';
+  document.getElementById('forgot-modal').style.display = 'flex';
+}
+function closeForgotPassword() {
+  document.getElementById('forgot-modal').style.display = 'none';
+}
+async function doForgotPassword() {
+  const username = document.getElementById('fuser').value.trim();
+  const errEl = document.getElementById('ferr');
+  if (!username) { errEl.textContent = 'Introdu username-ul!'; return; }
+  errEl.textContent = '';
+  const r = await fetch('/api/forgot-password', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ username })
+  });
+  const d = await r.json();
+  if (!r.ok) { errEl.textContent = d.error || 'Eroare'; return; }
+  document.getElementById('forgot-view-1').style.display = 'none';
+  document.getElementById('forgot-view-2').style.display = 'block';
+  document.getElementById('ferr2').textContent = d.msg || '';
+}
+async function doResetPassword() {
+  const token = document.getElementById('freset-token').value.trim();
+  const pass = document.getElementById('freset-pass').value.trim();
+  const errEl = document.getElementById('ferr2');
+  if (!token || !pass) { errEl.textContent = 'Completeaza toate campurile!'; return; }
+  errEl.textContent = '';
+  const r = await fetch('/api/reset-password', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ token, new_password: pass })
+  });
+  const d = await r.json();
+  if (!r.ok) { errEl.textContent = d.error || 'Eroare'; return; }
+  errEl.style.color = 'var(--green)';
+  errEl.textContent = d.msg || 'Parola schimbata!';
+  setTimeout(() => { closeForgotPassword(); errEl.style.color = ''; }, 2000);
+}
 
 // ─── INIT ───
 if(token) {

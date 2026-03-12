@@ -81,6 +81,20 @@ db.serialize(() => {
   db.run(`ALTER TABLE users ADD COLUMN best_streak INTEGER DEFAULT 0`, () => {});
   db.run(`ALTER TABLE users ADD COLUMN char_skin TEXT DEFAULT 'chibi'`, () => {});
   db.run(`ALTER TABLE users ADD COLUMN invite_code TEXT`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN char_frame TEXT DEFAULT 'none'`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN char_card_style TEXT DEFAULT 'none'`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN best_arcade_stage INTEGER DEFAULT 0`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN email TEXT`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN weekly_points INTEGER DEFAULT 0`, () => {});
+  db.run(`ALTER TABLE users ADD COLUMN week_str TEXT`, () => {});
+  db.run(`CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  token TEXT UNIQUE NOT NULL,
+  expires_at DATETIME NOT NULL,
+  used INTEGER DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)`);
   // generate invite codes for users that don't have one
   db.all(`SELECT id FROM users WHERE invite_code IS NULL`, [], (err, rows) => {
     if (rows) rows.forEach(r => {
@@ -99,6 +113,13 @@ function auth(req, res, next) {
 
 const BALLOON_TYPES = ['red','green','blue','orange','purple','pink','gold','rainbow'];
 const POINTS = { red:10, green:12, blue:15, orange:20, purple:25, pink:30, gold:50, rainbow:100 };
+
+function getWeekStr() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); // Monday
+  return d.toISOString().slice(0, 10);
+}
 
 function seededRand(seed, max) {
   const x = Math.sin(seed + 1) * 10000;
@@ -275,14 +296,14 @@ app.post('/api/invite/use', auth, (req, res) => {
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
 app.post('/api/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
   if (!username || !password || username.length < 3)
     return res.status(400).json({ error: 'Username minim 3 caractere' });
   if (password.length < 4)
     return res.status(400).json({ error: 'Parola minim 4 caractere' });
   const hash = await bcrypt.hash(password, 10);
   const inviteCode = username.slice(0,3).toUpperCase() + crypto.randomBytes(2).toString('hex').toUpperCase();
-  db.run('INSERT INTO users (username, password, invite_code) VALUES (?, ?, ?)', [username.toLowerCase(), hash, inviteCode], function(err) {
+  db.run('INSERT INTO users (username, password, invite_code, email) VALUES (?, ?, ?, ?)', [username.toLowerCase(), hash, inviteCode, email||null], function(err) {
     if (err) return res.status(400).json({ error: 'Username ocupat' });
     const token = jwt.sign({ id: this.lastID, username: username.toLowerCase() }, JWT_SECRET, { expiresIn: '30d' });
     res.json({ token, user: { id: this.lastID, username: username.toLowerCase(), points: 0 } });
@@ -326,7 +347,7 @@ app.post('/api/pop', auth, (req, res) => {
       const isLastBalloon = row.cnt + 1 === 3;
       const completionBonus = isLastBalloon ? 15 : 0;
 
-      db.get('SELECT streak, last_pop_date, best_streak FROM users WHERE id=?', [req.user.id], (err, userRow) => {
+      db.get('SELECT streak, last_pop_date, best_streak, week_str FROM users WHERE id=?', [req.user.id], (err, userRow) => {
         let newStreak = userRow.streak || 0;
 
         if (isFirstPopToday) {
@@ -337,18 +358,25 @@ app.post('/api/pop', auth, (req, res) => {
         }
 
         const newBestStreak = Math.max(newStreak, userRow.best_streak || 0);
-        const totalPts = pts + completionBonus;
+        const STREAK_MILESTONES = { 3: 15, 7: 35, 14: 70, 30: 150, 60: 300, 100: 500 };
+        const streakBonus = (isFirstPopToday && STREAK_MILESTONES[newStreak]) ? STREAK_MILESTONES[newStreak] : 0;
+        const totalPts = pts + completionBonus + streakBonus;
+
+        const weekStr = getWeekStr();
+        const weekReset = !userRow.week_str || userRow.week_str !== weekStr;
 
         db.run('INSERT INTO daily_pops (user_id, date, balloon_index, balloon_type, points_earned) VALUES (?,?,?,?,?)',
           [req.user.id, today, balloon_index, bType, pts], function(err) {
           if (err) return res.status(500).json({ error: 'Eroare server' });
 
-          db.run('UPDATE users SET points=points+?, last_pop_date=?, streak=?, best_streak=?, total_pops=COALESCE(total_pops,0)+1 WHERE id=?',
-            [totalPts, today, newStreak, newBestStreak, req.user.id], () => {
+          db.run(`UPDATE users SET points=points+?, last_pop_date=?, streak=?, best_streak=?, total_pops=COALESCE(total_pops,0)+1,
+            weekly_points=CASE WHEN week_str=? THEN COALESCE(weekly_points,0)+? ELSE ? END, week_str=? WHERE id=?`,
+            [totalPts, today, newStreak, newBestStreak, weekStr, totalPts, totalPts, weekStr, req.user.id], () => {
             db.get('SELECT points, streak, total_pops FROM users WHERE id=?', [req.user.id], (err, u) => {
               res.json({
                 points_earned: pts,
                 bonus: completionBonus,
+                streak_bonus: streakBonus,
                 total_points: u.points,
                 balloon_type: bType,
                 streak: u.streak,
@@ -365,7 +393,7 @@ app.post('/api/pop', auth, (req, res) => {
 });
 
 app.get('/api/me', auth, (req, res) => {
-  db.get('SELECT id,username,points,streak,best_streak,total_pops,char_hat,char_eyes,char_outfit,char_bg,char_skin,invite_code,created_at FROM users WHERE id=?', [req.user.id], (err, user) => {
+  db.get('SELECT id,username,points,streak,best_streak,total_pops,char_hat,char_eyes,char_outfit,char_bg,char_skin,char_frame,char_card_style,invite_code,created_at,best_arcade_stage,email FROM users WHERE id=?', [req.user.id], (err, user) => {
     db.all('SELECT item_id FROM owned_items WHERE user_id=?', [req.user.id], (err, items) => {
       res.json({ ...user, owned_items: items.map(i => i.item_id) });
     });
@@ -373,7 +401,7 @@ app.get('/api/me', auth, (req, res) => {
 });
 
 app.get('/api/profile/:id', (req, res) => {
-  db.get('SELECT id,username,points,streak,best_streak,total_pops,char_hat,char_eyes,char_outfit,char_bg,char_skin FROM users WHERE id=?', [req.params.id], (err, user) => {
+  db.get('SELECT id,username,points,streak,best_streak,total_pops,char_hat,char_eyes,char_outfit,char_bg,char_skin,char_frame,char_card_style FROM users WHERE id=?', [req.params.id], (err, user) => {
     if (!user) return res.status(404).json({ error: 'User negasit' });
     db.all('SELECT item_id FROM owned_items WHERE user_id=?', [user.id], (err, items) => {
       res.json({ ...user, owned_items: items.map(i => i.item_id) });
@@ -446,6 +474,98 @@ const SHOP = {
   'skin_frigo':       { name: 'Frigocamelo el Arctino', cost: 2200, slot: 'skin',   emoji: '🐪' },
   'skin_lirili':      { name: 'Lirilino el Larilino',   cost: 1800, slot: 'skin',   emoji: '🐘' },
   'skin_gyat':        { name: 'Gyatino el Swagmastero', cost: 1500, slot: 'skin',   emoji: '💅' },
+
+  // --- New image cards (Wikimedia Commons) ---
+  'skin_merluzzini':  { name: 'Merluzzini Marraquetini', cost: 1800, slot: 'skin', emoji: '🐟' },
+  'skin_frulli':      { name: 'Frulli Frulla',           cost: 1400, slot: 'skin', emoji: '🌀' },
+  'skin_giraffa':     { name: 'Giraffa Celeste',         cost: 2200, slot: 'skin', emoji: '🦒' },
+  'skin_cavallo':     { name: 'Ecco Cavallo Virtuoso',   cost: 2600, slot: 'skin', emoji: '🐴' },
+
+  // --- Card Styles (global card visual themes) ---
+  'style_gold':    { name: 'Gold Foil',    cost: 8000,   slot: 'cardstyle', emoji: '✨' },
+  'style_neon':    { name: 'Neon Glow',    cost: 12000,  slot: 'cardstyle', emoji: '💡' },
+  'style_dark':    { name: 'Dark Aura',    cost: 10000,  slot: 'cardstyle', emoji: '🖤' },
+  'style_fire':    { name: 'Fire Edition', cost: 15000,  slot: 'cardstyle', emoji: '🔥' },
+  'style_holo':    { name: 'Holographic',  cost: 25000,  slot: 'cardstyle', emoji: '🌈' },
+
+  // --- Card Frames ---
+  'frame_gold':    { name: 'Rama Aurie',        cost: 3000,   slot: 'frame', emoji: '🟡' },
+  'frame_neon':    { name: 'Neon Violet',        cost: 5000,   slot: 'frame', emoji: '💜' },
+  'frame_fire':    { name: 'Rama de Foc',        cost: 8000,   slot: 'frame', emoji: '🔥' },
+  'frame_ice':     { name: 'Crystal Ice',        cost: 10000,  slot: 'frame', emoji: '🧊' },
+  'frame_holo':    { name: 'Holographic',        cost: 20000,  slot: 'frame', emoji: '🌈' },
+  'frame_shadow':  { name: 'Dark Shadow',        cost: 15000,  slot: 'frame', emoji: '🖤' },
+  'frame_star':    { name: 'Stardust',           cost: 12000,  slot: 'frame', emoji: '⭐' },
+  'frame_diamond': { name: 'Diamond Elite',      cost: 50000,  slot: 'frame', emoji: '💎' },
+
+  // --- Common (200-800) ---
+  'skin_noobini_pizza':   { name: 'Noobini Pizzanini',        cost: 200,  slot: 'skin', emoji: '🍕' },
+  'skin_lirili_la':       { name: 'Lirili Larila',            cost: 300,  slot: 'skin', emoji: '🐘' },
+  'skin_tim_cheese':      { name: 'Tim Cheese',               cost: 250,  slot: 'skin', emoji: '🧀' },
+  'skin_fluriflura':      { name: 'FluriFlura',               cost: 400,  slot: 'skin', emoji: '🌸' },
+  'skin_talpa_fero':      { name: 'Talpa Di Fero',            cost: 350,  slot: 'skin', emoji: '🦔' },
+  'skin_svinina':         { name: 'Svinina Bombardino',       cost: 500,  slot: 'skin', emoji: '🐷' },
+  'skin_pipi_kiwi':       { name: 'Pipi Kiwi',               cost: 300,  slot: 'skin', emoji: '🥝' },
+  'skin_racooni':         { name: 'Racooni Jandelini',        cost: 450,  slot: 'skin', emoji: '🦝' },
+  'skin_pipi_corni':      { name: 'Pipi Corni',               cost: 350,  slot: 'skin', emoji: '🌽' },
+  'skin_noobini_santa':   { name: 'Noobini Santanini',        cost: 600,  slot: 'skin', emoji: '🎅' },
+
+  // --- Rare (800-2500) ---
+  'skin_trippi_troppi':   { name: 'Trippi Troppi',            cost: 800,  slot: 'skin', emoji: '🦋' },
+  'skin_gangster_foot':   { name: 'Gangster Footera',         cost: 1000, slot: 'skin', emoji: '👟' },
+  'skin_bandito_bob':     { name: 'Bandito Bobritto',         cost: 1200, slot: 'skin', emoji: '🦫' },
+  'skin_boneca_amb':      { name: 'Boneca Ambalabu',          cost: 1500, slot: 'skin', emoji: '🎎' },
+  'skin_cacto_hipo':      { name: 'Cacto Hipopotamo',         cost: 1100, slot: 'skin', emoji: '🦛' },
+  'skin_ta_sahur':        { name: 'Ta Ta Ta Ta Sahur',        cost: 2000, slot: 'skin', emoji: '🥁' },
+  'skin_tric_trac':       { name: 'Tric Trac Baraboom',       cost: 1800, slot: 'skin', emoji: '💥' },
+  'skin_pipi_avocado':    { name: 'Pipi Avocado',             cost: 900,  slot: 'skin', emoji: '🥑' },
+  'skin_frogo_elfo':      { name: 'Frogo Elfo',               cost: 2500, slot: 'skin', emoji: '🧝' },
+
+  // --- Epic (2500-6000) ---
+  'skin_cappuccino_ass':  { name: 'Cappuccino Assassino',     cost: 2500, slot: 'skin', emoji: '☕' },
+  'skin_brr_patapim':     { name: 'Brr Brr Patapim',         cost: 3000, slot: 'skin', emoji: '🥁' },
+  'skin_trulimero':       { name: 'Trulimero Trulicina',      cost: 3500, slot: 'skin', emoji: '🎭' },
+  'skin_bambini_crost':   { name: 'Bambini Crostini',         cost: 2800, slot: 'skin', emoji: '🥐' },
+  'skin_bananita_dolph':  { name: 'Bananita Dolphinita',      cost: 4000, slot: 'skin', emoji: '🐬' },
+  'skin_perochello':      { name: 'Perochello Lemonchello',   cost: 3200, slot: 'skin', emoji: '🍋' },
+  'skin_brri_bombicus':   { name: 'Brri Brri Bicus Dicus Bombicus', cost: 5000, slot: 'skin', emoji: '💣' },
+  'skin_avocadini_guf':   { name: 'Avocadini Guffo',         cost: 3800, slot: 'skin', emoji: '🦉' },
+  'skin_salamino_peng':   { name: 'Salamino Penguino',        cost: 4500, slot: 'skin', emoji: '🐧' },
+  'skin_ti_sahur':        { name: 'Ti Ti Ti Sahur',           cost: 5500, slot: 'skin', emoji: '🌙' },
+  'skin_penguin_tree':    { name: 'Penguin Tree',             cost: 4200, slot: 'skin', emoji: '🌲' },
+  'skin_penguino_coco':   { name: 'Penguino Cocosino',        cost: 6000, slot: 'skin', emoji: '🥥' },
+
+  // --- Legendary (6000-25000) ---
+  'skin_burbaloni':       { name: 'Burbaloni Loliloli',       cost: 6000,  slot: 'skin', emoji: '🫧' },
+  'skin_chimpazini':      { name: 'Chimpazini Bananini',      cost: 8000,  slot: 'skin', emoji: '🦧' },
+  'skin_chef_crab':       { name: 'Chef Crabracadabra',       cost: 10000, slot: 'skin', emoji: '🦀' },
+  'skin_lionel_cact':     { name: 'Lionel Cactuseli',         cost: 12000, slot: 'skin', emoji: '🌵' },
+  'skin_glorbo_frutt':    { name: 'Glorbo Fruttodrillo',      cost: 9000,  slot: 'skin', emoji: '🐊' },
+  'skin_blueberrini':     { name: 'Blueberrini Octopusini',   cost: 15000, slot: 'skin', emoji: '🐙' },
+  'skin_strawberelli':    { name: 'Strawberelli Flamingelli',  cost: 14000, slot: 'skin', emoji: '🦩' },
+  'skin_pandaccini':      { name: 'Pandaccini Bananini',      cost: 11000, slot: 'skin', emoji: '🐼' },
+  'skin_cocosini_mama':   { name: 'Cocosini Mama',            cost: 13000, slot: 'skin', emoji: '🥥' },
+  'skin_sigma_boy':       { name: 'Sigma Boy',                cost: 18000, slot: 'skin', emoji: '💪' },
+  'skin_sigma_girl':      { name: 'Sigma Girl',               cost: 18000, slot: 'skin', emoji: '👑' },
+  'skin_pi_watermelon':   { name: 'Pi Pi Watermelon',         cost: 20000, slot: 'skin', emoji: '🍉' },
+  'skin_chocco_bunny':    { name: 'Chocco Bunny',             cost: 16000, slot: 'skin', emoji: '🐰' },
+  'skin_sealo_regalo':    { name: 'Sealo Regalo',             cost: 25000, slot: 'skin', emoji: '🦭' },
+
+  // --- Mythic (25000-100000) ---
+  'skin_frigo_camelo':    { name: 'Frigo Camelo',             cost: 30000,  slot: 'skin', emoji: '🐪' },
+  'skin_orangutini':      { name: 'Orangutini Ananassini',    cost: 50000,  slot: 'skin', emoji: '🦧' },
+  'skin_rhino_toast':     { name: 'Rhino Toasterino',         cost: 40000,  slot: 'skin', emoji: '🦏' },
+  'skin_bombardiro_croc': { name: 'Bombardiro Crocodilo',     cost: 75000,  slot: 'skin', emoji: '🐊' },
+  'skin_bombombini_gus':  { name: 'Bombombini Gusini',        cost: 100000, slot: 'skin', emoji: '💥' },
+
+  // --- Brainrot God (100000-500000) ---
+  'skin_brainrot_god':    { name: 'Brainrot God',             cost: 250000, slot: 'skin', emoji: '🧠' },
+
+  // --- Secret (500000-5000000) ---
+  'skin_secret_one':      { name: '??? Secret ???',           cost: 999999, slot: 'skin', emoji: '❓' },
+
+  // --- OG (5000000+) ---
+  'skin_og_original':     { name: 'OG Original Brainrot',     cost: 5000000, slot: 'skin', emoji: '🏆' },
 };
 
 app.get('/api/shop', (req, res) => res.json(SHOP));
@@ -469,8 +589,8 @@ app.post('/api/buy', auth, (req, res) => {
 
 app.post('/api/equip', auth, (req, res) => {
   const { item_id, slot } = req.body;
-  const colMap = { hat:'char_hat', eyes:'char_eyes', outfit:'char_outfit', bg:'char_bg', skin:'char_skin' };
-  const defaultMap = { hat:'none', eyes:'normal', outfit:'default', bg:'blue', skin:'chibi' };
+  const colMap = { hat:'char_hat', eyes:'char_eyes', outfit:'char_outfit', bg:'char_bg', skin:'char_skin', frame:'char_frame', cardstyle:'char_card_style' };
+  const defaultMap = { hat:'none', eyes:'normal', outfit:'default', bg:'blue', skin:'chibi', frame:'none', cardstyle:'none' };
   const col = colMap[slot];
   if (!col) return res.status(400).json({ error: 'Slot invalid' });
   if (item_id === 'none' || item_id === 'chibi') {
@@ -485,6 +605,13 @@ app.post('/api/equip', auth, (req, res) => {
 
 app.get('/api/leaderboard', (req, res) => {
   db.all('SELECT id,username,points,streak,char_hat,char_bg,char_eyes,char_outfit,char_skin FROM users ORDER BY points DESC LIMIT 20', [], (err, rows) => {
+    res.json(rows || []);
+  });
+});
+
+app.get('/api/leaderboard/weekly', (req, res) => {
+  const weekStr = getWeekStr();
+  db.all('SELECT id,username,weekly_points,streak,char_skin FROM users WHERE week_str=? ORDER BY weekly_points DESC LIMIT 20', [weekStr], (err, rows) => {
     res.json(rows || []);
   });
 });
@@ -514,6 +641,81 @@ app.delete('/api/users/me', auth, (req, res) => {
   db.run('DELETE FROM users WHERE id=?', [userId], (err) => {
     if (err) return res.status(500).json({ error: 'Eroare server' });
     res.json({ success: true });
+  });
+});
+
+app.post('/api/arcade/reward', auth, (req, res) => {
+  const { points, card_id } = req.body;
+  const pts = Math.min(Math.max(parseInt(points)||0, 0), 9999);
+  if(card_id) {
+    const item = SHOP[card_id];
+    if(!item || item.slot !== 'skin') {
+      db.run('UPDATE users SET points=points+? WHERE id=?', [pts, req.user.id], ()=>{
+        db.get('SELECT points FROM users WHERE id=?', [req.user.id], (err, u)=>{
+          res.json({success:true, total_points: u.points});
+        });
+      });
+      return;
+    }
+    db.run('INSERT OR IGNORE INTO owned_items (user_id, item_id) VALUES (?,?)', [req.user.id, card_id], function() {
+      const cardGiven = this.changes > 0;
+      db.run('UPDATE users SET points=points+? WHERE id=?', [pts, req.user.id], ()=>{
+        db.get('SELECT points FROM users WHERE id=?', [req.user.id], (err, u)=>{
+          res.json({success:true, total_points: u.points, card_name: cardGiven ? item.name : null});
+        });
+      });
+    });
+  } else {
+    if(pts === 0) return res.json({success:true, total_points: 0});
+    db.run('UPDATE users SET points=points+? WHERE id=?', [pts, req.user.id], ()=>{
+      db.get('SELECT points FROM users WHERE id=?', [req.user.id], (err, u)=>{
+        res.json({success:true, total_points: u.points});
+      });
+    });
+  }
+});
+
+app.post('/api/arcade/stage', auth, (req, res) => {
+  const { stage } = req.body;
+  const s = Math.max(parseInt(stage)||0, 0);
+  db.run('UPDATE users SET best_arcade_stage=MAX(COALESCE(best_arcade_stage,0),?) WHERE id=?', [s, req.user.id], () => {
+    res.json({ success: true });
+  });
+});
+
+app.post('/api/forgot-password', (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ error: 'Username lipsa' });
+  db.get('SELECT id, username, email FROM users WHERE username=?', [username.toLowerCase()], (err, user) => {
+    if (!user) return res.status(404).json({ error: 'Username inexistent' });
+    if (!user.email) return res.status(400).json({ error: 'Nu ai email salvat. Contacteaza suportul.' });
+    const token = crypto.randomBytes(24).toString('hex');
+    const expires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+    db.run('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES (?,?,?)', [user.id, token, expires], function(err) {
+      if (err) return res.status(500).json({ error: 'Eroare server' });
+      // TODO: Send email with reset link
+      // For now, return token directly (only in dev) - in prod, send via email
+      const resetLink = `https://kboom.enjoyme.com.ro/reset-password?token=${token}`;
+      console.log('Reset link for', user.username, ':', resetLink);
+      res.json({ success: true, msg: 'Daca username-ul exista, vei primi un email cu instructiuni.' });
+    });
+  });
+});
+
+app.post('/api/reset-password', async (req, res) => {
+  const { token, new_password } = req.body;
+  if (!token || !new_password) return res.status(400).json({ error: 'Date lipsa' });
+  if (new_password.length < 4) return res.status(400).json({ error: 'Parola minim 4 caractere' });
+  const now = new Date().toISOString();
+  db.get('SELECT * FROM password_reset_tokens WHERE token=? AND used=0 AND expires_at > ?', [token, now], async (err, row) => {
+    if (!row) return res.status(400).json({ error: 'Token invalid sau expirat' });
+    const hash = await bcrypt.hash(new_password, 10);
+    db.run('UPDATE users SET password=? WHERE id=?', [hash, row.user_id], (err) => {
+      if (err) return res.status(500).json({ error: 'Eroare server' });
+      db.run('UPDATE password_reset_tokens SET used=1 WHERE token=?', [token], () => {
+        res.json({ success: true, msg: 'Parola schimbata cu succes!' });
+      });
+    });
   });
 });
 

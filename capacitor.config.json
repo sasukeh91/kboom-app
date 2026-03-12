@@ -1,6 +1,6 @@
 {
   "appId": "ro.kboom.app",
-  "appName": "K-Boom",
+  "appName": "KBoom",
   "webDir": "www",
   "server": {
     "url": "https://kboom.enjoyme.com.ro",

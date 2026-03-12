@@ -54,7 +54,7 @@ workflows:
       - name: Update iOS project
         script: npx cap update ios
 
-      - name: Set export compliance
+      - name: Set permissions and export compliance
         script: |
           PLIST="ios/App/App/Info.plist"
           /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST" 2>/dev/null || \
@@ -74,6 +74,7 @@ workflows:
           echo "Raw output: '$RAW_BUILD'"
           CURRENT_BUILD=$(echo "$RAW_BUILD" | grep -E '^[0-9]+$' | tail -1)
           CURRENT_BUILD=${CURRENT_BUILD:-0}
+          echo "CURRENT_BUILD: $CURRENT_BUILD"
           NEW_BUILD=$((CURRENT_BUILD + 1))
           echo "NEW_BUILD: $NEW_BUILD"
           agvtool new-marketing-version 1.0.0
@@ -87,15 +88,75 @@ workflows:
             --scheme App \
             --archive-flags="-destination 'generic/platform=iOS'"
 
-      - name: Upload to TestFlight
+      - name: Upload to App Store Connect
         script: |
+          IPA=$(find build/ios/ipa -name "*.ipa" | head -1)
+          echo "Uploading IPA: $IPA"
           app-store-connect publish \
-            --path build/ios/ipa/App.ipa \
+            --path "$IPA" \
             --private-key @file:/tmp/AuthKey.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --testflight
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID"
 
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
+
+  android-workflow:
+    name: K-Boom Android Build
+    max_build_duration: 60
+    environment:
+      java: 17
+      node: v20
+      groups:
+        - android_signing
+      vars:
+        APP_ID: ro.kboom.app
+        APP_NAME: "K-Boom"
+    scripts:
+      - name: Install dependencies
+        script: npm install
+
+      - name: Install Capacitor CLI
+        script: npm install -g @capacitor/cli @capacitor/assets
+
+      - name: Add Android platform
+        script: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Generate app icons
+        script: npx @capacitor/assets generate --android
+
+      - name: Copy web assets
+        script: npx cap copy android
+
+      - name: Update Android project
+        script: npx cap update android
+
+      - name: Set app version
+        script: |
+          VERSION_CODE=1
+          sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/" android/app/build.gradle
+          sed -i 's/versionName "[^"]*"/versionName "1.0.0"/' android/app/build.gradle
+
+      - name: Build release AAB
+        script: |
+          cd android
+          ./gradlew bundleRelease
+
+      - name: Sign AAB
+        script: |
+          echo "$KEYSTORE_BASE64" | base64 -d > /tmp/keystore.jks
+          jarsigner -verbose \
+            -sigalg SHA256withRSA \
+            -digestalg SHA-256 \
+            -keystore /tmp/keystore.jks \
+            -storepass "$KEYSTORE_PASSWORD" \
+            -keypass "$KEY_PASSWORD" \
+            android/app/build/outputs/bundle/release/app-release.aab \
+            "$KEY_ALIAS"
+
+    artifacts:
+      - android/app/build/outputs/bundle/release/*.aab

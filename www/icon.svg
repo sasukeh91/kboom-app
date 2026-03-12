@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#6A00CC"/>
+      <stop offset="35%" stop-color="#3A0080"/>
+      <stop offset="70%" stop-color="#1A0050"/>
+      <stop offset="100%" stop-color="#0A0020"/>
+    </radialGradient>
+    <radialGradient id="bg2" cx="80%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#CC0060"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="bg3" cx="15%" cy="85%" r="50%">
+      <stop offset="0%" stop-color="#0060CC"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="balloon" cx="33%" cy="22%" r="75%">
+      <stop offset="0%" stop-color="#D4AAFF"/>
+      <stop offset="40%" stop-color="#9B5CFF"/>
+      <stop offset="100%" stop-color="#4A1FA8"/>
+    </radialGradient>
+    <radialGradient id="bshadow" cx="50%" cy="75%" r="55%">
+      <stop offset="0%" stop-color="#3A0090" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1A0060" stop-opacity="0.65"/>
+    </radialGradient>
+    <radialGradient id="bowlg" cx="40%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF8E0"/>
+      <stop offset="100%" stop-color="#F0C060"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg2)" opacity="0.7"/>
+  <rect width="1024" height="1024" rx="224" fill="url(#bg3)" opacity="0.5"/>
+
+  <!-- Background stars & sparkles -->
+  <circle cx="100" cy="160" r="4"   fill="white"   opacity="0.5"/>
+  <circle cx="900" cy="200" r="3.5" fill="#FFD700" opacity="0.6"/>
+  <circle cx="180" cy="760" r="3"   fill="#A855FF" opacity="0.55"/>
+  <circle cx="850" cy="660" r="4"   fill="#FF4D94" opacity="0.55"/>
+  <circle cx="780" cy="130" r="3"   fill="white"   opacity="0.45"/>
+  <circle cx="140" cy="410" r="3"   fill="#A855FF" opacity="0.65"/>
+  <circle cx="870" cy="430" r="3"   fill="#FF4D94" opacity="0.6"/>
+  <circle cx="940" cy="320" r="2.5" fill="#FFD700" opacity="0.5"/>
+  <circle cx="70"  cy="560" r="2.5" fill="white"   opacity="0.4"/>
+  <circle cx="920" cy="820" r="3.5" fill="#A855FF" opacity="0.5"/>
+  <circle cx="60"  cy="850" r="3"   fill="#FF4D94" opacity="0.45"/>
+  <circle cx="950" cy="550" r="2"   fill="white"   opacity="0.4"/>
+  <circle cx="200" cy="300" r="2"   fill="#FFD700" opacity="0.45"/>
+  <!-- Cross sparkle top-right -->
+  <path d="M870 170 L870 150 M860 160 L880 160" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <!-- Cross sparkle bottom-left -->
+  <path d="M130 700 L130 684 M122 692 L138 692" stroke="#A855FF" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- K-BOOM main title -->
+  <text x="512" y="70" text-anchor="middle"
+        font-family="Arial Black,Impact,sans-serif"
+        font-size="80" font-weight="900" letter-spacing="4"
+        fill="white" opacity="0.97" filter="url(#glow)">K-BOOM</text>
+  <!-- BRAINROT subtitle -->
+  <text x="512" y="122" text-anchor="middle"
+        font-family="Arial Black,Impact,sans-serif"
+        font-size="40" font-weight="900" letter-spacing="10"
+        fill="#FF4D94" opacity="0.92">BRAINROT</text>
+
+  <!-- Balloon body -->
+  <ellipse cx="512" cy="558" rx="305" ry="358" fill="url(#balloon)"/>
+  <ellipse cx="512" cy="558" rx="305" ry="358" fill="url(#bshadow)"/>
+
+  <!-- Balloon shine -->
+  <ellipse cx="392" cy="398" rx="108" ry="72" fill="rgba(255,255,255,0.38)"/>
+  <ellipse cx="358" cy="366" rx="44" ry="32" fill="rgba(255,255,255,0.68)"/>
+
+  <!-- ── NOODLE BRAINROT CHARACTER ── -->
+
+  <!-- Bowl base shadow -->
+  <ellipse cx="512" cy="645" rx="190" ry="48" fill="#B08010" opacity="0.7"/>
+  <!-- Bowl rim -->
+  <ellipse cx="512" cy="632" rx="192" ry="50" fill="url(#bowlg)"/>
+  <!-- Bowl inner -->
+  <ellipse cx="512" cy="630" rx="168" ry="40" fill="#FFF3B0"/>
+
+  <!-- Noodle layer back -->
+  <path d="M338 594 Q360 558 386 580 Q412 602 438 566 Q464 530 494 558 Q520 584 548 552 Q574 520 602 548 Q626 572 652 548 Q672 528 686 544"
+        stroke="#D48A10" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Noodle layer mid -->
+  <path d="M346 610 Q370 576 396 596 Q424 618 452 584 Q480 550 510 576 Q536 600 564 570 Q592 542 618 566 Q642 588 668 566"
+        stroke="#F0B020" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Noodle layer front -->
+  <path d="M354 578 Q378 546 404 566 Q430 586 456 554 Q482 522 512 548 Q540 572 566 544 Q592 516 618 540 Q640 560 662 544"
+        stroke="#FFD040" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Left eye white + shadow -->
+  <circle cx="436" cy="506" r="66" fill="rgba(0,0,0,0.15)"/>
+  <circle cx="436" cy="502" r="66" fill="white" stroke="#C88010" stroke-width="5"/>
+  <!-- Right eye white + shadow -->
+  <circle cx="588" cy="506" r="66" fill="rgba(0,0,0,0.15)"/>
+  <circle cx="588" cy="502" r="66" fill="white" stroke="#C88010" stroke-width="5"/>
+
+  <!-- Left iris -->
+  <circle cx="436" cy="502" r="45" fill="#2E7FFF"/>
+  <circle cx="436" cy="502" r="28" fill="#0A1850"/>
+  <circle cx="450" cy="488" r="13" fill="white"/>
+  <circle cx="424" cy="516" r="5" fill="rgba(255,255,255,0.55)"/>
+
+  <!-- Right iris -->
+  <circle cx="588" cy="502" r="45" fill="#2E7FFF"/>
+  <circle cx="588" cy="502" r="28" fill="#0A1850"/>
+  <circle cx="602" cy="488" r="13" fill="white"/>
+  <circle cx="576" cy="516" r="5" fill="rgba(255,255,255,0.55)"/>
+
+  <!-- Eyebrows (raised/surprised) -->
+  <path d="M388 446 Q436 422 482 440"
+        stroke="#7A3A00" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M544 440 Q588 422 636 446"
+        stroke="#7A3A00" stroke-width="12" stroke-linecap="round" fill="none"/>
+
+  <!-- Mouth (open O - surprised happy) -->
+  <ellipse cx="512" cy="574" rx="30" ry="22" fill="#993300"/>
+  <ellipse cx="512" cy="574" rx="22" ry="16" fill="#FF3300"/>
+  <ellipse cx="512" cy="582" rx="18" ry="8" fill="#CC2200"/>
+
+  <!-- Balloon tip -->
+  <path d="M472 916 Q512 950 552 916 Q530 958 512 952 Q494 958 472 916Z" fill="#3A1880"/>
+  <!-- String -->
+  <path d="M512 952 Q488 996 506 1012" stroke="rgba(255,255,255,0.25)" stroke-width="10"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- Fuse -->
+  <path d="M512 200 Q538 150 572 130" stroke="#FFD700" stroke-width="16"
+        stroke-linecap="round" fill="none"/>
+  <!-- Spark glow halo -->
+  <circle cx="578" cy="124" r="34" fill="#FF8800" opacity="0.45"/>
+  <!-- Spark -->
+  <circle cx="578" cy="124" r="24" fill="#FF9F1C"/>
+  <circle cx="578" cy="124" r="14" fill="#FFE040"/>
+  <!-- Sparkles -->
+  <circle cx="610" cy="96"  r="9"   fill="#FFD700" opacity="0.85"/>
+  <circle cx="556" cy="90"  r="7"   fill="#FFD700" opacity="0.75"/>
+  <circle cx="626" cy="120" r="5.5" fill="#FF9F1C" opacity="0.9"/>
+  <circle cx="596" cy="86"  r="4"   fill="white"   opacity="0.7"/>
+</svg>
