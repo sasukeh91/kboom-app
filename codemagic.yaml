@@ -106,14 +106,14 @@ workflows:
             --scheme App \
             --archive-flags="-destination 'generic/platform=iOS'"
 
-      - name: Upload to TestFlight
+      - name: Upload to App Store
         script: |
           app-store-connect publish \
             --path build/ios/ipa/App.ipa \
             --private-key @file:/tmp/AuthKey.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --testflight
+            --app-store
 
     artifacts:
       - build/ios/ipa/*.ipa
