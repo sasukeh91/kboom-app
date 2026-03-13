@@ -6,3 +6,6 @@ android/
 *.db-wal
 .DS_Store
 dist/
+Apple/
+VPS Backup/
+screenshots/
