@@ -18,6 +18,8 @@ workflows:
           head -1 /tmp/AuthKey.p8
           tail -1 /tmp/AuthKey.p8
           echo "Lines: $(wc -l < /tmp/AuthKey.p8)"
+          echo "Key ID: $APP_STORE_CONNECT_KEY_IDENTIFIER"
+          echo "Issuer: $APP_STORE_CONNECT_ISSUER_ID"
           openssl pkey -in /tmp/AuthKey.p8 -check -noout 2>&1 || echo "KEY CHECK FAILED"
 
       - name: Initialize keychain and fetch signing files
@@ -46,7 +48,20 @@ workflows:
           fi
 
       - name: Generate app icons
-        script: npx @capacitor/assets generate --ios
+        script: |
+          ICON_DIR=$(find ios -name "AppIcon.appiconset" -type d | head -1)
+          echo "AppIcon dir: $ICON_DIR"
+          if [ -z "$ICON_DIR" ]; then
+            echo "ERROR: no AppIcon.appiconset found"
+            find ios -type d | grep -i icon
+            exit 1
+          fi
+          sips -z 1024 1024 resources/icon.png -s format jpeg --out /tmp/icon_noa.jpg
+          sips /tmp/icon_noa.jpg -s format png --out "$ICON_DIR/AppIcon.png"
+          echo "Alpha stripped, icon written to $ICON_DIR/AppIcon.png"
+          ls -la "$ICON_DIR/"
+          printf '{\n  "images": [\n    {\n      "filename": "AppIcon.png",\n      "idiom": "universal",\n      "platform": "ios",\n      "size": "1024x1024"\n    }\n  ],\n  "info": {\n    "author": "xcode",\n    "version": 1\n  }\n}\n' > "$ICON_DIR/Contents.json"
+          echo "Contents.json written"
 
       - name: Copy web assets
         script: npx cap copy ios
@@ -66,6 +81,8 @@ workflows:
       - name: Set app version
         script: |
           echo "=== Version Debug ==="
+          echo "Key ID: $APP_STORE_CONNECT_KEY_IDENTIFIER"
+          echo "Issuer: $APP_STORE_CONNECT_ISSUER_ID"
           RAW_BUILD=$(app-store-connect get-latest-build-number "$APP_ID" \
             --platform IOS \
             --private-key @file:/tmp/AuthKey.p8 \
@@ -73,7 +90,8 @@ workflows:
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" 2>&1) || true
           echo "Raw output: '$RAW_BUILD'"
           CURRENT_BUILD=$(echo "$RAW_BUILD" | grep -E '^[0-9]+$' | tail -1)
-          CURRENT_BUILD=${CURRENT_BUILD:-0}
+          GIT_COUNT=$(git rev-list --count HEAD)
+          CURRENT_BUILD=${CURRENT_BUILD:-$GIT_COUNT}
           echo "CURRENT_BUILD: $CURRENT_BUILD"
           NEW_BUILD=$((CURRENT_BUILD + 1))
           echo "NEW_BUILD: $NEW_BUILD"
@@ -88,15 +106,14 @@ workflows:
             --scheme App \
             --archive-flags="-destination 'generic/platform=iOS'"
 
-      - name: Upload to App Store Connect
+      - name: Upload to TestFlight
         script: |
-          IPA=$(find build/ios/ipa -name "*.ipa" | head -1)
-          echo "Uploading IPA: $IPA"
           app-store-connect publish \
-            --path "$IPA" \
+            --path build/ios/ipa/App.ipa \
             --private-key @file:/tmp/AuthKey.p8 \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID"
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --testflight
 
     artifacts:
       - build/ios/ipa/*.ipa
