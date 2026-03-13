@@ -5,8 +5,6 @@ workflows:
     environment:
       xcode: latest
       node: v20
-      groups:
-        - ios_build
       vars:
         APP_ID: ro.kboom.app
         APP_NAME: "K-Boom"
